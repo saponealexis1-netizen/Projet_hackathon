@@ -43,6 +43,10 @@ La première version des slides prévoyait une migration d'un faux CRM vers **Su
 | D5 | **Plan B Supabase** : fichier JSON pour les contacts, export CSV pour les mesures. | Le cœur de la démo (ancien CRM → agent → HubSpot) n'en dépend pas. |
 | D6 | **n8n est exclu du MVP.** | Pas nécessaire au parcours principal. |
 | D7 | **10 à 20 contacts synthétiques** (jeu de référence Hugging Face). | Aucune donnée personnelle réelle. |
+| D8 | **Écran de lancement et bilan final = deux parties de l'écran de suivi** (bouton « Lancer la migration » en haut, encadré « Bilan » en bas), construit par Inès. | Évite deux écrans supplémentaires. |
+| D9 | **Une fiche bloquée est affichée avec sa raison, mais n'est pas corrigeable dans l'outil.** | Un formulaire de correction n'est pas indispensable au parcours principal. En démo : « Thomas la corrige à la main ». |
+| D10 | **Les fiches « à vérifier » (warning) partent dans HubSpot, sans note.** L'anomalie est enregistrée dans `migration_log` et affichée sur l'écran de suivi. | Reste simple ; l'information n'est pas perdue. |
+| D11 | **L'ancien CRM n'a pas de mot de passe pour le MVP.** | Gestion des connexions par l'agent H encore inconnue ; à ajouter si le temps le permet. |
 
 ## 5. Architecture cible
 
