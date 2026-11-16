@@ -9,22 +9,23 @@ Ce document dit **qui fait quoi, quand, dans quel dossier**, et **comment on tra
 ## 1. Les règles d'or
 
 1. **Une personne = une conversation Claude Code = une branche par tâche.**
-2. **Personne ne merge, sauf le chef de projet (Mehdi).** Chacun pousse sa branche et ouvre une pull request (PR) vers `main`.
-3. **Quand une tâche est finie**, la personne envoie à Mehdi le message « PRÊT POUR MERGE » (modèle en section 6). Mehdi relit, vérifie que rien n'est en cours ailleurs, puis merge.
+2. **Personne ne fusionne (merge), sauf le chef de projet : Alexis.** Chacun pousse sa branche et ouvre une pull request (PR) vers `main`.
+3. **Quand une tâche est finie**, la personne envoie à Alexis le message « PRÊT POUR MERGE » (modèle en section 7), **puis enchaîne directement sur sa tâche suivante** sans attendre.
 4. **Chacun reste dans ses dossiers** (section 3). Pour toucher au dossier de quelqu'un d'autre, on prévient d'abord.
 5. **Aucun secret dans Git** : clés H Company, HubSpot et Supabase uniquement dans `.env.local` (jamais commité) et dans les variables d'environnement Vercel.
 6. **Des petites PR souvent**, plutôt qu'une énorme PR le jeudi soir.
+7. **Alexis fusionne régulièrement** (dès qu'un message arrive, ou au moins toutes les heures) pour que personne ne reste bloqué.
 
 ## 2. Qui fait quoi
 
 | Membre | Rôle | Responsabilité principale cette semaine |
 |---|---|---|
-| **Mehdi Zitouni** | CPO + chef de projet | Coordination, **merges**, parcours utilisateur, look de l'ancien CRM, écran de suivi de migration |
-| **Victoria Ifrah** | CTO | Socle technique (Next.js, Vercel), ancien CRM simulé, **intégration de l'agent H Company**, orchestration, démo live + plan B |
-| **Inès Soubran** | CAIO | Instructions de l'agent (ce qu'il doit lire et comment), **vérification IA** : mapping des champs, doublons, anomalies |
-| **Alexis Sapone** | CDO | Jeu de données synthétique, **Supabase** (2 tables), **envoi vers HubSpot via API**, **mesures** |
-| **Maxime Bazin** | CEO | Pitch, business model, coût de run, Loom de mercredi, vidéo démo, pitch deck, fiche projet, retours sur l'Agent API |
-| Natalia Medrano | CAO | Non affectée dans ce plan — à intégrer avec Maxime (marketing, post LinkedIn) si disponible |
+| **Alexis Sapone** | CDO + **chef de projet** | **Fusions**, coordination, jeu de données synthétique, Supabase (2 tables), envoi vers HubSpot via API, mesures |
+| **Victoria Ifrah** | CTO | Socle technique (Next.js, Vercel), ancien CRM simulé (fonctionnement + look « vieux logiciel »), **intégration de l'agent H Company**, orchestration, schéma d'architecture, démo live + plan B |
+| **Inès Soubran** | CAIO | Instructions de l'agent (ce qu'il doit lire et comment), **vérification IA** (mapping, doublons, anomalies), écran de suivi de migration |
+| **Maxime Bazin** | CEO | Parcours utilisateur, pitch, business model, coût de run, Loom de mercredi, vidéo démo, pitch deck, fiche projet |
+| Mehdi Zitouni | CPO | ⏸️ **En standby** cette semaine — ses tâches sont réparties ci-dessus |
+| Natalia Medrano | CAO | ⏸️ **En standby** — peut rejoindre Maxime (marketing, post LinkedIn) si disponible |
 
 ## 3. Qui possède quels dossiers
 
@@ -33,8 +34,8 @@ Chaque dossier a **un seul propriétaire**. C'est ce qui permet de travailler en
 ```
 .
 ├── apps/
-│   ├── legacy-crm/          Victoria  (style et écrans : Mehdi)
-│   └── dashboard/           Mehdi     (écran de suivi de migration)
+│   ├── legacy-crm/          Victoria  (ancien CRM simulé, fonctionnement + style)
+│   └── dashboard/           Inès      (écran de suivi de migration)
 ├── agent/
 │   ├── runner/              Victoria  (appel de l'Agent API, orchestration)
 │   └── prompts/             Inès      (instructions données à l'agent)
@@ -45,11 +46,12 @@ Chaque dossier a **un seul propriétaire**. C'est ce qui permet de travailler en
 ├── data/                    Alexis    (contacts synthétiques)
 ├── supabase/                Alexis    (schéma SQL des 2 tables)
 ├── shared/
-│   └── contact.schema.json  Alexis    ⚠️ CONTRAT COMMUN — toute modification validée par Mehdi
+│   └── contact.schema.json  Alexis    ⚠️ CONTRAT COMMUN — toute modification annoncée à toute l'équipe
 └── docs/
-    ├── parcours/            Mehdi     (parcours utilisateur)
+    ├── architecture/        Victoria  (schéma d'architecture)
+    ├── parcours/            Maxime    (parcours utilisateur)
     ├── pitch/               Maxime    (pitch, business model, coût de run)
-    └── checkpoint-2..4/     Maxime    (livrables Eugenia, avec Mehdi)
+    └── checkpoint-2..4/     Maxime    (livrables Eugenia, déposés par Alexis)
 ```
 
 > Le langage de l'agent (TypeScript ou Python) sera fixé par Victoria **mardi après la session technique H Company (11h)**, selon les exemples officiels.
@@ -80,8 +82,8 @@ Qui produit / qui consomme :
 Ancien CRM ──(écran)──► Agent H ──► contact JSON ──► Vérification ──► HubSpot
  (Victoria)            (Victoria     (contrat         (Inès)          (Alexis)
                         + Inès)       Alexis)              │
-                                                           └──► Supabase migration_log ──► Mesures + Dashboard
-                                                                (Alexis)                   (Alexis + Mehdi)
+                                                           └──► Supabase migration_log ──► Mesures      + Écran de suivi
+                                                                (Alexis)                   (Alexis)       (Inès)
 ```
 
 ## 5. Le planning tâche par tâche
@@ -91,14 +93,14 @@ Ancien CRM ──(écran)──► Agent H ──► contact JSON ──► Vér
 | Qui | Tâche | Branche | Terminé quand… |
 |---|---|---|---|
 | Victoria | Socle Next.js + déploiement Vercel | `victoria/socle` | Une page « Hello » est en ligne sur Vercel |
-| Alexis | Contrat `contact.schema.json` + 20 contacts d'exemple | `alexis/contrat-donnees` | Validé par Inès et Victoria, mergé **avant midi** |
+| Alexis | Contrat `contact.schema.json` + 20 contacts d'exemple | `alexis/contrat-donnees` | Validé par Inès et Victoria, fusionné **avant midi** |
 | Alexis | Supabase : tables `legacy_contacts` et `migration_log` + chargement des 20 contacts | `alexis/supabase` | Les 20 contacts sont visibles dans Supabase |
-| Victoria | Ancien CRM simulé : liste paginée + fiche détail, sans export | `victoria/legacy-crm` | On peut ouvrir chaque fiche dans le navigateur |
-| Mehdi | Look « vieux logiciel » de l'ancien CRM + premier parcours utilisateur | `mehdi/parcours` | Maquette du parcours prête pour mercredi |
+| Victoria | Ancien CRM simulé : liste paginée + fiche détail, sans export, look « vieux logiciel » | `victoria/legacy-crm` | On peut ouvrir chaque fiche dans le navigateur |
 | Victoria | Session tech H Company (11h, 15h) → premier agent qui lit **une fiche** | `victoria/agent-v0` | L'agent renvoie les champs d'une fiche |
 | Inès | Premières instructions de l'agent (quelle page ouvrir, quoi lire) | `ines/prompts-v0` | Testées avec Victoria sur une fiche |
 | Alexis | Compte HubSpot gratuit + test de création d'un contact par API | `alexis/hubspot-v0` | Un contact de test apparaît dans HubSpot |
 | Maxime | Business model v1 (qui paie, combien) + suivi des crédits | `maxime/business` | Une page dans `docs/pitch/` |
+| Maxime | Premier parcours utilisateur (Camille et Thomas) | `maxime/parcours` | Brouillon dans `docs/parcours/` |
 
 ### Mercredi 18 — Premier parcours complet · livrable 17h
 
@@ -108,9 +110,9 @@ Ancien CRM ──(écran)──► Agent H ──► contact JSON ──► Vér
 | Inès | Vérification : mapping, doublons, champs manquants ou mal formés | `ines/verification` | Testée sur les contacts d'exemple |
 | Alexis | Envoi des contacts vérifiés vers HubSpot + écriture dans `migration_log` | `alexis/hubspot` | 5 contacts arrivent dans HubSpot |
 | Victoria | Orchestration : agent → vérification → HubSpot, en un seul lancement | `victoria/orchestration` | **Parcours complet sur 5 fiches** |
-| Mehdi | Parcours utilisateur final + schéma d'architecture | `mehdi/checkpoint-2` | Dans `docs/checkpoint-2/` |
-| Maxime | Mini pitch Loom (2 min) + roadmap jusqu'à jeudi | `maxime/checkpoint-2` | Lien Loom et roadmap dans `docs/checkpoint-2/` |
-| **Mehdi** | **Merge et dépôt du livrable 2 avant 17h** | — | Livrable rendu |
+| Victoria | Schéma d'architecture | `victoria/architecture` | Dans `docs/architecture/` |
+| Maxime | Parcours utilisateur final + mini pitch Loom (2 min) + roadmap jusqu'à jeudi | `maxime/checkpoint-2` | Dans `docs/checkpoint-2/` |
+| **Alexis** | **Fusion et dépôt du livrable 2 avant 17h** | — | Livrable rendu |
 
 ### Jeudi 19 — Fiabiliser et mesurer
 
@@ -119,9 +121,9 @@ Ancien CRM ──(écran)──► Agent H ──► contact JSON ──► Vér
 | Victoria | Passage à **20 fiches**, gestion des erreurs et des relances | `victoria/agent-20` | 20 fiches traitées en un lancement |
 | Inès | Cas pièges dans l'ancien CRM (doublon, champ vide, format bizarre) + amélioration des instructions | `ines/cas-pieges` | Les pièges sont détectés et signalés |
 | Alexis | Mesures : taux de réussite par fiche et par champ, temps, coût par fiche | `alexis/metrics` | Tableau de chiffres dans `pipeline/metrics/` |
-| Mehdi | Écran de suivi de migration (fiches traitées, anomalies, chiffres) | `mehdi/dashboard` | Lisible par le jury |
+| Inès | Écran de suivi de migration (fiches traitées, anomalies, chiffres) | `ines/dashboard` | Lisible par le jury |
 | Victoria | **Plan B démo** : vidéo de secours + jeu de données de secours | `victoria/plan-b` | La démo peut être montrée même si le réseau lâche |
-| Maxime | Coût de run, go-to-market, brouillon du pitch deck (8 à 12 slides) | `maxime/pitch-deck` | Brouillon relu par Mehdi |
+| Maxime | Coût de run, go-to-market, brouillon du pitch deck (8 à 12 slides) | `maxime/pitch-deck` | Brouillon relu par Alexis |
 | Tous | **Répétition de démo à 18h** | — | Démo réussie de bout en bout |
 
 ### Vendredi 20 — Livrer
@@ -130,26 +132,53 @@ Ancien CRM ──(écran)──► Agent H ──► contact JSON ──► Vér
 |---|---|---|
 | avant 9h | Tous | **Gel du code** : plus de nouvelle fonctionnalité, seulement des corrections |
 | 9h–11h | Victoria + Alexis | README final : comment tester, lien du prototype, architecture |
-| 9h–11h | Maxime + Mehdi | Vidéo démo (5 min) + fiche projet |
+| 9h–11h | Maxime + Inès | Vidéo démo (5 min) + fiche projet |
 | 9h–11h | Inès | Retours sur l'Agent API : ce qui a marché, ce qui a cassé, ce qui nous a surpris |
-| **11h** | **Mehdi** | **Dépôt : prototype, fiche projet + repo, vidéo** |
+| **11h** | **Alexis** | **Dépôt : prototype, fiche projet + repo, vidéo** |
 | 11h–15h | Maxime (+ tous) | Pitch deck final, avec les vrais chiffres d'Alexis |
-| **15h** | **Mehdi** | **Dépôt du pitch deck** |
+| **15h** | **Alexis** | **Dépôt du pitch deck** |
 | après 15h | Maxime | Pitch (6 min) + Q&R (4 min) |
 
 ## 6. Le circuit d'une tâche
 
+### C'est quoi une pull request ?
+
+Une **pull request (PR)** est une page GitHub où quelqu'un dit : « Voici mon travail, je propose de l'ajouter à la version officielle (`main`). » Alexis y voit les fichiers modifiés, la description, et un bouton **« Merge pull request »**. Tant qu'il n'a pas cliqué, `main` ne change pas.
+
 ```
-1. Je pars de main à jour       →  git pull origin main
-2. Je crée ma branche           →  prenom/tache
-3. Je travaille avec Claude Code dans MES dossiers
-4. Je pousse et j'ouvre une PR vers main (sans merger)
-5. J'envoie à Mehdi le message « PRÊT POUR MERGE »
-6. Mehdi relit et merge — ou me renvoie une correction
-7. Tout le monde récupère main à jour avant sa tâche suivante
+main (version officielle) ─────────────●───────────►
+                         \             ↑
+victoria/agent-v0         ●───●───●────┘
+                          son travail   la PR = « Alexis, tu peux l'ajouter ? »
 ```
 
-### Message « PRÊT POUR MERGE » (à envoyer à Mehdi)
+### Les étapes
+
+```
+1. Je pars de main à jour          →  Claude : « repars de main à jour »
+2. Je crée ma branche              →  prenom/tache
+3. Je travaille avec Claude Code dans MES dossiers
+4. C'est fini : Claude committe, pousse ma branche et ouvre une PR vers main (sans fusionner)
+5. J'envoie à Alexis le message « PRÊT POUR MERGE »
+6. J'ENCHAÎNE tout de suite sur ma tâche suivante (retour à l'étape 1)
+7. Alexis relit et fusionne — ou laisse un commentaire et je corrige
+```
+
+> Le point de contrôle est la **fusion**, pas le commit ni le push. Pousser souvent sur sa propre branche est conseillé : rien n'est perdu si la session Claude se ferme.
+
+### Enchaîner les tâches
+
+Pour démarrer la tâche suivante, dire à Claude :
+
+> « Tâche suivante : `<nom>`. Repars de `main` à jour, sur une nouvelle branche `<prenom>/<tache>`. »
+
+| Situation | Que faire |
+|---|---|
+| La tâche suivante ne dépend pas de la précédente | Repartir de `main` à jour (cas normal) |
+| Elle dépend de la précédente, **déjà fusionnée** | Repartir de `main` à jour |
+| Elle dépend de la précédente, **pas encore fusionnée** | Demander à Alexis de fusionner vite (« ça me bloque »), ou dire à Claude de repartir de sa branche précédente |
+
+### Message « PRÊT POUR MERGE » (à envoyer à Alexis)
 
 ```
 ✅ PRÊT POUR MERGE — <prénom> / <nom de la tâche>
@@ -160,13 +189,13 @@ Dossiers touchés : <liste>
 Dépend de / bloque : <rien, ou la tâche concernée>
 ```
 
-### Ce que vérifie Mehdi avant de merger
+### Ce que vérifie Alexis avant de fusionner
 
 - [ ] La PR ne touche que les dossiers de la personne.
 - [ ] Aucune clé ni mot de passe dans les fichiers.
 - [ ] Le contrat `contact.schema.json` n'a pas changé sans accord.
 - [ ] Rien d'autre n'est en cours qui dépend de cette PR.
-- [ ] Le site Vercel fonctionne toujours après le merge.
+- [ ] Le site Vercel fonctionne toujours après la fusion.
 
 ## 7. Le prompt de départ pour chaque conversation Claude Code
 
@@ -185,24 +214,24 @@ PURPOSE
 
 ABSOLUTE BOUNDARY
 - Travailler uniquement dans : <mes dossiers>.
-- Ne pas modifier shared/contact.schema.json sans accord du chef de projet.
+- Ne pas modifier shared/contact.schema.json sans accord d'Alexis.
 - Aucun secret dans Git (utiliser .env.local).
-- Ne jamais merger. Ne jamais pousser sur main.
+- Ne jamais fusionner. Ne jamais pousser sur main.
 
 DONE WHEN
 <critère "terminé quand…" du planning>
 
 FINAL REPORT — FRANÇAIS
 - Ce qui est fait, comment le vérifier, fichiers modifiés.
-- Pousser la branche et ouvrir une PR vers main.
-- Rédiger le message « PRÊT POUR MERGE » pour Mehdi (modèle docs/ORGANISATION.md).
+- Committer, pousser ma branche et ouvrir une PR vers main.
+- Rédiger le message « PRÊT POUR MERGE » pour Alexis (modèle docs/ORGANISATION.md).
 
-STOP_FOR_USER_DECISION : ne pas merger.
+STOP_FOR_USER_DECISION : ne pas fusionner.
 ```
 
 ## 8. Avant mardi matin
 
-- [ ] Ajouter Alexis, Maxime, Victoria et Inès comme **collaborateurs** du dépôt GitHub.
+- [ ] Ajouter Maxime, Victoria et Inès comme **collaborateurs** du dépôt GitHub.
 - [ ] Partager en privé (pas dans Git, pas sur Slack public) : clé Agent API H Company, jeton HubSpot, clés Supabase.
 - [ ] Créer un canal d'équipe pour les messages « PRÊT POUR MERGE ».
 - [ ] Vérifier que le dépôt est accessible au jury.

@@ -89,6 +89,8 @@ Team 8 — six rôles attribués.
 | Mehdi Zitouni | **CPO** | Design, parcours, interface |
 | Natalia Medrano | **CAO** | Automatisations, marketing |
 
+> **Cette semaine :** 4 membres actifs (Alexis, Victoria, Inès, Maxime) ; Mehdi et Natalia sont en standby. **Alexis est chef de projet** et seul responsable des fusions. Détail dans [docs/ORGANISATION.md](docs/ORGANISATION.md).
+
 ## Livrables
 
 | Checkpoint | Échéance | Contenu | Statut |
