@@ -38,17 +38,20 @@ Changer de CRM devient difficile quand les fiches clients ne peuvent pas être e
 
 ```
  1. CRM ANCIEN          2. AGENT H COMPANY       3. VÉRIFICATION           4. CRM CIBLE
- Interface web     →    Observe, clique et   →   Mapping des champs,   →   Mini-interface CRM
- fictive, sans          extrait les contacts     doublons et anomalies     connectée à Supabase
- export utilisateur
+ Interface web     →    Observe, clique et   →   Mapping des champs,   →   CRM réel : HubSpot,
+ simulée, sans          extrait les contacts     doublons et anomalies     alimenté via son API
+ export ni API
 ```
 
 **Périmètre du MVP**
 - 10 à 20 contacts **synthétiques**.
 - Aucun accès direct à la base source.
 - Aucune donnée réelle.
+- Ancien CRM **simulé** (on contrôle la démo et on prouve l'absence d'export) ; CRM cible **réel** (HubSpot).
 
-**Pourquoi un agent *computer-use* ?** Sans API ni export, une automatisation classique (script, connecteur) ne peut pas lire les données : il faut « voir » l'écran et naviguer dans l'interface.
+**Pourquoi un agent *computer-use* ?** Sans API ni export, une automatisation classique (script, connecteur) ne peut pas lire les données : il faut « voir » l'écran et naviguer dans l'interface. L'agent n'intervient que là où c'est indispensable (la lecture de l'ancien CRM) ; l'écriture dans HubSpot passe par son API, plus fiable.
+
+Le cadrage complet (options étudiées, décisions, planning) est détaillé dans [docs/CADRAGE.md](docs/CADRAGE.md).
 
 ## Personas
 
@@ -64,10 +67,11 @@ Personas fictifs de cadrage — business model B2B à tester.
 
 | Outil | Rôle dans le projet |
 |---|---|
-| **H Company** (Agent API) | Navigation visuelle et extraction des fiches |
-| **Next.js / TypeScript** | Interfaces, contrôles et orchestration |
+| **H Company** (Agent API) | Navigation visuelle et extraction des fiches dans l'ancien CRM |
+| **HubSpot** (CRM gratuit + API) | CRM cible réel, dans lequel les contacts sont importés |
+| **Next.js / TypeScript** | Ancien CRM simulé, interface de suivi et orchestration |
 | **Vercel** | Hébergement des interfaces |
-| **Supabase** | Base cible, suivi de la migration et anomalies |
+| **Supabase** | Base cachée de l'ancien CRM + journal de migration et mesures (**ce n'est pas le CRM cible**) |
 | **Hugging Face** | Jeu de données synthétique de référence |
 | **GitHub + Claude Code** | Versionnage et développement |
 
@@ -99,6 +103,7 @@ Team 8 — six rôles attribués.
 .
 ├── README.md                    ← présentation du projet (ce fichier)
 └── docs/
+    ├── CADRAGE.md               ← décisions de cadrage et planning de la semaine
     └── checkpoint-1/
         ├── README.md            ← détail du livrable 1
         └── Bascule_Livrable1_Validation_Idee_CORRIGE.pdf
