@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bascule/contact.schema.json",
+  "title": "Contact Bascule",
+  "description": "Format commun d'un contact extrait de l'ancien CRM. Produit par l'agent H, consommé par la vérification, HubSpot et les mesures. Toute modification doit être annoncée à toute l'équipe.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["legacy_id", "first_name", "last_name"],
+  "properties": {
+    "legacy_id":  { "type": "string", "pattern": "^C-[0-9]{4}$", "description": "Identifiant de la fiche dans l'ancien CRM, ex. C-0042" },
+    "first_name": { "type": "string", "minLength": 1, "description": "Prénom" },
+    "last_name":  { "type": "string", "minLength": 1, "description": "Nom" },
+    "email":      { "type": ["string", "null"], "description": "Adresse e-mail (le format est contrôlé par la vérification, pas par le schéma)" },
+    "phone":      { "type": ["string", "null"], "description": "Téléphone tel qu'affiché dans l'ancien CRM (normalisé par la vérification)" },
+    "company":    { "type": ["string", "null"], "description": "Entreprise" },
+    "job_title":  { "type": ["string", "null"], "description": "Poste" },
+    "city":       { "type": ["string", "null"], "description": "Ville" },
+    "notes":      { "type": ["string", "null"], "description": "Notes libres" }
+  }
+}
