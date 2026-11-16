@@ -229,9 +229,34 @@ FINAL REPORT — FRANÇAIS
 STOP_FOR_USER_DECISION : ne pas fusionner.
 ```
 
-## 8. Avant mardi matin
+## 8. Les clés API et les crédits
+
+**Chacun a sa propre clé Agent API H Company, avec ses propres crédits** (à récupérer sur platform.hcompany.ai).
+
+| Sujet | Règle |
+|---|---|
+| **Développement** | Chacun met **sa** clé dans **son** `.env.local`. Ce fichier n'est jamais envoyé sur GitHub et la clé n'est jamais partagée. |
+| **Démo et site Vercel** | Une seule clé est utilisée en ligne : **celle de Victoria** (elle fait tourner l'agent). C'est elle qu'on met dans les variables d'environnement Vercel. |
+| **Clé de secours** | Si Victoria n'a plus de crédits, on remplace sa clé dans Vercel par **celle d'Inès** (deuxième utilisatrice de l'agent). |
+| **Coût de fonctionnement** | Mesuré sur les lancements de Victoria (20 fiches jeudi) : elle note les crédits **avant et après**, Alexis calcule le coût par fiche pour le pitch. |
+| **Maxime** | N'a pas besoin de clé, sauf pour tester. Ses crédits restent en réserve. |
+| **Surveillance** | Victoria et Inès préviennent Alexis si leurs crédits passent **sous la moitié avant jeudi**. |
+
+### Ranger sa clé
+
+- La clé va dans un fichier `.env.local` (exemple : `H_COMPANY_API_KEY=...`, nom exact selon la doc H Company).
+- **Personne ne crée de fichier `.env` tant que le `.gitignore` (tâche `victoria/socle`) n'est pas fusionné.**
+- Avant tout commit, vérifier que Git ignore bien le fichier :
+  ```bash
+  git check-ignore -v apps/legacy-crm/.env.local
+  ```
+  Si la commande n'affiche rien : **ne pas committer**.
+- Jamais de clé dans le groupe d'équipe, une issue GitHub, une pull request ou une conversation Claude.
+
+## 9. Avant mardi matin
 
 - [ ] Ajouter Maxime, Victoria et Inès comme **collaborateurs** du dépôt GitHub.
-- [ ] Partager en privé (pas dans Git, pas sur Slack public) : clé Agent API H Company, jeton HubSpot, clés Supabase.
+- [ ] Chacun récupère **sa** clé Agent API H Company avec ses crédits (section 8).
+- [ ] Partager en privé (pas dans Git, pas sur Slack public) : jeton HubSpot et clés Supabase.
 - [ ] Créer un canal d'équipe pour les messages « PRÊT POUR MERGE ».
 - [ ] Vérifier que le dépôt est accessible au jury.
