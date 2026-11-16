@@ -88,6 +88,8 @@ Ancien CRM ──(écran)──► Agent H ──► contact JSON ──► Vér
 
 ## 5. Le planning tâche par tâche
 
+> **Le planning est indicatif.** Dès qu'une tâche est finie, on enchaîne sur la suivante sans attendre le jour prévu.
+
 ### Mardi 17 — Poser les fondations
 
 | Qui | Tâche | Branche | Terminé quand… |
@@ -245,7 +247,7 @@ STOP_FOR_USER_DECISION : ne pas fusionner.
 ### Ranger sa clé
 
 - La clé va dans un fichier `.env.local` (exemple : `H_COMPANY_API_KEY=...`, nom exact selon la doc H Company).
-- **Personne ne crée de fichier `.env` tant que le `.gitignore` (tâche `victoria/socle`) n'est pas fusionné.**
+- Le `.gitignore` à la racine du dépôt protège tous les fichiers `.env` et `.env.*` (sauf `.env.example`, qui sert de modèle **sans** vraie valeur). Récupérer `main` à jour avant de créer son `.env.local`.
 - Avant tout commit, vérifier que Git ignore bien le fichier :
   ```bash
   git check-ignore -v apps/legacy-crm/.env.local
