@@ -1,0 +1,222 @@
+[
+  {
+    "legacy_id": "C-0001",
+    "first_name": "Julien",
+    "last_name": "Moreau",
+    "email": "julien.moreau@boulangerie-moreau.example",
+    "phone": "+33 6 39 98 00 01",
+    "company": "Boulangerie Moreau",
+    "job_title": "Gérant",
+    "city": "Lyon",
+    "notes": "Commande hebdomadaire de flyers"
+  },
+  {
+    "legacy_id": "C-0002",
+    "first_name": "Sophie",
+    "last_name": "Lefèvre",
+    "email": "sophie.lefevre@cabinet-lefevre-conseil.example",
+    "phone": "+33 6 39 98 00 02",
+    "company": "Cabinet Lefèvre Conseil",
+    "job_title": "Associée",
+    "city": "Paris",
+    "notes": "Rappeler en janvier"
+  },
+  {
+    "legacy_id": "C-0003",
+    "first_name": "Karim",
+    "last_name": "Benali",
+    "email": "karim.benali@transports-benali.example",
+    "phone": "+33 6 39 98 00 03",
+    "company": "Transports Benali",
+    "job_title": "Directeur commercial",
+    "city": "Marseille",
+    "notes": null
+  },
+  {
+    "legacy_id": "C-0004",
+    "first_name": "Élodie",
+    "last_name": "Garnier",
+    "email": "elodie.garnier@atelier-garnier.example",
+    "phone": "+33 6 39 98 00 04",
+    "company": "Atelier Garnier",
+    "job_title": "Fondatrice",
+    "city": "Nantes",
+    "notes": "Préfère être contactée par e-mail"
+  },
+  {
+    "legacy_id": "C-0005",
+    "first_name": "Thomas",
+    "last_name": "Roux",
+    "email": "thomas.roux@roux-immobilier.example",
+    "phone": "+33 6 39 98 00 05",
+    "company": "Roux Immobilier",
+    "job_title": "Agent immobilier",
+    "city": "Bordeaux",
+    "notes": "Client depuis 2018"
+  },
+  {
+    "legacy_id": "C-0006",
+    "first_name": "Nadia",
+    "last_name": "Haddad",
+    "email": "nadia.haddad@pharmacie-du-centre.example",
+    "phone": "+33 6 39 98 00 06",
+    "company": "Pharmacie du Centre",
+    "job_title": "Pharmacienne titulaire",
+    "city": "Lille",
+    "notes": null
+  },
+  {
+    "legacy_id": "C-0007",
+    "first_name": "Lucas",
+    "last_name": "Fontaine",
+    "email": "lucas.fontaine@fontaine-renovation.example",
+    "phone": "+33 6 39 98 00 07",
+    "company": "Fontaine Rénovation",
+    "job_title": "Chef de chantier",
+    "city": "Toulouse",
+    "notes": "Devis envoyé le 12/09"
+  },
+  {
+    "legacy_id": "C-0008",
+    "first_name": "Chloé",
+    "last_name": "Mercier",
+    "email": "chloe.mercier@studio-mercier.example",
+    "phone": "+33 6 39 98 00 08",
+    "company": "Studio Mercier",
+    "job_title": "Photographe",
+    "city": "Rennes",
+    "notes": null
+  },
+  {
+    "legacy_id": "C-0009",
+    "first_name": "Antoine",
+    "last_name": "Dubois",
+    "email": "antoine.dubois@dubois-fils.example",
+    "phone": "+33 6 39 98 00 09",
+    "company": "Dubois & Fils",
+    "job_title": "Directeur",
+    "city": "Strasbourg",
+    "notes": "Ancien client, à relancer"
+  },
+  {
+    "legacy_id": "C-0010",
+    "first_name": "Inès",
+    "last_name": "Rahmani",
+    "email": "ines.rahmani@agence-horizon.example",
+    "phone": "+33 6 39 98 00 10",
+    "company": "Agence Horizon",
+    "job_title": "Chargée de communication",
+    "city": "Montpellier",
+    "notes": null
+  },
+  {
+    "legacy_id": "C-0011",
+    "first_name": "Mathieu",
+    "last_name": "Perrin",
+    "email": "mathieu.perrin@perrin-logistique.example",
+    "phone": "+33 6 39 98 00 11",
+    "company": "Perrin Logistique",
+    "job_title": "Responsable achats",
+    "city": "Grenoble",
+    "notes": "Volume important au T4"
+  },
+  {
+    "legacy_id": "C-0012",
+    "first_name": "Laura",
+    "last_name": "Chevalier",
+    "email": "laura.chevalier@chevalier-evenements.example",
+    "phone": "+33 6 39 98 00 12",
+    "company": "Chevalier Événements",
+    "job_title": "Gérante",
+    "city": "Nice",
+    "notes": null
+  },
+  {
+    "legacy_id": "C-0013",
+    "first_name": "Hugo",
+    "last_name": "Lambert",
+    "email": "hugo.lambert@garage-lambert.example",
+    "phone": "+33 6 39 98 00 13",
+    "company": "Garage Lambert",
+    "job_title": "Mécanicien",
+    "city": "Dijon",
+    "notes": "Paiement à 30 jours"
+  },
+  {
+    "legacy_id": "C-0014",
+    "first_name": "Sarah",
+    "last_name": "Bouvier",
+    "email": "sarah.bouvier@bouvier-avocats.example",
+    "phone": "+33 6 39 98 00 14",
+    "company": "Bouvier Avocats",
+    "job_title": "Avocate",
+    "city": "Angers",
+    "notes": null
+  },
+  {
+    "legacy_id": "C-0015",
+    "first_name": "Mehdi",
+    "last_name": "Saïdi",
+    "email": "mehdi.saidi@saidi-traiteur.example",
+    "phone": "+33 6 39 98 00 15",
+    "company": "Saïdi Traiteur",
+    "job_title": "Gérant",
+    "city": "Reims",
+    "notes": "Salon professionnel en mars"
+  },
+  {
+    "legacy_id": "C-0016",
+    "first_name": "Camille",
+    "last_name": "Renard",
+    "email": "camille.renard@librairie-renard.example",
+    "phone": "+33 6 39 98 00 16",
+    "company": "Librairie Renard",
+    "job_title": "Libraire",
+    "city": "Tours",
+    "notes": null
+  },
+  {
+    "legacy_id": "C-0017",
+    "first_name": "Paul",
+    "last_name": "Girard",
+    "email": "paul.girard@girard-informatique.example",
+    "phone": "+33 6 39 98 00 17",
+    "company": "Girard Informatique",
+    "job_title": "Technicien",
+    "city": "Clermont-Ferrand",
+    "notes": "Contrat de maintenance annuel"
+  },
+  {
+    "legacy_id": "C-0018",
+    "first_name": "Manon",
+    "last_name": "Blanc",
+    "email": "manon.blanc@blanc-coiffure.example",
+    "phone": "+33 6 39 98 00 18",
+    "company": "Blanc Coiffure",
+    "job_title": "Coiffeuse",
+    "city": "Le Havre",
+    "notes": null
+  },
+  {
+    "legacy_id": "C-0019",
+    "first_name": "Yanis",
+    "last_name": "Morel",
+    "email": "yanis.morel@morel-paysage.example",
+    "phone": "+33 6 39 98 00 19",
+    "company": "Morel Paysage",
+    "job_title": "Paysagiste",
+    "city": "Metz",
+    "notes": "Intéressé par l'offre pro"
+  },
+  {
+    "legacy_id": "C-0020",
+    "first_name": "Claire",
+    "last_name": "Vidal",
+    "email": "claire.vidal@vidal-architecture.example",
+    "phone": "+33 6 39 98 00 20",
+    "company": "Vidal Architecture",
+    "job_title": "Architecte",
+    "city": "Aix-en-Provence",
+    "notes": null
+  }
+]
