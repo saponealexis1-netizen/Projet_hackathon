@@ -1,0 +1,510 @@
+[
+ {
+  "legacy_id": "C-0001",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0001",
+   "first_name": "Julien",
+   "last_name": "Moreau",
+   "email": "julien.moreau@boulangerie-moreau.example",
+   "phone": "+33639980001",
+   "company": "Boulangerie Moreau",
+   "job_title": "Gérant",
+   "city": "Lyon",
+   "notes": "Commande hebdomadaire de flyers"
+  },
+  "anomalies": [],
+  "duration_ms": 55104,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0002",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0002",
+   "first_name": "Sophie",
+   "last_name": "Lefèvre",
+   "email": "sophie.lefevre@cabinet-lefevre-conseil.example",
+   "phone": "+33639980002",
+   "company": "Cabinet Lefèvre Conseil",
+   "job_title": "Associée",
+   "city": "Paris",
+   "notes": "Rappeler en janvier"
+  },
+  "anomalies": [],
+  "duration_ms": 51571,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0003",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0003",
+   "first_name": "Karim",
+   "last_name": "Benali",
+   "email": "karim.benali@transports-benali.example",
+   "phone": "+33639980003",
+   "company": "Transports Benali",
+   "job_title": "Directeur commercial",
+   "city": "Marseille",
+   "notes": null
+  },
+  "anomalies": [],
+  "duration_ms": 47942,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0004",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0004",
+   "first_name": "Élodie",
+   "last_name": "Garnier",
+   "email": "elodie.garnier@atelier-garnier.example",
+   "phone": "+33639980004",
+   "company": "Atelier Garnier",
+   "job_title": "Fondatrice",
+   "city": "Nantes",
+   "notes": "Préfère être contactée par e-mail"
+  },
+  "anomalies": [],
+  "duration_ms": 49980,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0005",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0005",
+   "first_name": "Thomas",
+   "last_name": "Roux",
+   "email": "thomas.roux@roux-immobilier.example",
+   "phone": "+33639980005",
+   "company": "Roux Immobilier",
+   "job_title": "Agent immobilier",
+   "city": "Bordeaux",
+   "notes": "Client depuis 2018"
+  },
+  "anomalies": [],
+  "duration_ms": 47490,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0006",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0006",
+   "first_name": "Nadia",
+   "last_name": "Haddad",
+   "email": "nadia.haddad@pharmacie-du-centre.example",
+   "phone": "+33639980006",
+   "company": "Pharmacie du Centre",
+   "job_title": "Pharmacienne titulaire",
+   "city": "Lille",
+   "notes": null
+  },
+  "anomalies": [],
+  "duration_ms": 43724,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0007",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0007",
+   "first_name": "Lucas",
+   "last_name": "Fontaine",
+   "email": "lucas.fontaine@fontaine-renovation.example",
+   "phone": "+33639980007",
+   "company": "Fontaine Rénovation",
+   "job_title": "Chef de chantier",
+   "city": "Toulouse",
+   "notes": "Devis envoyé le 12/09"
+  },
+  "anomalies": [],
+  "duration_ms": 55700,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0008",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0008",
+   "first_name": "Chloé",
+   "last_name": "Mercier",
+   "email": "chloe.mercier@studio-mercier.example",
+   "phone": "+33639980008",
+   "company": "Studio Mercier",
+   "job_title": "Photographe",
+   "city": "Rennes",
+   "notes": null
+  },
+  "anomalies": [],
+  "duration_ms": 47118,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0009",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0009",
+   "first_name": "Antoine",
+   "last_name": "Dubois",
+   "email": "antoine.dubois@dubois-fils.example",
+   "phone": "+33639980009",
+   "company": "Dubois & Fils",
+   "job_title": "Directeur",
+   "city": "Strasbourg",
+   "notes": "Ancien client, à relancer"
+  },
+  "anomalies": [],
+  "duration_ms": 41609,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0010",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0010",
+   "first_name": "Inès",
+   "last_name": "Rahmani",
+   "email": "ines.rahmani@agence-horizon.example",
+   "phone": "+33639980010",
+   "company": "Agence Horizon",
+   "job_title": "Chargée de communication",
+   "city": "Montpellier",
+   "notes": null
+  },
+  "anomalies": [],
+  "duration_ms": 38882,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0011",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0011",
+   "first_name": "Mathieu",
+   "last_name": "Perrin",
+   "email": "mathieu.perrin@perrin-logistique.example",
+   "phone": "+33639980011",
+   "company": "Perrin Logistique",
+   "job_title": "Responsable achats",
+   "city": "Grenoble",
+   "notes": "Volume important au T4"
+  },
+  "anomalies": [],
+  "duration_ms": 46156,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0012",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0012",
+   "first_name": "Laura",
+   "last_name": "Chevalier",
+   "email": "laura.chevalier@chevalier-evenements.example",
+   "phone": "+33639980012",
+   "company": "Chevalier Événements",
+   "job_title": "Gérante",
+   "city": "Nice",
+   "notes": null
+  },
+  "anomalies": [],
+  "duration_ms": 50588,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0013",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0013",
+   "first_name": "Hugo",
+   "last_name": "Lambert",
+   "email": "hugo.lambert@garage-lambert.example",
+   "phone": "+33639980013",
+   "company": "Garage Lambert",
+   "job_title": "Mécanicien",
+   "city": "Dijon",
+   "notes": "Paiement à 30 jours"
+  },
+  "anomalies": [],
+  "duration_ms": 51748,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0014",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0014",
+   "first_name": "Sarah",
+   "last_name": "Bouvier",
+   "email": "sarah.bouvier@bouvier-avocats.example",
+   "phone": "+33639980014",
+   "company": "Bouvier Avocats",
+   "job_title": "Avocate",
+   "city": "Angers",
+   "notes": null
+  },
+  "anomalies": [],
+  "duration_ms": 46270,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0015",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0015",
+   "first_name": "Mehdi",
+   "last_name": "Saïdi",
+   "email": "mehdi.saidi@saidi-traiteur.example",
+   "phone": "+33639980015",
+   "company": "Saïdi Traiteur",
+   "job_title": "Gérant",
+   "city": "Reims",
+   "notes": "Salon professionnel en mars"
+  },
+  "anomalies": [],
+  "duration_ms": 54436,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0016",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0016",
+   "first_name": "Camille",
+   "last_name": "Renard",
+   "email": "camille.renard@librairie-renard.example",
+   "phone": "+33639980016",
+   "company": "Librairie Renard",
+   "job_title": "Libraire",
+   "city": "Tours",
+   "notes": null
+  },
+  "anomalies": [],
+  "duration_ms": 48401,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0017",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0017",
+   "first_name": "Paul",
+   "last_name": "Girard",
+   "email": "paul.girard@girard-informatique.example",
+   "phone": "+33639980017",
+   "company": "Girard Informatique",
+   "job_title": "Technicien",
+   "city": "Clermont-Ferrand",
+   "notes": "Contrat de maintenance annuel"
+  },
+  "anomalies": [],
+  "duration_ms": 51159,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0018",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0018",
+   "first_name": "Manon",
+   "last_name": "Blanc",
+   "email": "manon.blanc@blanc-coiffure.example",
+   "phone": "+33639980018",
+   "company": "Blanc Coiffure",
+   "job_title": "Coiffeuse",
+   "city": "Le Havre",
+   "notes": null
+  },
+  "anomalies": [],
+  "duration_ms": 42506,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0019",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0019",
+   "first_name": "Yanis",
+   "last_name": "Morel",
+   "email": "yanis.morel@morel-paysage.example",
+   "phone": "+33639980019",
+   "company": "Morel Paysage",
+   "job_title": "Paysagiste",
+   "city": "Metz",
+   "notes": "Intéressé par l'offre pro"
+  },
+  "anomalies": [],
+  "duration_ms": 56061,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0020",
+  "status": "success",
+  "extracted": {
+   "legacy_id": "C-0020",
+   "first_name": "Claire",
+   "last_name": "Vidal",
+   "email": "claire.vidal@vidal-architecture.example",
+   "phone": "+33639980020",
+   "company": "Vidal Architecture",
+   "job_title": "Architecte",
+   "city": "Aix-en-Provence",
+   "notes": null
+  },
+  "anomalies": [],
+  "duration_ms": 40037,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0021",
+  "status": "duplicate",
+  "extracted": {
+   "legacy_id": "C-0021",
+   "first_name": "Julien",
+   "last_name": "Moreau",
+   "email": "julien.moreau@boulangerie-moreau.example",
+   "phone": "+33639980001",
+   "company": "Boulangerie Moreau",
+   "job_title": "Gérant",
+   "city": "Lyon",
+   "notes": "Fiche ressaisie en double"
+  },
+  "anomalies": [
+   {
+    "field": "first_name",
+    "code": "case_fixed",
+    "severity": "warning",
+    "message": "casse corrigée : « JULIEN » → « Julien »"
+   },
+   {
+    "field": "last_name",
+    "code": "case_fixed",
+    "severity": "warning",
+    "message": "casse corrigée : « MOREAU » → « Moreau »"
+   },
+   {
+    "field": "city",
+    "code": "case_fixed",
+    "severity": "warning",
+    "message": "casse corrigée : « lyon » → « Lyon »"
+   },
+   {
+    "field": null,
+    "code": "duplicate_email",
+    "severity": "error",
+    "message": "doublon possible de C-0001 (même e-mail)"
+   },
+   {
+    "field": null,
+    "code": "duplicate_phone",
+    "severity": "warning",
+    "message": "doublon possible de C-0001 (même téléphone)"
+   },
+   {
+    "field": null,
+    "code": "duplicate_person",
+    "severity": "warning",
+    "message": "doublon possible de C-0001 (même prénom, nom et entreprise)"
+   }
+  ],
+  "duration_ms": 42583,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0022",
+  "status": "failed",
+  "extracted": {
+   "legacy_id": "C-0022",
+   "first_name": null,
+   "last_name": "Dupont",
+   "email": "dupont@exemple.example",
+   "phone": "+33639980022",
+   "company": null,
+   "job_title": null,
+   "city": "Nantes",
+   "notes": null
+  },
+  "anomalies": [
+   {
+    "field": "first_name",
+    "code": "missing_required",
+    "severity": "error",
+    "message": "champ obligatoire « first_name » vide"
+   },
+   {
+    "field": "company",
+    "code": "missing_optional",
+    "severity": "warning",
+    "message": "champ « company » vide"
+   }
+  ],
+  "duration_ms": 44441,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0023",
+  "status": "failed",
+  "extracted": {
+   "legacy_id": "C-0023",
+   "first_name": "Léa",
+   "last_name": "Martin",
+   "email": "lea.martin@exemple",
+   "phone": "06 39 98",
+   "company": "Martin Déco",
+   "job_title": "Fondatrice",
+   "city": "Brest",
+   "notes": null
+  },
+  "anomalies": [
+   {
+    "field": "email",
+    "code": "bad_email",
+    "severity": "error",
+    "message": "e-mail invalide : « lea.martin@exemple »"
+   },
+   {
+    "field": "phone",
+    "code": "bad_phone",
+    "severity": "warning",
+    "message": "téléphone non reconnu : « 06 39 98 »"
+   }
+  ],
+  "duration_ms": 42945,
+  "credits_used": 1
+ },
+ {
+  "legacy_id": "C-0024",
+  "status": "partial",
+  "extracted": {
+   "legacy_id": "C-0024",
+   "first_name": "Omar",
+   "last_name": "Kaci",
+   "email": null,
+   "phone": "+33639980024",
+   "company": "Kaci Transports",
+   "job_title": "Gérant",
+   "city": null,
+   "notes": null
+  },
+  "anomalies": [
+   {
+    "field": "email",
+    "code": "missing_email",
+    "severity": "warning",
+    "message": "pas d'e-mail : HubSpot ne pourra pas dédoublonner ce contact"
+   },
+   {
+    "field": "city",
+    "code": "missing_optional",
+    "severity": "warning",
+    "message": "champ « city » vide"
+   }
+  ],
+  "duration_ms": 55460,
+  "credits_used": 1
+ }
+]
