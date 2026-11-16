@@ -1,0 +1,10 @@
+/* Style volontairement « vieux logiciel » (affiné dans la tâche victoria/legacy-crm). */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #d4d0c8;
+  color: #000;
+  font-family: Tahoma, Verdana, "Segoe UI", sans-serif;
+  font-size: 13px;
+}
