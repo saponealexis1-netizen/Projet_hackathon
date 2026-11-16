@@ -125,15 +125,18 @@ Les autres éditeurs (Salesforce, Pipedrive, Zoho, éditeurs métier) élargisse
 
 ## 10. Suivi des crédits
 
+**Chacun a sa propre organisation H Company, sa clé et ses crédits** (voir [ORGANISATION.md](../ORGANISATION.md), section 8). Ce tableau suit **les crédits de Maxime**.
+
 | Plateforme | Crédit | Consommé | Vérifié le |
 |---|---|---|---|
-| **H Company** (offre Free, organisation de Maxime, équipe invitée) | 60 M tokens / mois, **3 agents en parallèle max** | 4 sessions de test, ~0,065 $ au total | 16/11 |
+| **H Company** (offre Free, organisation de Maxime) | 60 M tokens / mois, **3 agents en parallèle max par personne** | 4 sessions de test, ~0,065 $ au total | 16/11 |
 | **Hugging Face** | 50 € (coupon hackathon) | — | à vérifier |
 | **Vercel v0** | Code hackathon | — | à vérifier |
 | **HubSpot** | Offre gratuite | — | — |
 
 - Vérifier les tokens H Company restants : onglet **Facturation** de platform.hcompany.ai, ou `GET https://agp.eu.hcompany.ai/api/v2/quota/tokens` avec la clé API.
-- ⚠️ **3 agents en parallèle maximum** en offre gratuite. Les crédits du hackathon sont sur le compte d'équipe (Team8@eugeniaschool.com).
+- ⚠️ **3 agents en parallèle maximum par personne** en offre gratuite : chacun a sa propre limite, personne ne bloque les autres.
+- Les crédits du hackathon sont sur le compte d'équipe Eugenia.
 
 ## 11. Hypothèses à valider en interview
 
@@ -150,7 +153,7 @@ Les autres éditeurs (Salesforce, Pipedrive, Zoho, éditeurs métier) élargisse
 | Question | Réponse courte |
 |---|---|
 | « Pourquoi pas un simple script ou un outil de migration ? » | Pas d'API, pas d'export : la seule porte d'entrée est l'écran. |
-| « Et si l'agent se trompe ? » | Vérification automatique et score de confiance ; les cas douteux vont à un humain. |
+| « Et si l'agent se trompe ? » | Chaque fiche est classée **ok / à vérifier / bloquée** ; les fiches bloquées ne partent pas dans HubSpot. |
 | « Et la sécurité des données ? » | Accès en lecture seule, serveurs européens de H Company. Coffre-fort à mots de passe (vault) de H Company **prévu** après le MVP. |
 | « Combien ça coûte à faire tourner ? » | ✅ ~0,02 $ par fiche mesuré côté agent ; ~92 % de marge sur un forfait. |
 | « Pourquoi les éditeurs paieraient ? » | Ils facturent déjà l'onboarding, et la migration est le premier obstacle à la mise en place d'un nouveau CRM (44 %). |
