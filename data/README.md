@@ -7,6 +7,7 @@ Propriétaire : **Alexis (CDO)**.
 | [`../shared/contact.schema.json`](../shared/contact.schema.json) | **Contrat commun** : format d'un contact, utilisé par l'agent, la vérification, HubSpot et les mesures |
 | `contacts.sample.json` | 20 contacts d'exemple, conformes au contrat. Ils servent à remplir l'ancien CRM et à tester chaque brique sans attendre l'agent |
 | `validate_contacts.py` | Vérifie qu'un fichier de contacts respecte le contrat |
+| `generate_seed.py` | Génère `supabase/seed.sql` à partir de `contacts.sample.json` |
 
 ## Le format d'un contact
 
