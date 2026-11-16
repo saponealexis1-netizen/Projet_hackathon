@@ -1,0 +1,7 @@
+[
+  {"legacy_id": "C-0001", "first_name": "Julien", "last_name": "Moreau", "email": "julien.moreau@boulangerie-moreau.example", "phone": "+33 6 39 98 00 01", "company": "Boulangerie Moreau", "job_title": "Gérant", "city": "Lyon", "notes": null},
+  {"legacy_id": "C-0021", "first_name": "JULIEN", "last_name": "MOREAU", "email": "Julien.Moreau@boulangerie-moreau.example", "phone": "06 39 98 00 01", "company": "Boulangerie Moreau", "job_title": "Gérant", "city": "lyon", "notes": "Fiche ressaisie en double"},
+  {"legacy_id": "C-0022", "first_name": "", "last_name": "Dupont", "email": "dupont@exemple.example", "phone": "06.39.98.00.22", "company": "-", "job_title": null, "city": "Nantes", "notes": null},
+  {"legacy_id": "C-0023", "first_name": "Léa", "last_name": "Martin", "email": "lea.martin@exemple", "phone": "06 39 98", "company": "Martin Déco", "job_title": "Fondatrice", "city": "Brest", "notes": null},
+  {"legacy_id": "C-0024", "first_name": "Omar", "last_name": "Kaci", "email": null, "phone": "+33 (0)6 39 98 00 24", "company": "Kaci Transports", "job_title": "Gérant", "city": null, "notes": null}
+]
