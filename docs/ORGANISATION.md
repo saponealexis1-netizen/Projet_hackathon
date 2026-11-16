@@ -35,7 +35,7 @@ Chaque dossier a **un seul propriétaire**. C'est ce qui permet de travailler en
 .
 ├── apps/
 │   ├── legacy-crm/          Victoria  (ancien CRM simulé, fonctionnement + style)
-│   └── dashboard/           Inès      (écran de suivi de migration)
+│   └── dashboard/           Inès      (écran de suivi : lancement, suivi, bilan)
 ├── agent/
 │   ├── runner/              Victoria  (appel de l'Agent API, orchestration)
 │   └── prompts/             Inès      (instructions données à l'agent)
@@ -123,7 +123,7 @@ Ancien CRM ──(écran)──► Agent H ──► contact JSON ──► Vér
 | Victoria | Passage à **20 fiches**, gestion des erreurs et des relances | `victoria/agent-20` | 20 fiches traitées en un lancement |
 | Inès | Cas pièges dans l'ancien CRM (doublon, champ vide, format bizarre) + amélioration des instructions | `ines/cas-pieges` | Les pièges sont détectés et signalés |
 | Alexis | Mesures : taux de réussite par fiche et par champ, temps, coût par fiche | `alexis/metrics` | Tableau de chiffres dans `pipeline/metrics/` |
-| Inès | Écran de suivi de migration (fiches traitées, anomalies, chiffres) | `ines/dashboard` | Lisible par le jury |
+| Inès | Écran de suivi de migration : bouton « Lancer la migration », fiches traitées, anomalies, chiffres, encadré « Bilan » (décisions D8 à D10 de [CADRAGE.md](CADRAGE.md)) | `ines/dashboard` | Lisible par le jury |
 | Victoria | **Plan B démo** : vidéo de secours + jeu de données de secours | `victoria/plan-b` | La démo peut être montrée même si le réseau lâche |
 | Maxime | Coût de run, go-to-market, brouillon du pitch deck (8 à 12 slides) | `maxime/pitch-deck` | Brouillon relu par Alexis |
 | Tous | **Répétition de démo à 18h** | — | Démo réussie de bout en bout |
