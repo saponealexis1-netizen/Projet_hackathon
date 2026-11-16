@@ -52,6 +52,7 @@ Changer de CRM devient difficile quand les fiches clients ne peuvent pas être e
 **Pourquoi un agent *computer-use* ?** Sans API ni export, une automatisation classique (script, connecteur) ne peut pas lire les données : il faut « voir » l'écran et naviguer dans l'interface. L'agent n'intervient que là où c'est indispensable (la lecture de l'ancien CRM) ; l'écriture dans HubSpot passe par son API, plus fiable.
 
 Le cadrage complet (options étudiées, décisions, planning) est détaillé dans [docs/CADRAGE.md](docs/CADRAGE.md).
+La répartition des tâches et les règles de travail en équipe sont dans [docs/ORGANISATION.md](docs/ORGANISATION.md).
 
 ## Personas
 
@@ -104,6 +105,7 @@ Team 8 — six rôles attribués.
 ├── README.md                    ← présentation du projet (ce fichier)
 └── docs/
     ├── CADRAGE.md               ← décisions de cadrage et planning de la semaine
+    ├── ORGANISATION.md          ← qui fait quoi, règles Git, circuit de merge
     └── checkpoint-1/
         ├── README.md            ← détail du livrable 1
         └── Bascule_Livrable1_Validation_Idee_CORRIGE.pdf
