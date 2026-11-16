@@ -81,6 +81,8 @@ La première version des slides prévoyait une migration d'un faux CRM vers **Su
 
 ## 7. Planning de la semaine
 
+> **Règle de rythme : on n'attend pas le lendemain.** Le planning ci-dessous donne un **ordre** et des **échéances** (les livrables Eugenia), pas un calendrier à respecter jour par jour. Dès qu'une tâche est finie, on enchaîne sur la suivante, même si elle est prévue pour un autre jour. Seules les échéances des livrables sont fixes.
+
 | Jour | Livrable Eugenia | Objectif de l'équipe |
 |---|---|---|
 | **Lun. 16** | Validation d'idée (17h) ✅ | Cadrage, création du compte HubSpot |
