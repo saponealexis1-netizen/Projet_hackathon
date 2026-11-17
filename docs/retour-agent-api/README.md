@@ -1,6 +1,6 @@
 # Retour d'expérience — Agent API H Company
 
-Propriétaire : **Inès (CAIO)** · **Version 3 du mardi 17/11**. Reste à ajouter les résultats des tests de mercredi et jeudi (section 13), puis à finaliser vendredi avant 11h.
+Propriétaire : **Inès (CAIO)** · **Version 4 du mardi 17/11**. Reste à ajouter ce qui se passe pendant la démo live (section 13), puis à finaliser vendredi avant 11h.
 
 > Sources : tests d'Alexis dans [`agent/runner/README.md`](../../agent/runner/README.md), mesures de Maxime dans [`docs/pitch/business-model.md`](../pitch/business-model.md), journal `migration_log` (Supabase).
 
@@ -12,15 +12,20 @@ Propriétaire : **Inès (CAIO)** · **Version 3 du mardi 17/11**. Reste à ajout
 
 ## 2. Les chiffres clés
 
-| Mesure | Valeur | Source |
+Deux migrations complètes, **sur deux versions différentes de l'ancien CRM** (mise en page et libellés différents), avec **le même agent et les mêmes consignes**.
+
+| Mesure | Ancien CRM **v1** | Ancien CRM **v2** |
 |---|---|---|
-| Fiches migrées de l'ancien CRM vers HubSpot | **100 / 100** | Migration complète du 17/11 |
-| Fiches 100 % exactes (9 champs sur 9) | **100 / 100** | idem |
-| Temps moyen de lecture d'une fiche | **31 s** (médiane 29 s) | idem |
-| Coût moyen par fiche | **~0,015 $** (1,53 $ pour 100 fiches) | Métriques renvoyées par l'API |
-| Agents en parallèle | 3 (limite de l'offre gratuite) | Documentation H Company |
-| Durée réelle pour 100 fiches | ~17 min après correction de notre code (33 min mesurées avant) | `agent/runner` |
-| Premier essai sur 5 fiches, avant les garde-fous | **1 / 5** seulement | 17/11 |
+| Fiches lues par l'agent | 100 / 100 | **105 / 105** (100 + 5 pièges) |
+| Fiches 100 % exactes (9 champs sur 9) | **100 / 100** | **100 / 100** |
+| Fiches pièges traitées comme prévu | — | **5 / 5** |
+| Mauvaise fiche ouverte, rattrapée par le contrôle d'identité | 3 (relancées → exactes) | 1 : C-0009 au lieu de C-0090 (relancée automatiquement) |
+| Mauvaise fiche envoyée dans HubSpot | **0** | **0** |
+| Temps par fiche | 31 s (médiane 29 s) | **médiane 21 s** |
+| Durée réelle, 3 agents en parallèle | 33 min (avant correction de notre code) | **16,9 min mesurées** (après correction) |
+| Coût total de l'agent H | 1,53 $ (~0,015 $ par fiche) | **0,87 $** (~0,008 $ par fiche) |
+
+Avant les garde-fous, le premier essai sur 5 fiches donnait **1 fiche exacte sur 5**.
 
 ## 3. La progression, test après test
 
@@ -36,13 +41,14 @@ Propriétaire : **Inès (CAIO)** · **Version 3 du mardi 17/11**. Reste à ajout
 | Migration des 100 fiches | 97 / 100, **0 erreur envoyée dans HubSpot** | Le contrôle d'identité a bloqué les 3 mauvaises fiches |
 | Relance automatique des 3 fiches | **100 / 100** | Relance une fois si la fiche n'est pas la bonne |
 | 5 fiches pièges + 1 fiche normale | **5 / 5 pièges traités comme prévu** | Vérification + relecture ciblée (D13) |
+| **Migration complète de la v2** (105 fiches, autre mise en page, autres libellés) | **100 / 100 exactes, 5 / 5 pièges, en 16,9 min** | Aucun réglage : mêmes consignes, même agent |
 
 ## 4. Ce qui a marché
 
 | Constat | Ce que ça nous apporte |
 |---|---|
 | **Zéro configuration (D12)** : l'agent ne reçoit que l'adresse et l'identifiant de la fiche. Il trouve seul la liste, la pagination, les onglets, ferme la fenêtre « Message du jour » et clique sur « Afficher le numéro ». | C'est l'argument face à un script ou un robot RPA : un autre logiciel ne demande aucun code. |
-| **Le même agent, sans configuration, a lu une fiche de la 2e version de l'ancien CRM** (mise en page et libellés différents : « Société » / « Entreprise »…). | Premier signe que l'agent comprend le sens des libellés, pas leur position. Pas encore testé sur toute la v2. |
+| **Le même agent, sans aucun réglage, a migré les deux versions de l'ancien CRM** : 100/100 exactes sur la v1, puis 100/100 exactes (et 5/5 pièges) sur la v2, qui a une autre mise en page et d'autres libellés (« Société » / « Entreprise »…). | L'agent comprend le sens des libellés, pas leur position : un autre logiciel ne demande aucun code. |
 | **Format de réponse imposé** (`answer_format` : un objet JSON avec nos 9 champs + « error »). | La réponse arrive directement au format du contrat commun. |
 | **Mode visuel + texte de la page** (`markdown: true`). | L'agent navigue en regardant l'écran, mais recopie les caractères exacts : plus d'erreurs de lecture de chiffres. |
 | **Coût et durée renvoyés par l'API** pour chaque session. | Mesures de coût par fiche sans calcul de notre côté. |
@@ -58,7 +64,7 @@ Propriétaire : **Inès (CAIO)** · **Version 3 du mardi 17/11**. Reste à ajout
 | 3 | **Mauvaise fiche ouverte** : C-0007 au lieu de C-0070 (3 fiches sur 100). | Identifiants qui se ressemblent. | Consigne « l'identifiant doit être exactement {legacy_id}, caractère par caractère » + contrôle de l'identifiant renvoyé + **une relance automatique**. | Aucune mauvaise fiche envoyée dans HubSpot ; 3/3 exactes après relance |
 | 4 | **Réponse mal rangée** : toute la fiche en JSON dans le champ « notes », le mot « None » écrit comme erreur. | Format « texte ou null » trop compliqué pour l'agent. | Champs en texte uniquement (chaîne vide si absent) ; nettoyage de la réponse côté code. | Passage de 1/5 à 5/5 |
 | 5 | **Relecture sur une fiche vide** → l'agent a produit « User User ». | Relecture lancée alors que la première lecture avait échoué. | Pas de relecture si la fiche est vide. | — |
-| 6 | **~20 s perdues par fiche** après la réponse de l'agent. | Notre code attendait encore une confirmation de l'API (attente longue) après la fin de la session. | Arrêt dès que la session est terminée et la réponse reçue. | 100 fiches : ~17 min après correction (33 min mesurées avant) |
+| 6 | **~20 s perdues par fiche** après la réponse de l'agent. | Notre code attendait encore une confirmation de l'API (attente longue) après la fin de la session. | Arrêt dès que la session est terminée et la réponse reçue. | 33 min mesurées avant → **16,9 min mesurées après** (migration de la v2, 105 fiches) |
 | 7 | **Relecture qui efface la fiche** : la relecture de l'e-mail n'a renvoyé que l'e-mail, et le code a remplacé toute la fiche (prénom et nom perdus). | Notre code reprenait toute la réponse de la relecture. | Une relecture ne remplace plus que le champ relu (2 tests ajoutés). | Fiches pièges : prénom et nom conservés |
 
 ## 6. Les fiches pièges : l'agent face à des données fausses
@@ -117,12 +123,12 @@ Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 | Mettre en avant **`markdown: true`** dans la documentation pour les tâches de recopie | Il a supprimé les erreurs de lecture de chiffres ; nous l'avons découvert en cherchant |
 | Un exemple officiel de **fin de session** (« la réponse est là, arrête d'attendre ») | Notre code perdait ~20 s par fiche à attendre une confirmation inutile |
 | Des **captures d'écran durables** (ou un export) | Elles sont notre preuve pour l'utilisateur ; nous avons dû les faire relayer par notre serveur |
-| Plus d'**agents en parallèle** sur l'offre gratuite pendant un hackathon | Avec 3 agents, 100 fiches prennent ~17 min après correction de notre code (33 min mesurées avant) ; une démo live en montre 5 ou 6 |
+| Plus d'**agents en parallèle** sur l'offre gratuite pendant un hackathon | Avec 3 agents, 105 fiches prennent 16,9 min (mesuré) ; une démo live en montre 5 ou 6 |
 
 ## 11. Pour le pitch et les questions du jury
 
 **Trois messages à retenir**
-1. **L'agent lit un logiciel qu'il n'a jamais vu** : il ne reçoit que l'adresse. Il a migré les 100 fiches de la v1, et lu sans réglage une fiche de la v2 (autre mise en page, autres libellés).
+1. **Le même agent, sans aucun réglage, a migré deux logiciels différents** : il ne reçoit que l'adresse. 100/100 fiches exactes sur la v1, 100/100 sur la v2 (autre mise en page, autres libellés).
 2. **Il ne fait jamais seul** : 1 fiche exacte sur 5 sans garde-fous, 100 sur 100 avec.
 3. **Chaque donnée est prouvée** : capture d'écran de la fiche d'origine pour chaque contact migré.
 
@@ -131,9 +137,9 @@ Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 | Question | Réponse |
 |---|---|
 | « Qu'avez-vous appris sur l'Agent API ? » | Qu'il sait naviguer seul dans un logiciel inconnu, mais qu'il préfère inventer une valeur crédible plutôt que laisser vide. On le lui interdit, et on vérifie tout derrière lui. |
-| « Et si l'agent se trompe ? » | Il s'est trompé de fiche 3 fois sur 100 : notre contrôle d'identité les a bloquées avant HubSpot, puis l'agent les a relues. Chaque fiche a sa capture d'écran. |
-| « Pourquoi pas un script ou un robot RPA ? » | Pas d'API ni d'export, et l'agent n'a besoin d'aucune configuration : une autre interface ne demande pas de nouveau code. |
-| « Combien ça coûte ? » | ~0,015 $ par fiche mesuré sur 100 fiches, soit ~46 $ pour 3 000 fiches. |
+| « Et si l'agent se trompe ? » | Il s'est trompé de fiche 3 fois sur la v1 et 1 fois sur la v2 (C-0009 au lieu de C-0090) : notre contrôle d'identité les a bloquées avant HubSpot, puis l'agent les a relues. Aucune mauvaise fiche n'est partie. Chaque fiche a sa capture d'écran. |
+| « Pourquoi pas un script ou un robot RPA ? » | Pas d'API ni d'export, et aucune configuration : on l'a prouvé en migrant deux versions différentes du logiciel avec exactement les mêmes consignes. Un robot RPA aurait dû être réenregistré. |
+| « Combien ça coûte ? » | Entre ~0,008 $ (v2) et ~0,015 $ (v1) par fiche, mesuré sur plus de 200 fiches : de ~25 à ~46 $ pour 3 000 fiches. |
 | « Qu'est-ce qui a été le plus difficile ? » | Rendre l'agent fiable, pas le faire marcher : la première lecture a réussi tout de suite, les garde-fous ont pris le reste de la journée. |
 
 ## 12. Limites actuelles
@@ -145,8 +151,8 @@ Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 
 ## 13. À compléter jeudi et vendredi
 
-- [ ] Migration complète sur la **2e version** de l'ancien CRM (zéro configuration à grande échelle) : seule une fiche a été testée.
+- [x] Migration complète sur la **2e version** : 105/105 lues, 100/100 exactes, 5/5 pièges, 16,9 min (section 2).
 - [x] Résultat sur les **fiches pièges** : 5 / 5 traités comme prévu (section 6).
 - [ ] Part des anomalies **corrigées par la relecture** (D13) sur une vraie erreur de lecture de l'agent. Sur les pièges, aucune des 3 relectures n'a inventé de correction (2 ont explicitement confirmé la donnée de l'ancien CRM) : c'était la donnée qui était fausse, pas la lecture.
-- [ ] Durée réelle des 100 fiches **après correction** (mesurée, pas projetée). Premier indice : 6 fiches en 62 s avec 3 agents.
+- [x] Durée réelle **après correction**, mesurée : 16,9 min pour 105 fiches avec 3 agents, médiane 21 s par fiche.
 - [ ] Ce qui s'est passé pendant la **démo live** de vendredi.
