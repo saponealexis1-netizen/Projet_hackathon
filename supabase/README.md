@@ -29,6 +29,11 @@ Supabase n'est **pas** le CRM cible (c'est HubSpot). Il sert à deux choses :
 
 Les deux scripts peuvent être relancés sans risque : ils ne créent ni doublon ni erreur.
 
+## Droits du rôle serveur
+
+Si l'écran de suivi ou l'ancien CRM affiche `permission denied for table …` (code 42501), lancer
+`migrations/20261117150000_grant_service_role.sql` : il donne au **rôle serveur uniquement** le droit de lire et d'écrire nos tables. La clé publique reste sans accès.
+
 ## Colonnes de `migration_log`
 
 | Colonne | Type | Exemple |
