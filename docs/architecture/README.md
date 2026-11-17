@@ -34,12 +34,12 @@ L'ancien CRM lit ses propres données dans la table Supabase `legacy_contacts`, 
 |---|---|---|---|---|
 | Ancien CRM simulé | `apps/legacy-crm/` | Logiciel « de 2010 » : liste paginée, une fiche par page, **aucun export, aucune API** | Victoria → Maxime | ⏳ Socle en ligne, liste et fiches en cours |
 | Instructions de l'agent | `agent/prompts/` | Ce que l'agent doit ouvrir, lire et renvoyer ; règles strictes (ne rien inventer, lecture seule) | Inès | ⏳ Brouillon prêt, à tester sur l'ancien CRM |
-| Orchestration | `agent/runner/` | Lance les agents, récupère les fiches, enchaîne vérification et envoi | Victoria → Maxime | ⏳ À construire |
+| Orchestration et agent H | `agent/runner/` | Lance les agents, récupère les fiches, enchaîne vérification et envoi | Alexis | ⏳ En cours |
 | Vérification | `pipeline/verification/` | Nettoyage, mapping, doublons, anomalies → ok / à vérifier / bloquée | Inès | ✅ Fusionnée, 14 tests |
 | Envoi HubSpot | `pipeline/hubspot/` | Création des contacts par l'API, sans doublon, et écriture du journal | Alexis | ✅ Fusionné, testé sur HubSpot |
-| Base Supabase | `supabase/` | `legacy_contacts` (base cachée de l'ancien CRM) et `migration_log` (journal et mesures) | Alexis | ✅ Fusionnée |
+| Base Supabase | `supabase/` | `legacy_contacts` (base cachée de l'ancien CRM, **100 contacts**) et `migration_log` (journal et mesures) | Alexis | ✅ En ligne |
 | Écran de suivi | `apps/dashboard/` | Lancement, suivi en direct, bilan | Inès | ✅ En ligne (mode démo) |
-| Mesures | `pipeline/metrics/` | Taux de réussite, temps et coût par fiche | Alexis | ⏳ Jeudi |
+| Mesures | `pipeline/metrics/` | Taux de réussite par fiche et par champ, temps et coût par fiche, extrapolation à 3 000 fiches | Alexis | ✅ Fusionnées, à lancer sur la vraie migration |
 
 ## 4. Les choix techniques
 

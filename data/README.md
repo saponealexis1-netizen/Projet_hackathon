@@ -5,9 +5,11 @@ Propriétaire : **Alexis (CDO)**.
 | Fichier | Rôle |
 |---|---|
 | [`../shared/contact.schema.json`](../shared/contact.schema.json) | **Contrat commun** : format d'un contact, utilisé par l'agent, la vérification, HubSpot et les mesures |
-| `contacts.sample.json` | 20 contacts d'exemple, conformes au contrat. Ils servent à remplir l'ancien CRM et à tester chaque brique sans attendre l'agent |
+| `contacts.legacy.json` | **Base complète de l'ancien CRM : 100 contacts fictifs** (C-0001 à C-0100). C'est elle qui est chargée dans Supabase (`legacy_contacts`) |
+| `contacts.sample.json` | Les 20 premiers contacts (identiques à C-0001 à C-0020), utilisés par les tests de l'équipe |
+| `generate_contacts.py` | Génère `contacts.legacy.json` (reproductible : même résultat à chaque lancement) |
 | `validate_contacts.py` | Vérifie qu'un fichier de contacts respecte le contrat |
-| `generate_seed.py` | Génère `supabase/seed.sql` à partir de `contacts.sample.json` |
+| `generate_seed.py` | Génère `supabase/seed.sql` à partir de `contacts.legacy.json` |
 
 ## Le format d'un contact
 
