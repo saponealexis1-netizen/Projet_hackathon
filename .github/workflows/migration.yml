@@ -1,0 +1,68 @@
+# Lance la VRAIE migration (agent H Company) sans rien installer sur un ordinateur.
+# Déclenchée par le bouton « Lancer la migration » de l'écran de suivi, ou à la main :
+# GitHub > Actions > « Lancer la migration » > Run workflow.
+name: Lancer la migration
+
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: "Fiches à migrer (séparées par des virgules)"
+        default: "C-0004,C-0101,C-0102,C-0103,C-0104,C-0105"
+      url:
+        description: "Adresse de l'ancien CRM (v1, ou /v2)"
+        default: "https://projet-hackathon-uffi.vercel.app"
+      run_id:
+        description: "Identifiant du lancement (laisser vide : créé automatiquement)"
+        default: ""
+      parallel:
+        description: "Agents en parallèle"
+        default: "3"
+      reset:
+        description: "Supprimer d'abord ces fiches de HubSpot (pour les voir arriver)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: migration
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  migrer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      HAI_API_KEY: ${{ secrets.HAI_API_KEY }}
+      HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      IDS: ${{ inputs.ids }}
+      CRM_URL: ${{ inputs.url }}
+      PARALLEL: ${{ inputs.parallel }}
+      RUN_ID_INPUT: ${{ inputs.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Vérifier les secrets
+        run: |
+          for v in HAI_API_KEY HUBSPOT_TOKEN SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY; do
+            [ -n "${!v}" ] || { echo "::error::Secret manquant : $v (Settings > Secrets and variables > Actions)"; exit 1; }
+          done
+
+      - name: Remettre les fiches de démo à zéro dans HubSpot
+        if: ${{ inputs.reset }}
+        run: python -m pipeline.hubspot.reset --ids "$IDS" --yes
+
+      - name: Migration (agent H Company)
+        run: |
+          RUN_ID="${RUN_ID_INPUT:-$(python -c 'import uuid; print(uuid.uuid4())')}"
+          TOTAL=$(echo "$IDS" | tr ',' '\n' | grep -c .)
+          LIEN="https://projet-hackathon-jow2.vercel.app/?run=$RUN_ID&total=$TOTAL"
+          echo "### Suivi en direct : [$LIEN]($LIEN)" >> "$GITHUB_STEP_SUMMARY"
+          python -m agent.runner.run --url "$CRM_URL" --ids "$IDS" --parallel "$PARALLEL" --run-id "$RUN_ID"

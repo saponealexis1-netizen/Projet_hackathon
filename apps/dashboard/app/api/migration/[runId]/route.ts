@@ -3,8 +3,8 @@
  * Lit migration_log dans Supabase (ou la simulation en mode démo).
  */
 import { DEMO_TOTAL, demoRows, isDemoRunId } from "@/lib/demo";
-import { fetchLatestPerRecord, fetchRunRows, supabaseConfigured } from "@/lib/supabase";
-import type { RunState } from "@/lib/types";
+import { fetchLatestPerRecord, fetchLatestRun, fetchRunRows, supabaseConfigured } from "@/lib/supabase";
+import type { LogRow, RunState } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -23,12 +23,18 @@ export async function GET(request: Request, { params }: { params: Promise<{ runI
 
   const totalParam = Number(new URL(request.url).searchParams.get("total"));
   try {
-    // « tout » : l'état de chaque fiche migrée, tous lancements confondus.
-    const rows = runId === "tout" ? await fetchLatestPerRecord() : await fetchRunRows(runId);
-    const total = runId === "tout"
-      ? rows.length
-      : totalParam > 0 ? totalParam : rows.length; // sans « total » : un lancement déjà terminé
-    const state: RunState = { runId, mode: "live", total, rows, hubspotContactUrl };
+    // « tout » : chaque fiche migrée ; « dernier » : le lancement le plus récent (démo en direct).
+    let rows: LogRow[];
+    let resolvedRunId: string | undefined;
+    if (runId === "tout") rows = await fetchLatestPerRecord();
+    else if (runId === "dernier") {
+      const latest = await fetchLatestRun();
+      rows = latest.rows;
+      resolvedRunId = latest.runId ?? undefined;
+    } else rows = await fetchRunRows(runId);
+    // sans « total » : un lancement déjà terminé (ou « dernier », que l'écran continue de suivre)
+    const total = runId !== "tout" && totalParam > 0 ? totalParam : rows.length;
+    const state: RunState = { runId, mode: "live", total, rows, hubspotContactUrl, resolvedRunId: resolvedRunId ?? runId };
     return Response.json(state);
   } catch (e) {
     return Response.json({ error: (e as Error).message }, { status: 502 });

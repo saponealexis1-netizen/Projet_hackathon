@@ -46,4 +46,9 @@ export type RunState = {
   total: number;
   rows: LogRow[];
   hubspotContactUrl: string | null;
+  /** Identifiant réel du lancement (utile pour « dernier »). */
+  resolvedRunId?: string;
 };
+
+/** Un agent H en train de travailler (panneau « Agents en direct »). */
+export type LiveAgent = { sessionId: string; legacyId: string | null; status: string };

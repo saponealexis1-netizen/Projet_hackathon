@@ -8,6 +8,7 @@ ne sont jamais lus ni modifiés.
 Usage :
   python -m pipeline.hubspot.reset            # affiche ce qui serait supprimé, ne supprime rien
   python -m pipeline.hubspot.reset --yes      # supprime pour de vrai
+  python -m pipeline.hubspot.reset --ids C-0004,C-0101 --yes   # seulement ces fiches (démo)
 """
 from __future__ import annotations
 
@@ -49,6 +50,9 @@ def find_all() -> dict[str, dict]:
 
 def main(argv: list[str]) -> int:
     contacts = find_all()
+    if "--ids" in argv:   # remise à zéro de quelques fiches seulement (avant une démo)
+        keep = set(argv[argv.index("--ids") + 1].split(","))
+        contacts = {k: c for k, c in contacts.items() if c["properties"].get(client.ID_PROPERTY) in keep}
     for c in sorted(contacts.values(), key=lambda c: c["properties"].get(client.ID_PROPERTY) or ""):
         p = c["properties"]
         print(f"  {p.get(client.ID_PROPERTY)}  {p.get('firstname')} {p.get('lastname')}  (HubSpot {c['id']})")

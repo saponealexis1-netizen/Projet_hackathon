@@ -38,7 +38,9 @@ Copier `.env.example` en `.env.local` (jamais commité) et remplir :
 | Variable | Rôle |
 |---|---|
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Lecture de `migration_log` (côté serveur uniquement) |
-| `ORCHESTRATOR_URL` | Adresse appelée par le bouton « Lancer la migration » |
+| `GITHUB_DISPATCH_TOKEN` | Le bouton lance le **vrai agent** via l'action GitHub « Lancer la migration » (voir [docs/demo](../../docs/demo/README.md)) |
+| `HAI_API_KEY` | Captures d'écran de l'agent et panneau « Agents en direct » |
+| `ORCHESTRATOR_URL` | Autre orchestration HTTP, si pas de jeton GitHub |
 | `MIGRATION_TOTAL` | Nombre de fiches attendu (si l'orchestration ne le renvoie pas) |
 | `HUBSPOT_CONTACT_URL` | Optionnel : lien « Ouvrir » vers chaque contact HubSpot |
 
@@ -77,6 +79,13 @@ Une fois `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY` configurées (dans `.env.
 | `/?run=tout` | **L'état de chaque fiche migrée**, tous lancements confondus (dernière lecture de chaque fiche) |
 | `/?run=<identifiant>` | Un lancement précis, déjà terminé |
 | `/?run=<identifiant>&total=100` | Un lancement **en cours**, lancé depuis `agent/runner` avec `--run-id <identifiant>` : l'écran se remplit en direct |
+| `/?run=dernier` | **Le lancement le plus récent**, suivi en continu (pratique pendant la démo) |
+
+## Migration réelle en direct (bouton et agents en direct)
+
+1. Le bouton appelle `POST /api/migration`. Avec `GITHUB_DISPATCH_TOKEN`, il crée un identifiant de lancement et déclenche l'action GitHub **« Lancer la migration »** sur `main` (6 fiches de démo : C-0004 + les 5 pièges). Il refuse si des agents Bascule travaillent déjà.
+2. L'action remet ces fiches à zéro dans HubSpot, puis lance `agent/runner` : chaque fiche est vérifiée, envoyée et **écrite dans `migration_log` dès qu'elle est lue**.
+3. L'écran suit ce lancement (`?run=<id>&total=6`). Le panneau **« Agents en direct »** (`/api/live/<id>`) montre les agents H au travail, avec leur dernière capture d'écran (`/api/live/shot/<session>`, rafraîchie toutes les 3 s, clé gardée côté serveur, uniquement les sessions du groupe `bascule-…`).
 
 Coûts affichés en dollars (`credits_used` = coût de la fiche en $, mesuré par l'Agent API).
 
