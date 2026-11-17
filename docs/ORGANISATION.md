@@ -34,7 +34,7 @@ Chaque dossier a **un seul propriétaire**. C'est ce qui permet de travailler en
 ```
 .
 ├── apps/
-│   ├── legacy-crm/          Victoria  (ancien CRM simulé, fonctionnement + style)
+│   ├── legacy-crm/          Maxime    (ancien CRM simulé : liste + fiches ; socle par Victoria)
 │   └── dashboard/           Inès      (écran de suivi : lancement, suivi, bilan)
 ├── agent/
 │   ├── runner/              Victoria  (appel de l'Agent API, orchestration)
@@ -97,7 +97,7 @@ Ancien CRM ──(écran)──► Agent H ──► contact JSON ──► Vér
 | Victoria | Socle Next.js + déploiement Vercel | `victoria/socle` | Une page « Hello » est en ligne sur Vercel |
 | Alexis | Contrat `contact.schema.json` + 20 contacts d'exemple | `alexis/contrat-donnees` | Validé par Inès et Victoria, fusionné **avant midi** |
 | Alexis | Supabase : tables `legacy_contacts` et `migration_log` + chargement des 20 contacts | `alexis/supabase` | Les 20 contacts sont visibles dans Supabase |
-| Victoria | Ancien CRM simulé : liste paginée + fiche détail, sans export, look « vieux logiciel » | `victoria/legacy-crm` | On peut ouvrir chaque fiche dans le navigateur |
+| Maxime | Ancien CRM simulé : liste paginée + fiche détail, sans export, look « vieux logiciel » (libellés alignés sur `agent/prompts/` d'Inès) | `maxime/legacy-crm` | On peut ouvrir chaque fiche dans le navigateur |
 | Victoria | Session tech H Company (11h, 15h) → premier agent qui lit **une fiche** | `victoria/agent-v0` | L'agent renvoie les champs d'une fiche |
 | Inès | Premières instructions de l'agent (quelle page ouvrir, quoi lire) | `ines/prompts-v0` | Testées avec Victoria sur une fiche |
 | Alexis | Compte HubSpot gratuit + test de création d'un contact par API | `alexis/hubspot-v0` | Un contact de test apparaît dans HubSpot |
