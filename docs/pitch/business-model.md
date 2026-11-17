@@ -82,7 +82,8 @@ Test de l'agent H Company `h/web-surfer-flash` sur un site public de démonstrat
 | Poste | Coût |
 |---|---|
 | ✅ Agent H Company (lecture d'une fiche) | ~0,020 $ |
-| 🔎 Vérification (règles + modèle Hugging Face pour les cas douteux) | < 0,005 $ |
+| ✅ Vérification (règles automatiques, sans modèle d'IA : `pipeline/verification/`) | 0 $ |
+| 🔎 Marge de sécurité (relance d'une fiche ratée par l'agent) | ~0,005 $ |
 | HubSpot, Supabase, Vercel | Offres gratuites pendant le MVP |
 | **Total** | **~0,025 $ par fiche** |
 
