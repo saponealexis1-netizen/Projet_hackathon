@@ -182,9 +182,15 @@ def check_news(skill: dict, changelog: str, chat: Chat = llm.chat_json) -> tuple
 
 
 def learn_from_error(skill: dict, message: str, payload: dict | None = None,
-                     chat: Chat = llm.chat_json) -> tuple[bool, str]:
-    context = json.dumps({"erreur_hubspot": message, "donnees_envoyees": payload}, ensure_ascii=False)
-    result = propose_and_review(skill, "HubSpot a refusé une fiche", context, None, chat)
+                     chat: Chat = llm.chat_json, props: list[dict] | None = None) -> tuple[bool, str]:
+    """HubSpot a refusé une fiche : les 2 IA cherchent quoi changer dans le skill.
+    Avec `props` (propriétés HubSpot), les garde-fous vérifient que les propriétés proposées existent."""
+    info = {"erreur_hubspot": message, "donnees_envoyees": payload}
+    if props:
+        info["proprietes_hubspot"] = [{k: p.get(k) for k in ("name", "label", "type")} for p in props][:400]
+    context = json.dumps(info, ensure_ascii=False)
+    names = {p["name"] for p in props} if props else None
+    result = propose_and_review(skill, "HubSpot a refusé une fiche", context, names, chat)
     return apply(skill, result, "erreur HubSpot"), _describe(result)
 
 

@@ -49,6 +49,8 @@ export type Bilan = {
   relues: number; // D13 : fiches dont un champ a été relu par l'agent
   corrigeesParRelecture: number; // … et dont la valeur a changé après relecture
   avecPreuve: number; // D14 : fiches avec une capture d'écran
+  reparations: number; // Fallback : fiches refusées par HubSpot, réparation tentée
+  reparationsReussies: number;
 };
 
 /** Libellés français des champs du contrat commun. */
@@ -123,6 +125,8 @@ export function computeBilan(rows: LogRow[], total: number): Bilan {
     relues: rows.filter((r) => r.reread).length,
     corrigeesParRelecture: rows.filter(rereadChanged).length,
     avecPreuve: rows.filter((r) => r.screenshot_url).length,
+    reparations: rows.filter((r) => r.self_heal).length,
+    reparationsReussies: rows.filter((r) => r.self_heal?.applied).length,
   };
 }
 

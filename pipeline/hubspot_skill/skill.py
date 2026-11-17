@@ -31,18 +31,19 @@ FALLBACK_MAPPING = {
 }
 
 
-def load(path: Path = SKILL_PATH) -> dict | None:
+def load(path: Path | None = None) -> dict | None:
     """Le skill, ou None s'il est absent ou illisible."""
+    path = path or SKILL_PATH
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
 
 
-def save(skill: dict, path: Path = SKILL_PATH, md_path: Path | None = SKILL_MD_PATH) -> None:
+def save(skill: dict, path: Path | None = None, md_path: Path | None = None) -> None:
+    path, md_path = path or SKILL_PATH, md_path or SKILL_MD_PATH
     path.write_text(json.dumps(skill, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    if md_path is not None:
-        md_path.write_text(render_markdown(skill), encoding="utf-8")
+    md_path.write_text(render_markdown(skill), encoding="utf-8")
 
 
 def mapping_errors(mapping: dict, hubspot_properties: set[str] | None = None) -> list[str]:

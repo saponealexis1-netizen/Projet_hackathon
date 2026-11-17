@@ -169,3 +169,9 @@ h3 { margin: 0 0 8px; font-size: 15px; }
   padding: 6px 10px;
   font-size: 0.85rem;
 }
+
+/* ───────── Fallback : réparation automatique du skill HubSpot ───────── */
+.heal { margin-top: 4px; font-size: 12px; font-weight: 600; }
+.heal.ok { color: var(--ok); }
+.heal.ko { color: var(--warn); }
+.heal-detail { margin-top: 6px; font-weight: 400; color: var(--text); display: grid; gap: 4px; }

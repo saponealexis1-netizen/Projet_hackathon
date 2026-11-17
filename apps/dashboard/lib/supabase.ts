@@ -12,6 +12,8 @@ const COLUMNS =
   "legacy_id,status,extracted,anomalies,hubspot_id,duration_ms,credits_used,error,created_at," +
   "agent_session_id,screenshot_url,reread," + // preuve visuelle (D14) et relecture (D13)
   "run_id,agent_started_at,agent_finished_at"; // durée réelle
+// Fallback (migration 20261117180000_self_heal.sql) : lue seulement si la colonne existe déjà.
+const COLUMNS_WITH_HEAL = COLUMNS + ",self_heal";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export function isRunId(value: string): boolean {
@@ -19,8 +21,18 @@ export function isRunId(value: string): boolean {
 }
 
 async function query(params: Record<string, string>): Promise<LogRow[]> {
+  try {
+    return await queryWith(COLUMNS_WITH_HEAL, params);
+  } catch (e) {
+    // Colonne self_heal pas encore créée dans Supabase : on lit sans elle (rien ne casse).
+    if (String((e as Error).message).includes("self_heal")) return queryWith(COLUMNS, params);
+    throw e;
+  }
+}
+
+async function queryWith(columns: string, params: Record<string, string>): Promise<LogRow[]> {
   const url = new URL("/rest/v1/migration_log", process.env.SUPABASE_URL);
-  url.searchParams.set("select", COLUMNS);
+  url.searchParams.set("select", columns);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
 
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;

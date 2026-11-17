@@ -14,7 +14,8 @@ Propriétaire : **Inès (CAIO)**. Python 3 standard, aucune dépendance. Validé
 | `update.py` | Les deux IA, les garde-fous et les trois déclencheurs |
 | `llm.py` | Appel des modèles (Hugging Face ou Vercel AI Gateway) |
 | `sources.py` | Ce que la veille regarde : propriétés des contacts HubSpot, changelog HubSpot |
-| `test_skill.py` | 18 tests avec de fausses IA (sans réseau) |
+| `heal.py` | **Fallback en direct** : HubSpot refuse une fiche → les 2 IA réparent le skill → nouvel essai |
+| `test_skill.py`, `test_heal.py` | 25 tests avec de fausses IA et un faux HubSpot (sans réseau) |
 | [`../../.github/workflows/skill-hubspot.yml`](../../.github/workflows/skill-hubspot.yml) | La veille quotidienne |
 
 ## Comment ça marche
@@ -53,6 +54,40 @@ Propriétaire : **Inès (CAIO)**. Python 3 standard, aucune dépendance. Validé
 | `pipeline/verification/verify.py` | Nouvelle anomalie **`email_refused_by_hubspot`** (bloquante) : e-mails dont l'extension est refusée par HubSpot d'après le skill (aujourd'hui `.example`, la leçon d'Alexis) |
 | Envoi d'Alexis (`pipeline/hubspot/send.py`) | **Aucune modification** : il passe déjà par `to_hubspot()` |
 
+## Fallback en direct : Bascule se répare pendant la migration
+
+Principe expliqué par le professeur : quand une action échoue, le système revient en arrière, recalcule, se met à jour et réessaie ; on le voit dans les journaux. Validé par Alexis le 17/11.
+
+```
+❌ HubSpot refuse une fiche (erreur 400 : propriété inconnue, valeur refusée…)
+🧠 IA n°1 lit l'erreur + la liste des propriétés HubSpot → propose une correction du skill
+🛡️ garde-fous du code → 🔍 IA n°2 valide → skill enregistré (nouvelle version)
+🔁 la fiche est revérifiée avec le skill corrigé, puis renvoyée UNE fois
+✅ « envoyée après correction »  ou  🛑 « bloquée avant HubSpot (règle apprise) »  ou  ⚠️ « non corrigée »
+```
+
+| Où | Ce qui se passe |
+|---|---|
+| `pipeline/hubspot/send.py` → `migrate_one()` | En cas d'échec de l'envoi : `self_heal_and_retry()` (≈ 30 lignes, accord d'Alexis) |
+| `migration_log.self_heal` | Compte rendu : erreur HubSpot, ce que les IA ont fait, version du skill, résultat. **Colonne à créer** : `supabase/migrations/20261117180000_self_heal.sql` |
+| Écran de suivi | Ligne `🩹 ❌ refusée par HubSpot → 🧠 skill vN corrigé par les 2 IA → ✅ envoyée après correction`, détail dans la fenêtre « Preuve », compteur dans le bilan. Tant que la colonne n'existe pas, l'écran fonctionne sans. |
+| Journal de la migration (GitHub Actions) | `🩹 envoyée après correction (skill vN)` sur la ligne de la fiche, et résumé des réparations en fin de lancement |
+
+**Ce qui n'est jamais « réparé »** : jeton invalide (401/403), limite de débit (429), HubSpot en panne (5xx).
+**Crédits maîtrisés** : une même erreur n'est analysée qu'une fois par lancement (les fiches suivantes utilisent directement le skill corrigé, sans échec), et au plus 5 analyses par lancement.
+
+### La démo du fallback (pour le jury)
+
+*GitHub → Actions → « Lancer la migration » → cocher **panne_demo** → Run workflow.*
+
+Le skill est cassé volontairement au début du lancement : la fonction (« job_title ») part vers une propriété HubSpot qui n'existe pas (`jobtitle_ancien`). Résultat attendu :
+1. la 1re fiche est **refusée par HubSpot** ;
+2. les 2 IA lisent l'erreur, retrouvent `jobtitle` dans la liste des propriétés, corrigent le skill ;
+3. la fiche est **renvoyée et acceptée** ; les fiches suivantes passent **directement** ;
+4. l'écran de suivi montre la ligne 🩹, et le résumé du lancement affiche la réparation.
+
+La réparation faite pendant cette démo n'est **pas** enregistrée dans Git (le skill de `main` n'a jamais été cassé).
+
 ## Utilisation
 
 ```bash
@@ -61,7 +96,7 @@ python -m pipeline.hubspot_skill.update --champs --nouveautes          # la veil
 python -m pipeline.hubspot_skill.update --champs --dry-run             # sans rien écrire
 python -m pipeline.hubspot_skill.update --erreur "Property values were not valid: email"
 python -m pipeline.hubspot_skill.skill                                 # régénérer SKILL.md
-python -m unittest pipeline.hubspot_skill.test_skill -v                # tests (sans réseau)
+python -m unittest pipeline.hubspot_skill.test_skill pipeline.hubspot_skill.test_heal -v   # tests (sans réseau)
 ```
 
 ## Configuration (secrets, jamais dans Git)
