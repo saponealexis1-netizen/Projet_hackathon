@@ -12,7 +12,7 @@ Sources possibles pour le journal :
   python -m pipeline.metrics.compute --log journal.json            (export JSON de migration_log)
   python -m pipeline.metrics.compute --run-id <uuid>               (lecture directe dans Supabase)
 
-La « vérité » (ce que chaque fiche contient vraiment) vient de data/contacts.sample.json,
+La « vérité » (ce que chaque fiche contient vraiment) vient de data/contacts.legacy.json (base de l'ancien CRM),
 complétable avec --truth <fichier.json> (ex. les cas pièges ajoutés jeudi).
 """
 from __future__ import annotations
@@ -28,7 +28,7 @@ from pathlib import Path
 from pipeline.verification.verify import ALLOWED_FIELDS, verify_contact
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_TRUTH = ROOT / "data" / "contacts.sample.json"
+DEFAULT_TRUTH = ROOT / "data" / "contacts.legacy.json"
 FIELDS = [f for f in ALLOWED_FIELDS if f != "legacy_id"]   # les 8 champs lus par l'agent
 SENT = {"success", "partial"}
 EXTRAPOLATION = 3000

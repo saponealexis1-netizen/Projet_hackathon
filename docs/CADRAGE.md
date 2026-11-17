@@ -42,7 +42,7 @@ La première version des slides prévoyait une migration d'un faux CRM vers **Su
 | D4 | **Supabase est conservé, en version minimale** (2 tables). Ce n'est pas le CRM cible. | Sert de base cachée à l'ancien CRM et de journal de migration. Sur Vercel, aucun fichier n'est conservé : il faut une base pour garder les mesures. |
 | D5 | **Plan B Supabase** : fichier JSON pour les contacts, export CSV pour les mesures. | Le cœur de la démo (ancien CRM → agent → HubSpot) n'en dépend pas. |
 | D6 | **n8n est exclu du MVP.** | Pas nécessaire au parcours principal. |
-| D7 | **10 à 20 contacts synthétiques** (jeu de référence Hugging Face). | Aucune donnée personnelle réelle. |
+| D7 | **100 contacts synthétiques** dans l'ancien CRM (`data/contacts.legacy.json`), relevé de 20 à 100 le 17/11 pour plus de crédibilité. | Aucune donnée personnelle réelle ; volume crédible pour la démo et les mesures. |
 | D8 | **Écran de lancement et bilan final = deux parties de l'écran de suivi** (bouton « Lancer la migration » en haut, encadré « Bilan » en bas), construit par Inès. | Évite deux écrans supplémentaires. |
 | D9 | **Une fiche bloquée est affichée avec sa raison, mais n'est pas corrigeable dans l'outil.** | Un formulaire de correction n'est pas indispensable au parcours principal. En démo : « Thomas la corrige à la main ». |
 | D10 | **Les fiches « à vérifier » (warning) partent dans HubSpot, sans note.** L'anomalie est enregistrée dans `migration_log` et affichée sur l'écran de suivi. | Reste simple ; l'information n'est pas perdue. |
@@ -86,7 +86,7 @@ La première version des slides prévoyait une migration d'un faux CRM vers **Su
 | Jour | Livrable Eugenia | Objectif de l'équipe |
 |---|---|---|
 | **Lun. 16** | Validation d'idée (17h) ✅ | Cadrage, création du compte HubSpot |
-| **Mar. 17** | — | Ancien CRM en ligne avec 20 contacts ; premier agent H qui lit **une fiche** |
+| **Mar. 17** | — | Ancien CRM en ligne avec 100 contacts ; premier agent H qui lit **une fiche** |
 | **Mer. 18** | Point intermédiaire (17h) : parcours, architecture, Loom de 2 min, roadmap | Parcours complet sur quelques fiches : ancien CRM → agent → vérification → HubSpot |
 | **Jeu. 19** | — | 20 fiches, mesures, plan B pour la démo live |
 | **Ven. 20** | Prototype, fiche projet + repo, vidéo démo (11h) · Pitch deck de 8 à 12 slides (15h) | Démo live, README complet, retour d'expérience sur l'Agent API, business model et coût de run |
