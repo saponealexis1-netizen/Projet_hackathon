@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import PrintButton from "@/components/PrintButton";
 import { getContacts, PAGE_SIZE } from "@/lib/contacts";
 
 type Props = {
@@ -21,12 +22,10 @@ export default async function ContactList({ searchParams }: Props) {
       <h1>Contacts</h1>
 
       <div className="toolbar">
-        <span className="button" aria-disabled="true">
+        <Link className="button" href="/contacts/nouveau">
           Nouveau contact
-        </span>
-        <span className="button" aria-disabled="true">
-          Imprimer
-        </span>
+        </Link>
+        <PrintButton />
         <span>
           {contacts.length} contacts au total
         </span>

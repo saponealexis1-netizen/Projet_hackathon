@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
+import PrintButton from "@/components/PrintButton";
 import { getContact, PAGE_SIZE } from "@/lib/contacts";
 
 type Props = {
@@ -43,12 +44,10 @@ export default async function ContactPage({ params }: Props) {
         <Link className="button" href={listPage > 1 ? `/?page=${listPage}` : "/"}>
           ◄ Retour à la liste
         </Link>
-        <span className="button" aria-disabled="true">
+        <Link className="button" href={`/contacts/${c.legacy_id}/modifier`}>
           Modifier
-        </span>
-        <span className="button" aria-disabled="true">
-          Imprimer
-        </span>
+        </Link>
+        <PrintButton />
         <span>
           Fiche {position} sur {total}
         </span>

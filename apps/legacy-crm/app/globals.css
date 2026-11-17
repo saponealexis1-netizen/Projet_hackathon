@@ -28,7 +28,7 @@ body {
   font-weight: bold;
 }
 
-.titlebar-buttons span {
+.titlebar-buttons button {
   display: inline-block;
   width: 16px;
   margin-left: 2px;
@@ -39,30 +39,74 @@ body {
   border-color: #fff #404040 #404040 #fff;
   font-size: 11px;
   line-height: 14px;
+  padding: 0;
+  cursor: pointer;
 }
 
 .menubar {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   padding: 2px 4px;
   border-bottom: 1px solid #808080;
 }
 
-.menubar a,
-.menubar span {
-  padding: 2px 8px;
-  color: #000;
-  text-decoration: none;
+.menu {
+  position: relative;
 }
 
-.menubar a:hover {
+.menu-title {
+  padding: 2px 8px;
+  background: none;
+  border: 1px solid transparent;
+  font: inherit;
+  color: #000;
+  cursor: default;
+}
+
+.menu-title:hover,
+.menu-open {
   background: #0a246a;
   color: #fff;
 }
 
-.menu-disabled {
-  color: #808080 !important;
-  text-shadow: 1px 1px 0 #fff;
+.menu-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 210px;
+  padding: 2px;
+  background: #d4d0c8;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.menu-dropdown a,
+.menu-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 3px 20px;
+  background: none;
+  border: none;
+  font: inherit;
+  color: #000;
+  text-align: left;
+  text-decoration: none;
+  cursor: default;
+}
+
+.menu-dropdown a:hover,
+.menu-dropdown button:hover {
+  background: #0a246a;
+  color: #fff;
+}
+
+.menu-dropdown hr {
+  margin: 2px 1px;
+  border: none;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #fff;
 }
 
 .content {
@@ -184,4 +228,172 @@ table.form td {
   padding: 2px 6px;
   border-top: 1px solid #808080;
   font-size: 11px;
+}
+
+.window-max {
+  max-width: none;
+  margin: 0;
+  min-height: 100vh;
+}
+
+input,
+select,
+textarea {
+  min-width: 360px;
+  padding: 2px 4px;
+  background: #fff;
+  font: inherit;
+  border: 2px solid;
+  border-color: #404040 #fff #fff #404040;
+}
+
+select {
+  min-width: 120px;
+}
+
+input[type="checkbox"] {
+  min-width: 0;
+}
+
+input[readonly] {
+  background: #ece9d8;
+}
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.dialog {
+  min-width: 340px;
+  max-width: 460px;
+  background: #d4d0c8;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  box-shadow: 3px 3px 0 #000;
+}
+
+.dialog-body {
+  display: flex;
+  gap: 12px;
+  padding: 14px 14px 8px;
+}
+
+.dialog-icon {
+  font-size: 26px;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 0 12px;
+}
+
+.dialog-buttons button {
+  min-width: 75px;
+}
+
+table.calendar {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: #fff;
+  border: 2px solid;
+  border-color: #404040 #fff #fff #404040;
+}
+
+table.calendar th {
+  background: #d4d0c8;
+  font-weight: normal;
+  padding: 3px;
+  border: 1px solid;
+  border-color: #fff #808080 #808080 #fff;
+}
+
+table.calendar td {
+  height: 72px;
+  padding: 2px 3px;
+  vertical-align: top;
+  border: 1px solid #c0c0c0;
+}
+
+.calendar-empty {
+  background: #ece9d8;
+}
+
+.calendar-today {
+  background: #ffffe1;
+}
+
+.calendar-day {
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.calendar-event {
+  display: block;
+  margin-top: 2px;
+  padding: 1px 3px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: #000;
+  text-decoration: none;
+  background: #c6dbf7;
+  border-left: 3px solid #0a246a;
+}
+
+.calendar-event:hover {
+  background: #0a246a;
+  color: #fff;
+}
+
+.help {
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+ol.help {
+  padding-left: 20px;
+}
+
+.taskbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3px 4px;
+  background: #d4d0c8;
+  border-top: 2px solid #fff;
+}
+
+.taskbar-item {
+  min-width: 180px;
+  text-align: left;
+  font-weight: bold;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+  .titlebar,
+  .menubar,
+  .toolbar,
+  .pagination,
+  .statusbar {
+    display: none;
+  }
+  .window {
+    border: none;
+    box-shadow: none;
+    margin: 0;
+  }
 }
