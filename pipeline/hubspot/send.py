@@ -160,6 +160,19 @@ def supabase_rest_url(table: str) -> str:
     return f"{base}/rest/v1/{table}"
 
 
+def supabase_schema() -> str:
+    """Schéma Postgres de nos tables (« hackathon », pour ne pas les mélanger avec d'autres projets)."""
+    return os.environ.get("SUPABASE_SCHEMA", "").strip() or "hackathon"
+
+
+def supabase_headers(key: str, write: bool = False) -> dict:
+    """En-têtes de l'API REST : clé, et schéma visé (Accept-Profile en lecture, Content-Profile en écriture)."""
+    h = {"apikey": key, "Authorization": f"Bearer {key}", "Accept-Profile": supabase_schema()}
+    if write:
+        h["Content-Profile"] = supabase_schema()
+    return h
+
+
 def write_supabase_log(rows: list[dict]) -> None:
     key = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
     req = urllib.request.Request(
@@ -167,8 +180,7 @@ def write_supabase_log(rows: list[dict]) -> None:
         data=json.dumps(rows).encode("utf-8"),
         method="POST",
         headers={
-            "apikey": key,
-            "Authorization": f"Bearer {key}",
+            **supabase_headers(key, write=True),
             "Content-Type": "application/json",
             "Prefer": "return=minimal",
         },

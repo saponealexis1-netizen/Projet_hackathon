@@ -34,6 +34,9 @@ export function dataSource(): "supabase" | "fichier de secours" {
   return supabaseConfigured() ? "supabase" : "fichier de secours";
 }
 
+// Schéma Postgres de nos tables (« hackathon », pour ne pas les mélanger avec d'autres projets).
+const SCHEMA = process.env.SUPABASE_SCHEMA || "hackathon";
+
 async function fetchFromSupabase(): Promise<Contact[]> {
   const url = new URL("/rest/v1/legacy_contacts", process.env.SUPABASE_URL);
   url.searchParams.set(
@@ -45,8 +48,8 @@ async function fetchFromSupabase(): Promise<Contact[]> {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;
   // Les nouvelles clés Supabase (sb_secret_…) ne sont pas des JWT : elles passent seulement dans « apikey ».
   const headers: Record<string, string> = key.startsWith("sb_")
-    ? { apikey: key }
-    : { apikey: key, Authorization: `Bearer ${key}` };
+    ? { apikey: key, "Accept-Profile": SCHEMA }
+    : { apikey: key, Authorization: `Bearer ${key}`, "Accept-Profile": SCHEMA };
   const res = await fetch(url, { headers, cache: "no-store" });
   if (!res.ok) throw new Error(`Supabase ${res.status} : ${await res.text()}`);
   return (await res.json()) as Contact[];
