@@ -40,7 +40,12 @@ company (entreprise), job_title (poste, fonction), city (ville), notes (commenta
 
 RÈGLES STRICTES
 - Recopie chaque valeur EXACTEMENT comme elle est affichée : ne corrige rien, ne reformate rien.
-- N'invente rien. Champ vide, absent ou illisible : null.
+- Une valeur n'est valable que si tu la VOIS écrite à l'écran. Si un champ affiche un bouton
+  (« Afficher », « Voir », « Voir le tél. »…) au lieu d'une valeur, CLIQUE dessus et lis la valeur
+  qui apparaît. Ne déduis JAMAIS une valeur d'un motif, d'une autre fiche ou de l'identifiant.
+- Avant de répondre, vérifie sur l'écran que chaque valeur renvoyée y est bien visible,
+  caractère par caractère (attention aux chiffres des numéros de téléphone).
+- Champ vide, absent ou que tu n'as pas pu afficher : null. Mieux vaut null qu'une valeur inventée.
 - Lecture seule : ne clique jamais sur Enregistrer, Modifier ou Supprimer.
 - Si la fiche est introuvable, mets les champs à null et explique le problème dans « error ».
   Sinon, « error » vaut null.
