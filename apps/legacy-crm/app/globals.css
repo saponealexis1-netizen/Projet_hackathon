@@ -1,10 +1,187 @@
-/* Style volontairement « vieux logiciel » (affiné dans la tâche victoria/legacy-crm). */
+/* Style volontairement « vieux logiciel de 2010 » (inspiré des fenêtres Windows classiques). */
 html,
 body {
   margin: 0;
   padding: 0;
-  background: #d4d0c8;
+  background: #3a6ea5;
   color: #000;
   font-family: Tahoma, Verdana, "Segoe UI", sans-serif;
   font-size: 13px;
+}
+
+.window {
+  max-width: 980px;
+  margin: 24px auto;
+  background: #d4d0c8;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 6px;
+  background: linear-gradient(90deg, #0a246a, #a6caf0);
+  color: #fff;
+  font-weight: bold;
+}
+
+.titlebar-buttons span {
+  display: inline-block;
+  width: 16px;
+  margin-left: 2px;
+  text-align: center;
+  background: #d4d0c8;
+  color: #000;
+  border: 1px solid;
+  border-color: #fff #404040 #404040 #fff;
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.menubar {
+  display: flex;
+  gap: 4px;
+  padding: 2px 4px;
+  border-bottom: 1px solid #808080;
+}
+
+.menubar a,
+.menubar span {
+  padding: 2px 8px;
+  color: #000;
+  text-decoration: none;
+}
+
+.menubar a:hover {
+  background: #0a246a;
+  color: #fff;
+}
+
+.menu-disabled {
+  color: #808080 !important;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+.content {
+  padding: 10px 12px 14px;
+  min-height: 420px;
+}
+
+h1 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.button,
+button {
+  display: inline-block;
+  padding: 3px 12px;
+  background: #d4d0c8;
+  color: #000;
+  font: inherit;
+  text-decoration: none;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  cursor: pointer;
+}
+
+.button:active {
+  border-color: #404040 #fff #fff #404040;
+}
+
+.button[aria-disabled="true"],
+button:disabled {
+  color: #808080;
+  text-shadow: 1px 1px 0 #fff;
+  cursor: default;
+  pointer-events: none;
+}
+
+table.grid {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 2px solid;
+  border-color: #404040 #fff #fff #404040;
+}
+
+table.grid th {
+  background: #d4d0c8;
+  text-align: left;
+  font-weight: normal;
+  padding: 3px 6px;
+  border: 1px solid;
+  border-color: #fff #808080 #808080 #fff;
+}
+
+table.grid td {
+  padding: 3px 6px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+table.grid tr:nth-child(even) td {
+  background: #f4f4f4;
+}
+
+table.grid a {
+  color: #0000ee;
+}
+
+.pagination {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+fieldset {
+  border: 1px solid;
+  border-color: #808080 #fff #fff #808080;
+  padding: 8px 10px 10px;
+  margin: 0 0 10px;
+}
+
+legend {
+  padding: 0 4px;
+}
+
+table.form th {
+  width: 140px;
+  text-align: right;
+  font-weight: normal;
+  padding: 4px 8px 4px 0;
+  vertical-align: top;
+}
+
+table.form td {
+  padding: 3px 0;
+}
+
+.field {
+  display: inline-block;
+  min-width: 360px;
+  min-height: 16px;
+  padding: 2px 4px;
+  background: #fff;
+  border: 2px solid;
+  border-color: #404040 #fff #fff #404040;
+  white-space: pre-wrap;
+}
+
+.statusbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 6px;
+  border-top: 1px solid #808080;
+  font-size: 11px;
 }
