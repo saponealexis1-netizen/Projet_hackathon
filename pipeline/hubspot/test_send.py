@@ -71,7 +71,7 @@ class TestMigrate(unittest.TestCase):
     def test_lignes_conformes_a_migration_log(self):
         rows = migrate(PIEGES, "run-6", upsert=FakeHubSpot(), write_log=lambda r: None)
         colonnes = {"run_id", "legacy_id", "status", "extracted", "anomalies", "hubspot_id",
-                    "duration_ms", "credits_used", "error"}
+                    "duration_ms", "credits_used", "error", "agent_session_id", "screenshot_url", "reread"}
         for r in rows:
             self.assertEqual(set(r), colonnes)
             self.assertIn(r["status"], {"success", "partial", "failed", "duplicate", "skipped"})

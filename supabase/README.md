@@ -7,7 +7,7 @@ Supabase n'est **pas** le CRM cible (c'est HubSpot). Il sert à deux choses :
 | Table | Rôle | Qui lit / écrit |
 |---|---|---|
 | `legacy_contacts` | Base **cachée** de l'ancien CRM simulé (100 contacts fictifs) | L'ancien CRM la lit côté serveur. **L'agent H n'y a pas accès** : il passe par l'écran. |
-| `migration_log` | Journal de migration : **une ligne par fiche traitée** | L'orchestration écrit ; les mesures et l'écran de suivi lisent. |
+| `migration_log` | Journal de migration : **une ligne par fiche traitée**, avec la session de l'agent et sa capture d'écran (D14) | L'orchestration écrit ; les mesures et l'écran de suivi lisent. |
 
 ## Fichiers
 

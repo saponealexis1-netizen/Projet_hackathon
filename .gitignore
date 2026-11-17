@@ -38,3 +38,6 @@ Thumbs.db
 .idea/
 *.log
 coverage/
+
+# Résultats locaux de l'orchestration
+agent/runner/last_run.json
