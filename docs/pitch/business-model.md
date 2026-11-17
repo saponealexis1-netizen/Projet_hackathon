@@ -21,7 +21,7 @@
 | | Qui | Ce qu'il gagne |
 |---|---|---|
 | 💶 **Paie** | **Thomas**, responsable onboarding chez un éditeur CRM ou dans une **agence partenaire HubSpot** | Des ventes qui ne tombent plus à cause de la migration, un onboarding plus court |
-| 🖥️ **Utilise** | L'équipe onboarding | Lance la migration, suit le tableau de bord, ne traite que les cas douteux |
+| 🖥️ **Utilise** | L'équipe onboarding | Ne traite que les cas douteux au lieu de tout ressaisir |
 | 🙂 **En profite** | **Camille**, gérante d'une petite agence | Change d'outil sans tout recopier ni perdre de données |
 
 **Pourquoi ce sont eux qui paient, et pas la PME ?**
