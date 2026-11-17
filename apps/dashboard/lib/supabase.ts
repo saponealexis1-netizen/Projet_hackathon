@@ -51,6 +51,13 @@ export async function fetchScreenshotUrl(sessionId: string): Promise<string | nu
   return rows[0]?.screenshot_url ?? null;
 }
 
+/** Le lancement le plus récent : son identifiant et ses fiches (adresse « ?run=dernier »). */
+export async function fetchLatestRun(): Promise<{ runId: string | null; rows: LogRow[] }> {
+  const last = await query({ order: "created_at.desc", limit: "1" });
+  const runId = last[0]?.run_id ?? null;
+  return { runId, rows: runId ? await fetchRunRows(runId) : [] };
+}
+
 /** Les fiches d'un lancement précis. */
 export async function fetchRunRows(runId: string): Promise<LogRow[]> {
   if (!isRunId(runId)) throw new Error("Identifiant de migration invalide.");

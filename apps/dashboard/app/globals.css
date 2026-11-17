@@ -144,3 +144,28 @@ h3 { margin: 0 0 8px; font-size: 15px; }
 @media (max-width: 800px) {
   .modal-body { grid-template-columns: 1fr; }
 }
+
+/* Agents en direct — mise en forme minimale (design : Mehdi) */
+.live-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.live-agent {
+  margin: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f8fafc;
+}
+.live-agent img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: top;
+}
+.live-agent figcaption {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}

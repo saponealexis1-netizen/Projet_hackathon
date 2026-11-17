@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { FIELD_LABEL, UI_LABEL, UI_STATUS, computeBilan, formatDuree, reason, rereadChanged } from "@/lib/bilan";
-import type { LogRow, RunState } from "@/lib/types";
+import type { LiveAgent, LogRow, RunState } from "@/lib/types";
 
 type Run = { runId: string; mode: "demo" | "live"; total: number };
 
 const POLL_MS = 2000;
+const LIVE_MS = 3000;
 
 export default function SuiviMigration() {
   const [run, setRun] = useState<Run | null>(null);
@@ -14,11 +15,16 @@ export default function SuiviMigration() {
   const [launching, setLaunching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [preuve, setPreuve] = useState<LogRow | null>(null); // fiche ouverte dans la fenêtre « Preuve »
+  const [peutLancerReel, setPeutLancerReel] = useState(false); // le bouton déclenche-t-il le vrai agent ?
+  const [agents, setAgents] = useState<LiveAgent[]>([]);
 
   const rows = state?.rows ?? [];
   const total = state?.total ?? run?.total ?? 0;
   const bilan = computeBilan(rows, total);
-  const running = run !== null && !bilan.terminee;
+  const suitDernier = run?.runId === "dernier";
+  const running = run !== null && (suitDernier ? agents.length > 0 : !bilan.terminee);
+  // Lancement suivi pour le panneau « Agents en direct » (« dernier » est résolu par l'API).
+  const liveRunId = state?.resolvedRunId ?? run?.runId ?? null;
 
   async function lancer() {
     setLaunching(true);
@@ -29,6 +35,8 @@ export default function SuiviMigration() {
       const body = await res.json();
       if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
       setRun(body as Run);
+      // L'adresse garde le lancement : un rechargement de la page continue de le suivre.
+      if (body.mode === "live") window.history.replaceState(null, "", `?run=${body.runId}&total=${body.total}`);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -47,7 +55,8 @@ export default function SuiviMigration() {
         if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
         if (stop) return;
         setState(body as RunState);
-        if ((body as RunState).rows.length >= (body as RunState).total) stop = true;
+        // « dernier » : on continue de suivre (un nouveau lancement peut démarrer).
+        if (run.runId !== "dernier" && (body as RunState).rows.length >= (body as RunState).total) stop = true;
       } catch (e) {
         if (!stop) setError((e as Error).message);
       }
@@ -60,10 +69,41 @@ export default function SuiviMigration() {
     };
   }, [run]);
 
+  // Agents H en train de travailler (captures en direct), tant que la migration réelle tourne.
+  const suivreAgents = run?.mode === "live" && liveRunId !== null && liveRunId !== "tout" && (running || suitDernier);
+  useEffect(() => {
+    if (!suivreAgents || !liveRunId) return;
+    let stop = false;
+    const tick = async () => {
+      try {
+        const res = await fetch(`/api/live/${liveRunId}`, { cache: "no-store" });
+        const body = (await res.json()) as { agents?: LiveAgent[] };
+        if (!stop) setAgents(body.agents ?? []);
+      } catch {
+        /* le panneau est un bonus : on ignore une erreur passagère */
+      }
+    };
+    tick();
+    const id = setInterval(tick, LIVE_MS);
+    return () => {
+      stop = true;
+      clearInterval(id);
+    };
+  }, [suivreAgents, liveRunId]);
+
+  // Le bouton peut-il lancer le vrai agent (action GitHub configurée) ?
+  useEffect(() => {
+    fetch("/api/migration", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((b: { live?: boolean }) => setPeutLancerReel(Boolean(b.live)))
+      .catch(() => {});
+  }, []);
+
   // Afficher une migration existante : ?run=tout (toutes les fiches) ou ?run=<identifiant du lancement>
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const param = params.get("run");
+    // ?run=dernier : le lancement le plus récent (pratique pendant la démo).
     // L'adresse n'est connue que dans le navigateur : on l'applique juste après l'affichage initial.
     if (param) queueMicrotask(() => setRun({ runId: param, mode: "live", total: Number(params.get("total")) || 0 }));
   }, []);
@@ -90,13 +130,20 @@ export default function SuiviMigration() {
             avant d&apos;être envoyée dans HubSpot.
           </p>
         </div>
-        {run?.mode === "live" ? (
-          // Migration réelle, lancée par l'orchestration (agent/runner) : pas de bouton qui
-          // relancerait une simulation par erreur pendant la démo.
+        {run?.mode === "live" && (running || !peutLancerReel) ? (
+          // Migration réelle : pas de bouton qui relancerait une simulation par erreur pendant la démo.
           <span className="badge-live">{running ? "Migration réelle en cours…" : "Migration réelle · agent H Company"}</span>
         ) : (
           <button className="btn" onClick={lancer} disabled={launching || running}>
-            {launching ? "Lancement…" : running ? "Migration en cours…" : run ? "Relancer la migration" : "Lancer la migration"}
+            {launching
+              ? "Lancement…"
+              : running
+                ? "Migration en cours…"
+                : peutLancerReel
+                  ? "Lancer la migration (agent réel)"
+                  : run
+                    ? "Relancer la migration"
+                    : "Lancer la migration"}
           </button>
         )}
       </section>
@@ -105,6 +152,11 @@ export default function SuiviMigration() {
 
       {run && (
         <>
+          {/* ───────── Agents en direct (migration réelle) ───────── */}
+          {suivreAgents && (
+            <AgentsEnDirect agents={agents} attente={rows.length === 0} />
+          )}
+
           {/* ───────── 2. Suivi en direct ───────── */}
           <section className="card">
             <div className="progress-head">
@@ -149,7 +201,9 @@ export default function SuiviMigration() {
                 {rows.length === 0 && (
                   <tr>
                     <td colSpan={8} className="muted center">
-                      L&apos;agent ouvre l&apos;ancien CRM…
+                      {run.mode === "live" && running
+                        ? "L'agent démarre (environ 30 s), puis les fiches arrivent une par une…"
+                        : "L'agent ouvre l'ancien CRM…"}
                     </td>
                   </tr>
                 )}
@@ -220,6 +274,45 @@ export default function SuiviMigration() {
 
       {preuve && <FenetrePreuve row={preuve} onClose={() => setPreuve(null)} />}
     </main>
+  );
+}
+
+/** Ce que voient les agents H en ce moment : une capture par agent, rafraîchie toutes les 3 s. */
+function AgentsEnDirect({ agents, attente }: { agents: LiveAgent[]; attente: boolean }) {
+  const [t, setT] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setT((x) => x + 1), LIVE_MS);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <section className="card live-agents">
+      <div className="progress-head">
+        <h2>Agents en direct</h2>
+        <span className="muted">{agents.length} agent(s) H Company au travail</span>
+      </div>
+      {agents.length === 0 ? (
+        <p className="muted">
+          {attente ? "Démarrage des agents…" : "Aucun agent en cours : toutes les fiches lancées ont été lues."}
+        </p>
+      ) : (
+        <div className="live-grid">
+          {agents.map((a) => (
+            <figure key={a.sessionId} className="live-agent">
+              {/* eslint-disable-next-line @next/next/no-img-element -- capture relayée par le serveur */}
+              <img
+                src={`/api/live/shot/${a.sessionId}?t=${t}`}
+                alt={`Écran de l'agent sur la fiche ${a.legacyId ?? ""}`}
+                onError={(e) => (e.currentTarget.style.visibility = "hidden")}
+                onLoad={(e) => (e.currentTarget.style.visibility = "visible")}
+              />
+              <figcaption>
+                <span className="mono">{a.legacyId ?? "—"}</span> · l&apos;agent lit la fiche…
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 

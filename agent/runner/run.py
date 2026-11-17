@@ -20,7 +20,8 @@ from __future__ import annotations
 import json
 import sys
 import uuid
-from concurrent.futures import ThreadPoolExecutor
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from agent.runner import hclient
@@ -113,6 +114,19 @@ def reread_if_needed(url: str, run_id: str, result: dict) -> dict:
     return merged
 
 
+def metrics_of(r: dict) -> dict:
+    """Mesures et preuves d'une fiche, pour migration_log."""
+    return {
+        "duration_ms": r.get("duration_ms"),
+        "credits_used": r.get("cost_usd"),
+        "agent_session_id": r.get("session_id"),
+        "screenshot_url": (r.get("screenshots") or [None])[-1],
+        "reread": r.get("reread"),
+        "agent_started_at": r.get("started_at"),
+        "agent_finished_at": r.get("finished_at"),
+    }
+
+
 def process(url: str, legacy_id: str, run_id: str, reread: bool) -> dict:
     try:
         result = read_record(url, legacy_id, run_id)
@@ -147,32 +161,45 @@ def main(argv: list[str]) -> int:
     dry_run = "--dry-run" in argv
 
     print(f"Migration {run_id} : {len(ids)} fiche(s), {parallel} agent(s) en parallèle, ancien CRM {url}")
-    with ThreadPoolExecutor(max_workers=parallel) as pool:
-        results = list(pool.map(lambda i: process(url, i, run_id, "--no-reread" not in argv), ids))
+    print(f"Suivi en direct : https://projet-hackathon-jow2.vercel.app/?run={run_id}&total={len(ids)}", flush=True)
 
-    for r in results:
+    # Chaque fiche est vérifiée, envoyée dans HubSpot et journalisée DÈS qu'elle est lue :
+    # l'écran de suivi se remplit en direct (et une coupure ne fait pas tout perdre).
+    from pipeline.hubspot.send import failed_row, migrate_one, supabase_configured, write_supabase_log
+    write = write_supabase_log if (supabase_configured() and not dry_run) else (lambda rows: None)
+    lock = threading.Lock()
+    done: list[dict] = []
+    rows: list[dict] = []
+    results: list[dict] = []
+
+    def handle(r: dict) -> None:
         c = r["contact"]
-        extra = f" · relu : {r['reread']['field']} « {r['reread']['before']} » → « {r['reread']['after']} »" if r.get("reread") else ""
-        cost = f"{r['cost_usd']:.4f} $" if r.get("cost_usd") is not None else "—"
-        dur = f"{r['duration_ms'] / 1000:.0f} s" if r.get("duration_ms") else "—"
-        print(f"  {c['legacy_id']}  agent={r.get('status')}  {dur}  {cost}  "
-              f"{c.get('first_name')} {c.get('last_name')} <{c.get('email')}>"
-              f"{' · ' + str(r.get('agent_error') or r.get('error')) if (r.get('agent_error') or r.get('error')) else ''}{extra}")
+        m = metrics_of(r)
+        with lock:
+            if r.get("status") == "completed" and not r.get("agent_error"):
+                row = migrate_one(c, run_id, done, metrics=m, dry_run=dry_run, write_log=write)
+                done.append(c)
+            else:
+                row = failed_row(run_id, c["legacy_id"], r.get("agent_error") or r.get("error") or "échec de l'agent",
+                                 contact=c, metrics=m)
+                write([row])
+            rows.append(row)
+            results.append(r)
+            extra = f" · relu : {r['reread']['field']} « {r['reread']['before']} » → « {r['reread']['after']} »" if r.get("reread") else ""
+            cost = f"{r['cost_usd']:.4f} $" if r.get("cost_usd") is not None else "—"
+            dur = f"{r['duration_ms'] / 1000:.0f} s" if r.get("duration_ms") else "—"
+            print(f"  [{len(rows)}/{len(ids)}] {c['legacy_id']}  {row['status']:<9} {dur:>5}  {cost}  "
+                  f"{c.get('first_name')} {c.get('last_name')}"
+                  f"{' · ' + str(row['error']) if row.get('error') else ''}{extra}", flush=True)
 
-    from pipeline.hubspot.send import migrate  # import tardif : HubSpot seulement si on arrive ici
-    ok = [r for r in results if r.get("status") == "completed" and not r.get("agent_error")]
-    metrics = {r["contact"]["legacy_id"]: {
-        "duration_ms": r.get("duration_ms"),
-        "credits_used": r.get("cost_usd"),
-        "agent_session_id": r.get("session_id"),
-        "screenshot_url": (r.get("screenshots") or [None])[-1],
-        "reread": r.get("reread"),
-        "agent_started_at": r.get("started_at"),
-        "agent_finished_at": r.get("finished_at"),
-    } for r in ok}
-    rows = migrate([r["contact"] for r in ok], run_id, metrics=metrics, dry_run=dry_run)
+    with ThreadPoolExecutor(max_workers=parallel) as pool:
+        futures = [pool.submit(process, url, i, run_id, "--no-reread" not in argv) for i in ids]
+        for f in as_completed(futures):
+            handle(f.result())
+
     sent = sum(1 for row in rows if row["hubspot_id"])
-    print(f"\n{len(ok)}/{len(ids)} fiches lues par l'agent · {sent} dans HubSpot"
+    read = sum(1 for r in results if r.get("status") == "completed" and not r.get("agent_error"))
+    print(f"\n{read}/{len(ids)} fiches lues par l'agent · {sent} dans HubSpot"
           f"{' (simulation)' if dry_run else ''} · run_id {run_id}")
     out = ROOT / "agent" / "runner" / "last_run.json"
     out.write_text(json.dumps({"run_id": run_id, "url": url, "results": results, "log": rows},

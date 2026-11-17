@@ -98,6 +98,53 @@ def migrate(
     return rows
 
 
+def migrate_one(
+    contact: dict,
+    run_id: str,
+    previous: list[dict],
+    metrics: dict | None = None,
+    dry_run: bool = False,
+    upsert: Callable[[list[dict]], dict[str, str]] = client.upsert_contacts,
+    write_log: Callable[[list[dict]], None] | None = None,
+) -> dict:
+    """Migre UNE fiche dès qu'elle est lue (l'écran de suivi se remplit en direct).
+
+    Les doublons sont cherchés parmi les fiches déjà traitées dans ce lancement (`previous`) :
+    la première fiche vue est gardée, la suivante est signalée.
+    """
+    legacy_id = contact.get("legacy_id") or "?"
+    rows = migrate(previous + [contact], run_id, metrics={legacy_id: metrics or {}},
+                   dry_run=True, write_log=lambda r: None)
+    row = rows[-1]
+    if not dry_run and row["status"] in ("success", "partial"):
+        report_props = verify_batch(previous + [contact])[-1]["hubspot"]
+        try:
+            row["hubspot_id"] = upsert([report_props]).get(legacy_id)
+            if not row["hubspot_id"]:
+                row["status"], row["error"] = "failed", "contact non renvoyé par HubSpot"
+        except Exception as e:
+            row["status"], row["error"] = "failed", str(e)
+    if write_log is None and not dry_run and supabase_configured():
+        write_log = write_supabase_log
+    if write_log:
+        write_log([row])
+    return row
+
+
+def failed_row(run_id: str, legacy_id: str, error: str, contact: dict | None = None,
+               metrics: dict | None = None) -> dict:
+    """Ligne de journal pour une fiche que l'agent n'a pas pu lire."""
+    m = metrics or {}
+    return {
+        "run_id": run_id, "legacy_id": legacy_id, "status": "failed", "extracted": contact,
+        "anomalies": [], "hubspot_id": None, "duration_ms": m.get("duration_ms"),
+        "credits_used": m.get("credits_used"), "error": error,
+        "agent_session_id": m.get("agent_session_id"), "screenshot_url": m.get("screenshot_url"),
+        "reread": m.get("reread"), "agent_started_at": m.get("agent_started_at"),
+        "agent_finished_at": m.get("agent_finished_at"),
+    }
+
+
 # --------------------------------------------------------------------------- #
 # Supabase (facultatif) : écriture dans migration_log via l'API REST
 # --------------------------------------------------------------------------- #

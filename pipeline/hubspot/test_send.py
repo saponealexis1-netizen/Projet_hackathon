@@ -7,7 +7,7 @@ import json
 import unittest
 from pathlib import Path
 
-from pipeline.hubspot.send import log_status, migrate
+from pipeline.hubspot.send import failed_row, log_status, migrate, migrate_one
 
 ROOT = Path(__file__).resolve().parents[2]
 SAMPLE = json.loads((ROOT / "data" / "contacts.sample.json").read_text(encoding="utf-8"))
@@ -76,6 +76,40 @@ class TestMigrate(unittest.TestCase):
         for r in rows:
             self.assertEqual(set(r), colonnes)
             self.assertIn(r["status"], {"success", "partial", "failed", "duplicate", "skipped"})
+
+
+class TestFicheParFiche(unittest.TestCase):
+    """migrate_one : chaque fiche est migrée et journalisée dès qu'elle est lue."""
+
+    def test_fiche_envoyee_et_journalisee(self):
+        hs, log = FakeHubSpot(), []
+        row = migrate_one(SAMPLE[0], "run-7", [], upsert=hs, write_log=log.extend,
+                          metrics={"duration_ms": 21000, "credits_used": 0.008})
+        self.assertEqual(row["status"], "success")
+        self.assertEqual(row["hubspot_id"], "hs-C-0001")
+        self.assertEqual(row["duration_ms"], 21000)
+        self.assertEqual(log, [row])
+
+    def test_doublon_detecte_au_fil_de_l_eau(self):
+        hs = FakeHubSpot()
+        doublon = dict(PIEGES[1])               # même e-mail que C-0001 des pièges
+        first = PIEGES[0]
+        migrate_one(first, "run-8", [], upsert=hs, write_log=lambda r: None)
+        row = migrate_one(doublon, "run-8", [first], upsert=hs, write_log=lambda r: None)
+        self.assertEqual(row["status"], "duplicate")
+        self.assertIsNone(row["hubspot_id"])
+        self.assertEqual([p["bascule_legacy_id"] for p in hs.sent], ["C-0001"])
+
+    def test_hubspot_en_panne(self):
+        row = migrate_one(SAMPLE[0], "run-9", [], upsert=FakeHubSpot(fail=True), write_log=lambda r: None)
+        self.assertEqual(row["status"], "failed")
+        self.assertIn("401", row["error"])
+
+    def test_fiche_non_lue_par_l_agent(self):
+        row = failed_row("run-10", "C-0042", "session timed_out")
+        self.assertEqual(row["status"], "failed")
+        self.assertEqual(row["error"], "session timed_out")
+        self.assertIsNone(row["hubspot_id"])
 
 
 class TestStatut(unittest.TestCase):
