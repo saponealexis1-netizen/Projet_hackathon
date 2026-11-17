@@ -93,18 +93,24 @@ def reread_if_needed(url: str, run_id: str, result: dict) -> dict:
                                field_label=FIELD_LABELS.get(a["field"], a["field"]),
                                previous=result["contact"].get(a["field"]), reason=a["message"])
     second = read_record(url, result["contact"]["legacy_id"], run_id, task=task)
+    field, before = a["field"], result["contact"].get(a["field"])
     if second.get("agent_error"):
-        result["reread"] = {"field": a["field"], "before": result["contact"].get(a["field"]),
-                            "after": None, "error": second["agent_error"]}
+        result["reread"] = {"field": field, "before": before, "after": None, "error": second["agent_error"]}
         return result
-    second["reread"] = {"field": a["field"], "before": result["contact"].get(a["field"]),
-                        "after": second["contact"].get(a["field"])}
+    # La relecture ne remplace QUE le champ relu : les autres viennent de la 1re lecture
+    # (observé le 17/11 : en relecture, l'agent renvoie parfois seulement le champ demandé).
+    after = second["contact"].get(field)
+    merged = dict(result)
+    merged["contact"] = dict(result["contact"])
+    if after:
+        merged["contact"][field] = after
+    merged["reread"] = {"field": field, "before": before, "after": after or before}
     for k in ("cost_usd", "duration_ms", "steps"):   # on additionne les deux lectures
         if result.get(k) is not None and second.get(k) is not None:
-            second[k] = second[k] + result[k]
-    second["screenshots"] = result.get("screenshots", []) + second.get("screenshots", [])
-    second["started_at"] = result.get("started_at") or second.get("started_at")
-    return second
+            merged[k] = result[k] + second[k]
+    merged["screenshots"] = result.get("screenshots", []) + second.get("screenshots", [])
+    merged["finished_at"] = second.get("finished_at") or result.get("finished_at")
+    return merged
 
 
 def process(url: str, legacy_id: str, run_id: str, reread: bool) -> dict:

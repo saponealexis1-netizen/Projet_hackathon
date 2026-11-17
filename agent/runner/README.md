@@ -126,3 +126,17 @@ Les horaires de début et de fin de chaque session d'agent (API H : `started_at`
 **Cause** : une fois la réponse de l'agent reçue, `hclient.wait` relançait une attente longue (20 s) de l'API pour confirmer qu'il n'y avait plus rien : **~20 s perdues par fiche**. Correction : arrêt dès que la session est terminée et la réponse reçue ; plus d'attente longue après la fin.
 
 L'écran de suivi affiche désormais la **durée réelle** (dernière fin − premier début, par lancement), et non plus le temps cumulé des agents.
+
+## Fiches pièges (17/11/2026)
+
+5 fiches piégées ajoutées à l'ancien CRM (`data/contacts.pieges.json`, C-0101 à C-0105), lancées avec C-0004 pour que le doublon soit détecté. Run `df31d836-1095-4f31-bdd6-d8d559381a5e`, 6 fiches en 102 s :
+
+| Fiche | Piège | Résultat |
+|---|---|---|
+| C-0101 | Doublon de C-0004 (même e-mail) | 🔁 **Bloquée** : « doublon possible de C-0004 » |
+| C-0102 | E-mail invalide | Relue par l'agent (**confirmée**), puis ❌ **bloquée** : « e-mail invalide » |
+| C-0103 | Prénom « - » | Relue, puis ❌ **bloquée** : « champ obligatoire vide » |
+| C-0104 | Téléphone incomplet | Relue (**confirmée**), puis ⚠️ **à vérifier**, envoyée dans HubSpot |
+| C-0105 | `MARCHETTI`, `toulouse` | ⚠️ Corrigée (Marchetti, Toulouse), envoyée dans HubSpot |
+
+**Bug trouvé et corrigé** : au 1er essai, la relecture de C-0102 a renvoyé seulement l'e-mail, et le code a remplacé **toute la fiche** par cette réponse partielle (prénom et nom perdus). Désormais, une relecture ne remplace **que le champ relu** (2 tests ajoutés).

@@ -6,6 +6,7 @@ Propriétaire : **Alexis (CDO)**.
 |---|---|
 | [`../shared/contact.schema.json`](../shared/contact.schema.json) | **Contrat commun** : format d'un contact, utilisé par l'agent, la vérification, HubSpot et les mesures |
 | `contacts.legacy.json` | **Base complète de l'ancien CRM : 100 contacts fictifs** (C-0001 à C-0100). C'est elle qui est chargée dans Supabase (`legacy_contacts`) |
+| `contacts.pieges.json` | **5 fiches pièges** (C-0101 à C-0105) ajoutées à l'ancien CRM le 17/11 : doublon, e-mail invalide, prénom manquant, téléphone incomplet, majuscules. Elles servent à montrer la vérification et la relecture en action |
 | `contacts.sample.json` | Les 20 premiers contacts (identiques à C-0001 à C-0020), utilisés par les tests de l'équipe |
 | `generate_contacts.py` | Génère `contacts.legacy.json` (reproductible : même résultat à chaque lancement) |
 | `validate_contacts.py` | Vérifie qu'un fichier de contacts respecte le contrat |

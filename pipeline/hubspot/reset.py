@@ -18,7 +18,7 @@ from pathlib import Path
 from pipeline.hubspot import client
 
 ROOT = Path(__file__).resolve().parents[2]
-KNOWN_FILES = [ROOT / "data" / "contacts.legacy.json",
+KNOWN_FILES = [ROOT / "data" / "contacts.legacy.json", ROOT / "data" / "contacts.pieges.json",
                ROOT / "pipeline" / "verification" / "exemples_pieges.json"]
 
 
