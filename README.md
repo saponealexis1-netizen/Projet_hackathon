@@ -97,7 +97,7 @@ Team 8 — six rôles attribués.
 | Application | Adresse | Statut |
 |---|---|---|
 | Ancien CRM simulé (`apps/legacy-crm`) | https://projet-hackathon-uffi.vercel.app | ✅ En ligne (socle) |
-| Écran de suivi de migration (`apps/dashboard`) | à venir | ⏳ À déployer |
+| Écran de suivi de migration (`apps/dashboard`) | https://projet-hackathon-jow2.vercel.app | ✅ En ligne (mode démo : données simulées) |
 
 Chaque fusion sur `main` redéploie automatiquement sur Vercel.
 
