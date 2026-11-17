@@ -3,7 +3,7 @@
  * Lit migration_log dans Supabase (ou la simulation en mode démo).
  */
 import { DEMO_TOTAL, demoRows, isDemoRunId } from "@/lib/demo";
-import { fetchRunRows, supabaseConfigured } from "@/lib/supabase";
+import { fetchLatestPerRecord, fetchRunRows, supabaseConfigured } from "@/lib/supabase";
 import type { RunState } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -22,9 +22,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ runI
   }
 
   const totalParam = Number(new URL(request.url).searchParams.get("total"));
-  const total = totalParam > 0 ? totalParam : Number(process.env.MIGRATION_TOTAL ?? 20);
   try {
-    const rows = await fetchRunRows(runId);
+    // « tout » : l'état de chaque fiche migrée, tous lancements confondus.
+    const rows = runId === "tout" ? await fetchLatestPerRecord() : await fetchRunRows(runId);
+    const total = runId === "tout"
+      ? rows.length
+      : totalParam > 0 ? totalParam : rows.length; // sans « total » : un lancement déjà terminé
     const state: RunState = { runId, mode: "live", total, rows, hubspotContactUrl };
     return Response.json(state);
   } catch (e) {
