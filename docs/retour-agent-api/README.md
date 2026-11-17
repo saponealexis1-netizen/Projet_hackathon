@@ -1,6 +1,6 @@
 # Retour d'expérience — Agent API H Company
 
-Propriétaire : **Inès (CAIO)** · **Brouillon du mardi 17/11**, à compléter jeudi (tests sur les pièges et la 2e version du CRM) et à finaliser vendredi avant 11h.
+Propriétaire : **Inès (CAIO)** · **Version du mardi 17/11 (soir)**. Reste à ajouter les résultats des tests de mercredi et jeudi (section 12), puis à finaliser vendredi avant 11h.
 
 > Sources : tests d'Alexis dans [`agent/runner/README.md`](../../agent/runner/README.md), mesures de Maxime dans [`docs/pitch/business-model.md`](../pitch/business-model.md), journal `migration_log` (Supabase).
 
@@ -22,7 +22,21 @@ Propriétaire : **Inès (CAIO)** · **Brouillon du mardi 17/11**, à compléter 
 | Durée réelle pour 100 fiches | 33 min mesurées, ~17 min après correction de notre code | `agent/runner` |
 | Premier essai sur 5 fiches, avant les garde-fous | **1 / 5** seulement | 17/11 |
 
-## 3. Ce qui a marché
+## 3. La progression, test après test
+
+| Étape (17/11) | Fiches exactes | Ce qui a fait la différence |
+|---|---|---|
+| 1re lecture d'une fiche (page GitHub, avant l'ancien CRM) | 1 / 1 (12 s, 0,004 $) | Format de réponse imposé dès le départ |
+| Ancien CRM v1, fiche avec numéro caché, consignes v1 | 8 / 9 champs | — (téléphone inventé) |
+| Même fiche, consignes « ne devine jamais, clique sur Afficher » | 9 / 9 | Consignes anti-invention |
+| Ancien CRM v2, image seule | 8 / 9 champs | — (« 39 » lu « 99 ») |
+| v1 et v2 avec le texte de la page | 9 / 9 et 9 / 9 | `markdown: true` |
+| 1er parcours complet, 5 fiches, 3 agents | **1 / 5** | — (réponses mal rangées) |
+| Même parcours, format texte simple + nettoyage | **5 / 5** | Format simplifié |
+| Migration des 100 fiches | 97 / 100, **0 erreur envoyée dans HubSpot** | Le contrôle d'identité a bloqué les 3 mauvaises fiches |
+| Relance automatique des 3 fiches | **100 / 100** | Relance une fois si la fiche n'est pas la bonne |
+
+## 4. Ce qui a marché
 
 | Constat | Ce que ça nous apporte |
 |---|---|
@@ -34,7 +48,7 @@ Propriétaire : **Inès (CAIO)** · **Brouillon du mardi 17/11**, à compléter 
 | **Captures d'écran de chaque étape.** | Preuve pour l'utilisateur (D14) et outil de débogage : c'est grâce à elles qu'on a compris les erreurs. |
 | **Plusieurs agents en parallèle.** | 3 fiches lues en même temps ; 10 avec l'offre Builder (20 $/mois). |
 
-## 4. Ce qui a cassé, et comment on l'a réparé
+## 5. Ce qui a cassé, et comment on l'a réparé
 
 | # | Problème observé | Pourquoi | Ce qu'on a changé | Résultat |
 |---|---|---|---|---|
@@ -45,14 +59,14 @@ Propriétaire : **Inès (CAIO)** · **Brouillon du mardi 17/11**, à compléter 
 | 5 | **Relecture sur une fiche vide** → l'agent a produit « User User ». | Relecture lancée alors que la première lecture avait échoué. | Pas de relecture si la fiche est vide. | — |
 | 6 | **~20 s perdues par fiche** après la réponse de l'agent. | Notre code attendait encore une confirmation de l'API (attente longue) après la fin de la session. | Arrêt dès que la session est terminée et la réponse reçue. | 100 fiches : ~33 min → ~17 min (projection) |
 
-## 5. Ce qui nous a surpris
+## 6. Ce qui nous a surpris
 
 - **L'agent « veut » répondre** : face à une information cachée, il invente une valeur crédible plutôt que de dire qu'il ne la voit pas. Il faut lui dire explicitement que le vide vaut mieux qu'une invention.
 - **Une erreur « parfaite » ne se voit pas** : un faux numéro bien formaté passe toutes les règles de vérification. Seule la **capture d'écran** a permis de comprendre ce qui s'était passé.
 - **Les consignes en français simple suffisent** : pas besoin de décrire le logiciel, seulement le but et les règles.
 - **La moitié du travail est autour de l'agent**, pas dans l'agent : format imposé, contrôles, relances, mesures.
 
-## 6. Les garde-fous qu'on a mis autour de l'agent
+## 7. Les garde-fous qu'on a mis autour de l'agent
 
 | Garde-fou | Où | Il protège contre… |
 |---|---|---|
@@ -64,7 +78,7 @@ Propriétaire : **Inès (CAIO)** · **Brouillon du mardi 17/11**, à compléter 
 | Capture d'écran gardée pour chaque fiche (D14) | `migration_log` + écran de suivi | Les erreurs invisibles : on peut toujours vérifier |
 | Upsert sur `bascule_legacy_id` | `pipeline/hubspot/` | Les doublons dans HubSpot en cas de relance |
 
-## 7. Nos conseils à une équipe qui démarre avec l'Agent API
+## 8. Nos conseils à une équipe qui démarre avec l'Agent API
 
 1. **Imposer un format de réponse simple** (texte uniquement, chaîne vide si absent) dès le premier test.
 2. **Activer le texte de la page** (`markdown: true`) dès qu'il faut recopier des chiffres ou des identifiants.
@@ -74,10 +88,46 @@ Propriétaire : **Inès (CAIO)** · **Brouillon du mardi 17/11**, à compléter 
 6. **Une session par fiche** plutôt qu'une longue session : plus facile à relancer, à mesurer et à paralléliser.
 7. **Arrêter d'attendre dès que la réponse est là** : sinon on perd du temps à chaque fiche.
 
-## 8. À compléter jeudi et vendredi
+## 9. Nos retours à H Company
+
+Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
+
+| Suggestion | Pourquoi |
+|---|---|
+| Une option pour que l'agent **réponde « non visible »** plutôt que de compléter une valeur | Notre seule erreur grave (le téléphone inventé) venait de là, et elle passait toutes nos règles |
+| Mettre en avant **`markdown: true`** dans la documentation pour les tâches de recopie | Il a supprimé les erreurs de lecture de chiffres ; nous l'avons découvert en cherchant |
+| Un exemple officiel de **fin de session** (« la réponse est là, arrête d'attendre ») | Notre code perdait ~20 s par fiche à attendre une confirmation inutile |
+| Des **captures d'écran durables** (ou un export) | Elles sont notre preuve pour l'utilisateur ; nous avons dû les faire relayer par notre serveur |
+| Plus d'**agents en parallèle** sur l'offre gratuite pendant un hackathon | Avec 3 agents, 100 fiches prennent ~17 min ; une démo live en montre 5 ou 6 |
+
+## 10. Pour le pitch et les questions du jury
+
+**Trois messages à retenir**
+1. **L'agent lit un logiciel qu'il n'a jamais vu** : il ne reçoit que l'adresse, et lit aussi bien les deux versions de l'ancien CRM.
+2. **Il ne fait jamais seul** : 1 fiche exacte sur 5 sans garde-fous, 100 sur 100 avec.
+3. **Chaque donnée est prouvée** : capture d'écran de la fiche d'origine pour chaque contact migré.
+
+**Réponses courtes aux questions probables**
+
+| Question | Réponse |
+|---|---|
+| « Qu'avez-vous appris sur l'Agent API ? » | Qu'il sait naviguer seul dans un logiciel inconnu, mais qu'il préfère inventer une valeur crédible plutôt que laisser vide. On le lui interdit, et on vérifie tout derrière lui. |
+| « Et si l'agent se trompe ? » | Il s'est trompé de fiche 3 fois sur 100 : notre contrôle d'identité les a bloquées avant HubSpot, puis l'agent les a relues. Chaque fiche a sa capture d'écran. |
+| « Pourquoi pas un script ou un robot RPA ? » | Pas d'API ni d'export, et l'agent n'a besoin d'aucune configuration : une autre interface ne demande pas de nouveau code. |
+| « Combien ça coûte ? » | ~0,015 $ par fiche mesuré sur 100 fiches, soit ~46 $ pour 3 000 fiches. |
+| « Qu'est-ce qui a été le plus difficile ? » | Rendre l'agent fiable, pas le faire marcher : la première lecture a réussi tout de suite, les garde-fous ont pris le reste de la journée. |
+
+## 11. Limites actuelles
+
+- **Pas de connexion par mot de passe** dans l'ancien CRM (D11) : l'agent n'a pas encore été testé derrière un écran de connexion.
+- **3 agents en parallèle** sur l'offre gratuite : une grosse migration prend plusieurs heures.
+- **Les captures d'écran dépendent de H Company** : il faudra les copier chez nous pour les garder.
+- **Données fictives uniquement** : pas encore testé sur un vrai vieux logiciel de client.
+
+## 12. À compléter jeudi et vendredi
 
 - [ ] Migration complète sur la **2e version** de l'ancien CRM (zéro configuration à grande échelle).
 - [ ] Résultat sur les **fiches pièges** (doublons, champs vides, e-mails invalides) : bloquées par la vérification ?
 - [ ] Part des anomalies **corrigées par la relecture** (D13), lue sur l'écran de suivi.
-- [ ] Durée réelle des 100 fiches **après correction** (mesurée, pas projetée).
+- [ ] Durée réelle des 100 fiches **après correction** (mesurée, pas projetée). Premier indice : 6 fiches en 62 s avec 3 agents.
 - [ ] Ce qui s'est passé pendant la **démo live** de vendredi.
