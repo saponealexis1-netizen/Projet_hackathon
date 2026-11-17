@@ -1,6 +1,6 @@
 # Bascule — Architecture technique
 
-> Livrable 2 (mercredi 18/11). État au **mardi 17/11**. Les briques marquées ⏳ sont en cours de construction.
+> Livrable 2 (mercredi 18/11). État au **mardi 17/11 au soir** : toutes les briques fonctionnent de bout en bout.
 > Décisions de cadrage : [CADRAGE.md](../CADRAGE.md) (D1 à D11).
 
 ![Architecture de Bascule](architecture.png)
@@ -32,14 +32,14 @@ L'ancien CRM lit ses propres données dans la table Supabase `legacy_contacts`, 
 
 | Brique | Dossier | Rôle | Responsable | État |
 |---|---|---|---|---|
-| Ancien CRM simulé | `apps/legacy-crm/` | Logiciel « de 2010 » : liste paginée, une fiche par page, **aucun export, aucune API** | Victoria → Maxime | ⏳ Socle en ligne, liste et fiches en cours |
-| Instructions de l'agent | `agent/prompts/` | Ce que l'agent doit ouvrir, lire et renvoyer ; règles strictes (ne rien inventer, lecture seule) | Inès | ⏳ Brouillon prêt, à tester sur l'ancien CRM |
-| Orchestration et agent H | `agent/runner/` | Lance les agents, récupère les fiches, enchaîne vérification et envoi | Alexis | ⏳ En cours |
+| Ancien CRM simulé | `apps/legacy-crm/` | Logiciel « de 2010 » : liste paginée, une fiche par page, **aucun export, aucune API** | Victoria → Maxime | ✅ En ligne : v1 et v2 (autres libellés), 100 contacts lus dans Supabase |
+| Instructions de l'agent | `agent/prompts/` | Ce que l'agent doit ouvrir, lire et renvoyer ; règles strictes (ne rien inventer, lecture seule) | Inès (intégrées par Alexis) | ✅ Version « zéro configuration » dans `agent/runner/prompts.py`, testée sur v1 et v2 |
+| Orchestration et agent H | `agent/runner/` | Lance les agents, récupère les fiches, enchaîne vérification et envoi | Alexis | ✅ 100/100 fiches migrées, 100 % exactes, 31 s et 0,015 $ par fiche |
 | Vérification | `pipeline/verification/` | Nettoyage, mapping, doublons, anomalies → ok / à vérifier / bloquée | Inès | ✅ Fusionnée, 14 tests |
 | Envoi HubSpot | `pipeline/hubspot/` | Création des contacts par l'API, sans doublon, et écriture du journal | Alexis | ✅ Fusionné, testé sur HubSpot |
 | Base Supabase | `supabase/` | `legacy_contacts` (base cachée de l'ancien CRM, **100 contacts**) et `migration_log` (journal et mesures) | Alexis | ✅ En ligne |
-| Écran de suivi | `apps/dashboard/` | Lancement, suivi en direct, bilan | Inès | ✅ En ligne (mode démo) |
-| Mesures | `pipeline/metrics/` | Taux de réussite par fiche et par champ, temps et coût par fiche, extrapolation à 3 000 fiches | Alexis | ✅ Fusionnées, à lancer sur la vraie migration |
+| Écran de suivi | `apps/dashboard/` | Lancement, suivi en direct, bilan | Inès | ✅ En ligne, branché sur la vraie migration (`?run=tout`) |
+| Mesures | `pipeline/metrics/` | Taux de réussite par fiche et par champ, temps et coût par fiche, extrapolation à 3 000 fiches | Alexis | ✅ Calculées sur la vraie migration |
 
 ## 4. Les choix techniques
 
@@ -66,8 +66,8 @@ L'ancien CRM lit ses propres données dans la table Supabase `legacy_contacts`, 
 
 | | Adresse |
 |---|---|
-| Ancien CRM simulé | https://projet-hackathon-uffi.vercel.app |
-| Écran de suivi | https://projet-hackathon-jow2.vercel.app |
+| Ancien CRM simulé (v1 · v2) | https://projet-hackathon-uffi.vercel.app · https://projet-hackathon-uffi.vercel.app/v2 |
+| Écran de suivi (vraie migration) | https://projet-hackathon-jow2.vercel.app/?run=tout |
 
 ---
 
