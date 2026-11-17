@@ -44,7 +44,29 @@ export type Bilan = {
   creditsTotal: number;
   creditsParFiche: number | null;
   anomaliesParType: { code: string; label: string; count: number }[];
+  relues: number; // D13 : fiches dont un champ a été relu par l'agent
+  corrigeesParRelecture: number; // … et dont la valeur a changé après relecture
+  avecPreuve: number; // D14 : fiches avec une capture d'écran
 };
+
+/** Libellés français des champs du contrat commun. */
+export const FIELD_LABEL: Record<string, string> = {
+  legacy_id: "Identifiant",
+  first_name: "Prénom",
+  last_name: "Nom",
+  email: "E-mail",
+  phone: "Téléphone",
+  company: "Entreprise",
+  job_title: "Poste",
+  city: "Ville",
+  notes: "Notes",
+};
+
+/** Une relecture a-t-elle corrigé la valeur ? */
+export function rereadChanged(row: LogRow): boolean {
+  const r = row.reread;
+  return Boolean(r && !r.error && (r.after ?? "") !== (r.before ?? ""));
+}
 
 const CODE_LABEL: Record<string, string> = {
   missing_required: "Champ obligatoire vide",
@@ -93,6 +115,9 @@ export function computeBilan(rows: LogRow[], total: number): Bilan {
     anomaliesParType: [...parCode.entries()]
       .map(([code, n]) => ({ code, label: CODE_LABEL[code] ?? code, count: n }))
       .sort((a, b) => b.count - a.count),
+    relues: rows.filter((r) => r.reread).length,
+    corrigeesParRelecture: rows.filter(rereadChanged).length,
+    avecPreuve: rows.filter((r) => r.screenshot_url).length,
   };
 }
 

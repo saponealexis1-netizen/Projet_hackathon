@@ -26,8 +26,8 @@ for r in verify_batch(contacts):
         "status": status,
         "extracted": r["contact"],
         "anomalies": r["anomalies"],
-        "duration_ms": random.randint(38_000, 58_000),
-        "credits_used": 1,
+        "duration_ms": random.randint(21_000, 42_000),  # mesuré : ~31 s par fiche
+        "credits_used": round(random.uniform(0.009, 0.024), 4),  # coût mesuré : ~0,015 $ par fiche
     })
 out = ROOT / "apps/dashboard/lib/demo-data.json"
 out.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

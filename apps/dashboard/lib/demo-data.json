@@ -6,7 +6,7 @@
    "legacy_id": "C-0001",
    "first_name": "Julien",
    "last_name": "Moreau",
-   "email": "julien.moreau@boulangerie-moreau.example",
+   "email": "julien.moreau@boulangerie-moreau.example.com",
    "phone": "+33639980001",
    "company": "Boulangerie Moreau",
    "job_title": "Gérant",
@@ -14,8 +14,8 @@
    "notes": "Commande hebdomadaire de flyers"
   },
   "anomalies": [],
-  "duration_ms": 55104,
-  "credits_used": 1
+  "duration_ms": 38104,
+  "credits_used": 0.0152
  },
  {
   "legacy_id": "C-0002",
@@ -24,7 +24,7 @@
    "legacy_id": "C-0002",
    "first_name": "Sophie",
    "last_name": "Lefèvre",
-   "email": "sophie.lefevre@cabinet-lefevre-conseil.example",
+   "email": "sophie.lefevre@cabinet-lefevre-conseil.example.com",
    "phone": "+33639980002",
    "company": "Cabinet Lefèvre Conseil",
    "job_title": "Associée",
@@ -32,8 +32,8 @@
    "notes": "Rappeler en janvier"
   },
   "anomalies": [],
-  "duration_ms": 51571,
-  "credits_used": 1
+  "duration_ms": 30942,
+  "credits_used": 0.0234
  },
  {
   "legacy_id": "C-0003",
@@ -42,7 +42,7 @@
    "legacy_id": "C-0003",
    "first_name": "Karim",
    "last_name": "Benali",
-   "email": "karim.benali@transports-benali.example",
+   "email": "karim.benali@transports-benali.example.com",
    "phone": "+33639980003",
    "company": "Transports Benali",
    "job_title": "Directeur commercial",
@@ -50,8 +50,8 @@
    "notes": null
   },
   "anomalies": [],
-  "duration_ms": 47942,
-  "credits_used": 1
+  "duration_ms": 30490,
+  "credits_used": 0.0116
  },
  {
   "legacy_id": "C-0004",
@@ -60,7 +60,7 @@
    "legacy_id": "C-0004",
    "first_name": "Élodie",
    "last_name": "Garnier",
-   "email": "elodie.garnier@atelier-garnier.example",
+   "email": "elodie.garnier@atelier-garnier.example.com",
    "phone": "+33639980004",
    "company": "Atelier Garnier",
    "job_title": "Fondatrice",
@@ -68,8 +68,8 @@
    "notes": "Préfère être contactée par e-mail"
   },
   "anomalies": [],
-  "duration_ms": 49980,
-  "credits_used": 1
+  "duration_ms": 38700,
+  "credits_used": 0.0189
  },
  {
   "legacy_id": "C-0005",
@@ -78,7 +78,7 @@
    "legacy_id": "C-0005",
    "first_name": "Thomas",
    "last_name": "Roux",
-   "email": "thomas.roux@roux-immobilier.example",
+   "email": "thomas.roux@roux-immobilier.example.com",
    "phone": "+33639980005",
    "company": "Roux Immobilier",
    "job_title": "Agent immobilier",
@@ -86,8 +86,8 @@
    "notes": "Client depuis 2018"
   },
   "anomalies": [],
-  "duration_ms": 47490,
-  "credits_used": 1
+  "duration_ms": 24609,
+  "credits_used": 0.0228
  },
  {
   "legacy_id": "C-0006",
@@ -96,7 +96,7 @@
    "legacy_id": "C-0006",
    "first_name": "Nadia",
    "last_name": "Haddad",
-   "email": "nadia.haddad@pharmacie-du-centre.example",
+   "email": "nadia.haddad@pharmacie-du-centre.example.com",
    "phone": "+33639980006",
    "company": "Pharmacie du Centre",
    "job_title": "Pharmacienne titulaire",
@@ -104,8 +104,8 @@
    "notes": null
   },
   "anomalies": [],
-  "duration_ms": 43724,
-  "credits_used": 1
+  "duration_ms": 29156,
+  "credits_used": 0.0148
  },
  {
   "legacy_id": "C-0007",
@@ -114,7 +114,7 @@
    "legacy_id": "C-0007",
    "first_name": "Lucas",
    "last_name": "Fontaine",
-   "email": "lucas.fontaine@fontaine-renovation.example",
+   "email": "lucas.fontaine@fontaine-renovation.example.com",
    "phone": "+33639980007",
    "company": "Fontaine Rénovation",
    "job_title": "Chef de chantier",
@@ -122,8 +122,8 @@
    "notes": "Devis envoyé le 12/09"
   },
   "anomalies": [],
-  "duration_ms": 55700,
-  "credits_used": 1
+  "duration_ms": 34748,
+  "credits_used": 0.0128
  },
  {
   "legacy_id": "C-0008",
@@ -132,7 +132,7 @@
    "legacy_id": "C-0008",
    "first_name": "Chloé",
    "last_name": "Mercier",
-   "email": "chloe.mercier@studio-mercier.example",
+   "email": "chloe.mercier@studio-mercier.example.com",
    "phone": "+33639980008",
    "company": "Studio Mercier",
    "job_title": "Photographe",
@@ -140,8 +140,8 @@
    "notes": null
   },
   "anomalies": [],
-  "duration_ms": 47118,
-  "credits_used": 1
+  "duration_ms": 37436,
+  "credits_used": 0.021
  },
  {
   "legacy_id": "C-0009",
@@ -150,7 +150,7 @@
    "legacy_id": "C-0009",
    "first_name": "Antoine",
    "last_name": "Dubois",
-   "email": "antoine.dubois@dubois-fils.example",
+   "email": "antoine.dubois@dubois-fils.example.com",
    "phone": "+33639980009",
    "company": "Dubois & Fils",
    "job_title": "Directeur",
@@ -158,8 +158,8 @@
    "notes": "Ancien client, à relancer"
   },
   "anomalies": [],
-  "duration_ms": 41609,
-  "credits_used": 1
+  "duration_ms": 41988,
+  "credits_used": 0.0217
  },
  {
   "legacy_id": "C-0010",
@@ -168,7 +168,7 @@
    "legacy_id": "C-0010",
    "first_name": "Inès",
    "last_name": "Rahmani",
-   "email": "ines.rahmani@agence-horizon.example",
+   "email": "ines.rahmani@agence-horizon.example.com",
    "phone": "+33639980010",
    "company": "Agence Horizon",
    "job_title": "Chargée de communication",
@@ -176,8 +176,8 @@
    "notes": null
   },
   "anomalies": [],
-  "duration_ms": 38882,
-  "credits_used": 1
+  "duration_ms": 34159,
+  "credits_used": 0.0111
  },
  {
   "legacy_id": "C-0011",
@@ -186,7 +186,7 @@
    "legacy_id": "C-0011",
    "first_name": "Mathieu",
    "last_name": "Perrin",
-   "email": "mathieu.perrin@perrin-logistique.example",
+   "email": "mathieu.perrin@perrin-logistique.example.com",
    "phone": "+33639980011",
    "company": "Perrin Logistique",
    "job_title": "Responsable achats",
@@ -194,8 +194,8 @@
    "notes": "Volume important au T4"
   },
   "anomalies": [],
-  "duration_ms": 46156,
-  "credits_used": 1
+  "duration_ms": 39061,
+  "credits_used": 0.0099
  },
  {
   "legacy_id": "C-0012",
@@ -204,7 +204,7 @@
    "legacy_id": "C-0012",
    "first_name": "Laura",
    "last_name": "Chevalier",
-   "email": "laura.chevalier@chevalier-evenements.example",
+   "email": "laura.chevalier@chevalier-evenements.example.com",
    "phone": "+33639980012",
    "company": "Chevalier Événements",
    "job_title": "Gérante",
@@ -212,8 +212,8 @@
    "notes": null
   },
   "anomalies": [],
-  "duration_ms": 50588,
-  "credits_used": 1
+  "duration_ms": 27441,
+  "credits_used": 0.0113
  },
  {
   "legacy_id": "C-0013",
@@ -222,7 +222,7 @@
    "legacy_id": "C-0013",
    "first_name": "Hugo",
    "last_name": "Lambert",
-   "email": "hugo.lambert@garage-lambert.example",
+   "email": "hugo.lambert@garage-lambert.example.com",
    "phone": "+33639980013",
    "company": "Garage Lambert",
    "job_title": "Mécanicien",
@@ -230,8 +230,8 @@
    "notes": "Paiement à 30 jours"
   },
   "anomalies": [],
-  "duration_ms": 51748,
-  "credits_used": 1
+  "duration_ms": 38460,
+  "credits_used": 0.0174
  },
  {
   "legacy_id": "C-0014",
@@ -240,7 +240,7 @@
    "legacy_id": "C-0014",
    "first_name": "Sarah",
    "last_name": "Bouvier",
-   "email": "sarah.bouvier@bouvier-avocats.example",
+   "email": "sarah.bouvier@bouvier-avocats.example.com",
    "phone": "+33639980014",
    "company": "Bouvier Avocats",
    "job_title": "Avocate",
@@ -248,8 +248,8 @@
    "notes": null
   },
   "anomalies": [],
-  "duration_ms": 46270,
-  "credits_used": 1
+  "duration_ms": 27881,
+  "credits_used": 0.014
  },
  {
   "legacy_id": "C-0015",
@@ -258,7 +258,7 @@
    "legacy_id": "C-0015",
    "first_name": "Mehdi",
    "last_name": "Saïdi",
-   "email": "mehdi.saidi@saidi-traiteur.example",
+   "email": "mehdi.saidi@saidi-traiteur.example.com",
    "phone": "+33639980015",
    "company": "Saïdi Traiteur",
    "job_title": "Gérant",
@@ -266,8 +266,8 @@
    "notes": "Salon professionnel en mars"
   },
   "anomalies": [],
-  "duration_ms": 54436,
-  "credits_used": 1
+  "duration_ms": 25046,
+  "credits_used": 0.0222
  },
  {
   "legacy_id": "C-0016",
@@ -276,7 +276,7 @@
    "legacy_id": "C-0016",
    "first_name": "Camille",
    "last_name": "Renard",
-   "email": "camille.renard@librairie-renard.example",
+   "email": "camille.renard@librairie-renard.example.com",
    "phone": "+33639980016",
    "company": "Librairie Renard",
    "job_title": "Libraire",
@@ -284,8 +284,8 @@
    "notes": null
   },
   "anomalies": [],
-  "duration_ms": 48401,
-  "credits_used": 1
+  "duration_ms": 41931,
+  "credits_used": 0.01
  },
  {
   "legacy_id": "C-0017",
@@ -294,7 +294,7 @@
    "legacy_id": "C-0017",
    "first_name": "Paul",
    "last_name": "Girard",
-   "email": "paul.girard@girard-informatique.example",
+   "email": "paul.girard@girard-informatique.example.com",
    "phone": "+33639980017",
    "company": "Girard Informatique",
    "job_title": "Technicien",
@@ -302,8 +302,8 @@
    "notes": "Contrat de maintenance annuel"
   },
   "anomalies": [],
-  "duration_ms": 51159,
-  "credits_used": 1
+  "duration_ms": 34424,
+  "credits_used": 0.0102
  },
  {
   "legacy_id": "C-0018",
@@ -312,7 +312,7 @@
    "legacy_id": "C-0018",
    "first_name": "Manon",
    "last_name": "Blanc",
-   "email": "manon.blanc@blanc-coiffure.example",
+   "email": "manon.blanc@blanc-coiffure.example.com",
    "phone": "+33639980018",
    "company": "Blanc Coiffure",
    "job_title": "Coiffeuse",
@@ -320,8 +320,8 @@
    "notes": null
   },
   "anomalies": [],
-  "duration_ms": 42506,
-  "credits_used": 1
+  "duration_ms": 36535,
+  "credits_used": 0.0186
  },
  {
   "legacy_id": "C-0019",
@@ -330,7 +330,7 @@
    "legacy_id": "C-0019",
    "first_name": "Yanis",
    "last_name": "Morel",
-   "email": "yanis.morel@morel-paysage.example",
+   "email": "yanis.morel@morel-paysage.example.com",
    "phone": "+33639980019",
    "company": "Morel Paysage",
    "job_title": "Paysagiste",
@@ -338,8 +338,8 @@
    "notes": "Intéressé par l'offre pro"
   },
   "anomalies": [],
-  "duration_ms": 56061,
-  "credits_used": 1
+  "duration_ms": 40658,
+  "credits_used": 0.0111
  },
  {
   "legacy_id": "C-0020",
@@ -348,7 +348,7 @@
    "legacy_id": "C-0020",
    "first_name": "Claire",
    "last_name": "Vidal",
-   "email": "claire.vidal@vidal-architecture.example",
+   "email": "claire.vidal@vidal-architecture.example.com",
    "phone": "+33639980020",
    "company": "Vidal Architecture",
    "job_title": "Architecte",
@@ -356,12 +356,12 @@
    "notes": null
   },
   "anomalies": [],
-  "duration_ms": 40037,
-  "credits_used": 1
+  "duration_ms": 34391,
+  "credits_used": 0.0212
  },
  {
   "legacy_id": "C-0021",
-  "status": "duplicate",
+  "status": "partial",
   "extracted": {
    "legacy_id": "C-0021",
    "first_name": "Julien",
@@ -394,12 +394,6 @@
    },
    {
     "field": null,
-    "code": "duplicate_email",
-    "severity": "error",
-    "message": "doublon possible de C-0001 (même e-mail)"
-   },
-   {
-    "field": null,
     "code": "duplicate_phone",
     "severity": "warning",
     "message": "doublon possible de C-0001 (même téléphone)"
@@ -411,8 +405,8 @@
     "message": "doublon possible de C-0001 (même prénom, nom et entreprise)"
    }
   ],
-  "duration_ms": 42583,
-  "credits_used": 1
+  "duration_ms": 32022,
+  "credits_used": 0.0093
  },
  {
   "legacy_id": "C-0022",
@@ -442,8 +436,8 @@
     "message": "champ « company » vide"
    }
   ],
-  "duration_ms": 44441,
-  "credits_used": 1
+  "duration_ms": 33196,
+  "credits_used": 0.0176
  },
  {
   "legacy_id": "C-0023",
@@ -473,8 +467,8 @@
     "message": "téléphone non reconnu : « 06 39 98 »"
    }
   ],
-  "duration_ms": 42945,
-  "credits_used": 1
+  "duration_ms": 32620,
+  "credits_used": 0.0098
  },
  {
   "legacy_id": "C-0024",
@@ -504,7 +498,7 @@
     "message": "champ « city » vide"
    }
   ],
-  "duration_ms": 55460,
-  "credits_used": 1
+  "duration_ms": 36638,
+  "credits_used": 0.0146
  }
 ]

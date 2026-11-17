@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { UI_LABEL, UI_STATUS, computeBilan, formatDuree, reason } from "@/lib/bilan";
+import { FIELD_LABEL, UI_LABEL, UI_STATUS, computeBilan, formatDuree, reason, rereadChanged } from "@/lib/bilan";
 import type { LogRow, RunState } from "@/lib/types";
 
 type Run = { runId: string; mode: "demo" | "live"; total: number };
@@ -13,6 +13,7 @@ export default function SuiviMigration() {
   const [state, setState] = useState<RunState | null>(null);
   const [launching, setLaunching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [preuve, setPreuve] = useState<LogRow | null>(null); // fiche ouverte dans la fenêtre « Preuve »
 
   const rows = state?.rows ?? [];
   const total = state?.total ?? run?.total ?? 0;
@@ -133,15 +134,21 @@ export default function SuiviMigration() {
                   <th>Anomalies</th>
                   <th>Durée</th>
                   <th>HubSpot</th>
+                  <th>Preuve</th>
                 </tr>
               </thead>
               <tbody>
                 {[...rows].reverse().map((r) => (
-                  <Ligne key={`${r.legacy_id}-${r.created_at}`} row={r} hubspotUrl={state?.hubspotContactUrl ?? null} />
+                  <Ligne
+                    key={`${r.legacy_id}-${r.created_at}`}
+                    row={r}
+                    hubspotUrl={state?.hubspotContactUrl ?? null}
+                    onPreuve={() => setPreuve(r)}
+                  />
                 ))}
                 {rows.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="muted center">
+                    <td colSpan={8} className="muted center">
                       L&apos;agent ouvre l&apos;ancien CRM…
                     </td>
                   </tr>
@@ -160,6 +167,11 @@ export default function SuiviMigration() {
               <Stat label="Temps moyen par fiche" value={formatDuree(bilan.dureeMoyenneMs)} />
               <Stat label="Coût Agent API" value={formatDollars(bilan.creditsTotal, 2)} />
               <Stat label="Coût par fiche" value={bilan.creditsParFiche === null ? "—" : formatDollars(bilan.creditsParFiche, 3)} />
+              <Stat
+                label="Champs relus par l'agent (corrigés)"
+                value={`${bilan.relues} (${bilan.corrigeesParRelecture})`}
+              />
+              <Stat label="Fiches avec capture d'écran" value={`${bilan.avecPreuve} / ${bilan.traitees}`} />
             </div>
 
             <div className="bilan-cols">
@@ -201,6 +213,8 @@ export default function SuiviMigration() {
           </section>
         </>
       )}
+
+      {preuve && <FenetrePreuve row={preuve} onClose={() => setPreuve(null)} />}
     </main>
   );
 }
@@ -211,7 +225,7 @@ function nom(r: LogRow): string {
   return [e.first_name, e.last_name].filter(Boolean).join(" ");
 }
 
-function Ligne({ row, hubspotUrl }: { row: LogRow; hubspotUrl: string | null }) {
+function Ligne({ row, hubspotUrl, onPreuve }: { row: LogRow; hubspotUrl: string | null; onPreuve: () => void }) {
   const ui = UI_STATUS[row.status];
   return (
     <tr>
@@ -221,7 +235,10 @@ function Ligne({ row, hubspotUrl }: { row: LogRow; hubspotUrl: string | null }) 
       <td>
         <span className={`status status-${ui}`}>{UI_LABEL[ui]}</span>
       </td>
-      <td className="small">{reason(row) || <span className="muted">—</span>}</td>
+      <td className="small">
+        {reason(row) || (!row.reread && <span className="muted">—</span>)}
+        {row.reread && <Relecture row={row} />}
+      </td>
       <td className="mono">{formatDuree(row.duration_ms)}</td>
       <td>
         {row.hubspot_id ? (
@@ -236,7 +253,94 @@ function Ligne({ row, hubspotUrl }: { row: LogRow; hubspotUrl: string | null }) 
           <span className="muted">—</span>
         )}
       </td>
+      <td>
+        {row.screenshot_url || row.extracted ? (
+          <button className="link-btn" onClick={onPreuve}>
+            {row.screenshot_url ? "📷 Voir" : "Voir"}
+          </button>
+        ) : (
+          <span className="muted">—</span>
+        )}
+      </td>
     </tr>
+  );
+}
+
+/** D13 : « relu par l'agent : Téléphone « avant » → « après » ». */
+function Relecture({ row }: { row: LogRow }) {
+  const r = row.reread!;
+  const label = FIELD_LABEL[r.field] ?? r.field;
+  if (r.error) return <div className="reread fail">🔁 Relecture de « {label} » impossible : {r.error}</div>;
+  return (
+    <div className={`reread ${rereadChanged(row) ? "fixed" : ""}`}>
+      🔁 {label} relu par l&apos;agent : « {r.before ?? "vide"} » → « {r.after ?? "vide"} »
+      {!rereadChanged(row) && " (confirmé)"}
+    </div>
+  );
+}
+
+/** D14 : ce que l'agent a vu (capture) à côté de ce qu'il a lu (champs extraits). */
+function FenetrePreuve({ row, onClose }: { row: LogRow; onClose: () => void }) {
+  const [imageKo, setImageKo] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const ui = UI_STATUS[row.status];
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-head">
+          <div>
+            <h2>
+              Preuve · <span className="mono">{row.legacy_id}</span> {nom(row)}
+            </h2>
+            <span className={`status status-${ui}`}>{UI_LABEL[ui]}</span>
+          </div>
+          <button className="close" onClick={onClose} aria-label="Fermer">
+            ✕
+          </button>
+        </div>
+
+        <div className="modal-body">
+          <div className="shot">
+            <h3>Ce que l&apos;agent a vu</h3>
+            {row.screenshot_url && !imageKo ? (
+              <a href={row.screenshot_url} target="_blank" rel="noreferrer">
+                {/* eslint-disable-next-line @next/next/no-img-element -- capture externe (Agent API) */}
+                <img src={row.screenshot_url} alt={`Fiche ${row.legacy_id} vue par l'agent`} onError={() => setImageKo(true)} />
+              </a>
+            ) : (
+              <p className="muted">{row.screenshot_url ? "Capture d'écran expirée ou inaccessible." : "Pas de capture pour cette fiche."}</p>
+            )}
+            {row.agent_session_id && (
+              <p className="muted small">
+                Session de l&apos;agent : <span className="mono">{row.agent_session_id}</span>
+              </p>
+            )}
+          </div>
+
+          <div>
+            <h3>Ce que l&apos;agent a lu</h3>
+            <table className="table fields">
+              <tbody>
+                {Object.keys(FIELD_LABEL).map((f) => (
+                  <tr key={f} className={row.reread?.field === f ? "hl" : ""}>
+                    <th>{FIELD_LABEL[f]}</th>
+                    <td>{row.extracted?.[f] ?? <span className="muted">—</span>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {row.reread && <Relecture row={row} />}
+            {reason(row) && <p className="small anomalies-txt">⚠️ {reason(row)}</p>}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
