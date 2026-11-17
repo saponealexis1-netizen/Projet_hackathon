@@ -96,3 +96,20 @@ Paramètres : agent `h/web-surfer-flash`, `max_steps` 40, `max_time_s` 240, quot
 | Coût moyen par fiche | **0,013 $** |
 | Durée totale (3 agents en parallèle) | ~1 min |
 | Extrapolation 3 000 fiches | ~39 $ · ~6,7 h avec 3 agents |
+
+## Migration complète : les 100 fiches (17/11/2026)
+
+Ancien CRM v1 en ligne → 3 agents H en parallèle → vérification → HubSpot → `migration_log`.
+
+| Mesure | Valeur |
+|---|---|
+| Fiches migrées dans HubSpot | **100 / 100** |
+| Fiches **100 % exactes** (9/9 champs) | **100 / 100** |
+| Temps moyen par fiche | 31 s (médiane 29 s) |
+| Durée réelle (3 agents en parallèle) | ~17 min |
+| Coût total agent H | **1,53 $** (~0,015 $ par fiche) |
+| Extrapolation 3 000 fiches | ~46 $ · ~8,7 h avec 3 agents (~2,6 h avec 10, offre Builder) |
+
+**Ce qui a coincé** : au 1er passage, 3 fiches sur 100 (C-0070, C-0077, C-0088) ont été **bloquées par le contrôle d'identité** : l'agent avait ouvert C-0007 / C-0008, dont le numéro ressemble. Aucune mauvaise fiche n'est partie dans HubSpot. Correction : consigne « l'identifiant doit être exactement {legacy_id}, caractère par caractère » + **relance automatique une fois** si la fiche renvoyée n'est pas la bonne. Les 3 fiches relancées : 3/3 exactes.
+
+Runs : `b961da00-eb32-4e73-b21f-4b705cf9d198` (97 fiches) et `f7962b57-39f2-4829-9440-a0647263a5a6` (3 fiches relancées), dans `migration_log`.

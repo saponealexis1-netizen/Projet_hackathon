@@ -110,5 +110,17 @@ class TestFiletsDeSecurite(unittest.TestCase):
         self.assertEqual(r["agent_error"], "réponse vide")
 
 
+    def test_mauvaise_fiche_relancee_une_fois(self):
+        wrong = dict(GOOD, legacy_id="C-0007")
+        good70 = dict(GOOD, legacy_id="C-0070")
+        create, wait, calls = fake_session([wrong, good70])
+        with mock.patch.object(run.hclient, "create_session", create), mock.patch.object(run.hclient, "wait", wait):
+            r = run.process("https://crm.example", "C-0070", "run-1", reread=True)
+        self.assertEqual(calls["n"], 2)
+        self.assertIsNone(r["agent_error"])
+        self.assertIn("C-0007", r["retry"])
+        self.assertIn("C-0070 n'est pas C-0007", calls["tasks"][0])
+
+
 if __name__ == "__main__":
     unittest.main()
