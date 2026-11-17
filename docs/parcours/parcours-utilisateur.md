@@ -21,7 +21,7 @@ flowchart LR
     A["1. Camille veut<br/>changer de CRM mais<br/>bloque sur la migration"] --> B["2. Thomas lance<br/>la migration<br/>dans Bascule"]
     B --> C["3. L'agent H lit<br/>chaque fiche<br/>de l'ancien CRM"]
     C --> D["4. La vérification<br/>classe chaque fiche<br/>ok · à vérifier · bloquée"]
-    D --> E["5. Les fiches valides<br/>arrivent dans<br/>HubSpot"]
+    D --> E["5. Les fiches non bloquées<br/>arrivent dans<br/>HubSpot"]
     D --> F["5 bis. Thomas corrige<br/>à la main les fiches<br/>bloquées"]
     F --> E
     E --> G["6. Bilan :<br/>Camille travaille<br/>dans HubSpot"]
@@ -31,7 +31,7 @@ flowchart LR
 
 | # | Étape | Ce que Thomas fait | Ce que Bascule fait | Écran | Ce que ressent Thomas |
 |---|---|---|---|---|---|
-| 1 | **Le blocage** | Camille, qu'il démarche, est convaincue par HubSpot, mais son vieux logiciel n'a aucun export | — | — | 😟 La vente risque de tomber |
+| 1 | **Le blocage** | Apprend que Camille, convaincue par HubSpot, ne peut pas exporter ses données : son vieux logiciel n'a aucun export | — | — | 😟 La vente risque de tomber |
 | 2 | **Préparer la migration** | Ouvre l'écran de suivi de Bascule : l'adresse de l'ancien CRM de Camille et la destination HubSpot sont déjà réglées | — | Écran de suivi (partie haute) | 🤔 « Est-ce que ça va marcher ? » |
 | 3 | **Lancer** | Clique sur le bouton « Lancer la migration » | L'agent H ouvre la liste des contacts, puis chaque fiche, comme un humain | Écran de suivi | 😮 Il voit l'agent travailler en direct |
 | 4 | **Suivre** | Regarde le tableau de bord | Affiche en direct : fiches lues, fiches par minute, % de champs corrects, coût, anomalies | Écran de suivi | 😌 Il n'a rien à faire |
