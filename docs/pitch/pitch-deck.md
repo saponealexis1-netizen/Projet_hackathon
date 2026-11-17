@@ -86,7 +86,6 @@
 **À l'écran**
 - **Qui paie** : l'éditeur ou l'agence qui vend le nouveau CRM
 - **990 €** par client migré (jusqu'à 10 000 fiches) 🔎
-- 🗣️ `[citation d'interview à remplir — voir « Interviews à faire » en bas]`
 
 **Ce qu'on dit**
 > « Ce n'est pas Camille qui paie, c'est Thomas. Chaque migration réussie lui débloque un abonnement, et il facture déjà l'onboarding : entre 1 500 et 3 500 dollars chez HubSpot. Nous lui vendons la migration 490 euros jusqu'à 2 000 fiches, 990 euros jusqu'à 10 000. Pour 3 000 fiches, c'est trois fois moins cher que la ressaisie, et quelques heures au lieu de trois semaines. »
@@ -185,32 +184,13 @@ Détail : [docs/architecture/](../architecture/README.md).
 | « Et si l'agent se trompe ? » | Il a ouvert la mauvaise fiche 4 fois sur 205 : notre contrôle les a bloquées avant HubSpot, puis l'agent les a relues. Aucune mauvaise fiche n'est partie. Chaque fiche est classée ok / à vérifier / bloquée, et a sa capture d'écran. |
 | « Et la sécurité ? » | L'agent ne fait que lire. Serveurs européens de H Company. Coffre-fort à mots de passe prévu après le MVP. |
 | « Qui paie, et pourquoi ? » | L'éditeur ou l'agence : il facture déjà l'onboarding, et la migration bloque ses ventes. |
-| « Avez-vous parlé à des clients ? » | `[à remplir avec les interviews — si aucune interview n'est faite, retirer cette ligne et la citation de la slide 5]` |
+| « Avez-vous parlé à des clients ? » | Pas encore : cette semaine, nous avons prouvé que la technologie marche. Nos prix sont des hypothèses ; la prochaine étape, ce sont des entretiens avec des agences partenaires HubSpot, et nos questions sont prêtes. |
 | « Qu'avez-vous appris sur l'Agent API ? » | Qu'il sait naviguer seul dans un logiciel inconnu, mais qu'il préfère inventer une valeur crédible plutôt que laisser vide. On le lui interdit, et on vérifie tout derrière lui : 1 fiche exacte sur 5 sans garde-fous, 100 sur 100 avec. Détail : [retour d'expérience](../retour-agent-api/README.md). |
-
----
-
-## Interviews à faire d'ici jeudi (Maxime)
-
-**Objectif** : une vraie citation pour la slide 5 et une réponse à « Avez-vous parlé à des clients ? ».
-
-**Qui appeler** : 2 ou 3 agences partenaires HubSpot en France (annuaire des partenaires HubSpot, LinkedIn), ou des responsables onboarding d'éditeurs de CRM.
-
-**L'appel en 5 minutes**
-
-1. « Quand un nouveau client arrive avec un vieux logiciel, comment récupérez-vous ses données ? »
-2. « Ça vous est déjà arrivé qu'un logiciel n'ait aucun export ? Qu'avez-vous fait ? »
-3. « Combien de temps ça vous prend, en moyenne ? »
-4. « Une migration faite par un agent IA en quelques heures, pour 490 € jusqu'à 2 000 fiches et 990 € au-delà : ça vous intéresserait ? »
-5. « Je peux citer votre réponse, avec ou sans votre nom ? »
-
-**À noter après chaque appel** : le nom de l'agence (si accord), la phrase la plus forte mot pour mot, et la réponse à la question 4.
 
 ---
 
 ## À faire avant vendredi 15h
 
-- [ ] 2 ou 3 interviews → citation de la slide 5 et réponse à « Avez-vous parlé à des clients ? » (Maxime)
 - [x] Remplir la slide 9 avec les mesures réelles (v1 et v2)
 - [x] Schéma d'architecture sur la slide 7, ligne « nombre maximal d'étapes » confirmée
 - [ ] Ajouter les captures : ancien CRM, écran de suivi, HubSpot

@@ -75,6 +75,7 @@ Détail : [business model](../pitch/business-model.md).
 | HubSpot uniquement | Salesforce, Pipedrive, Zoho |
 | 3 agents en parallèle | 10 agents et plus (offre Builder) |
 | Données fictives | Pilote avec une agence partenaire |
+| Prix non encore testés auprès de clients | Entretiens avec des agences partenaires HubSpot (questions prêtes dans le business model) |
 
 ## Liens
 
