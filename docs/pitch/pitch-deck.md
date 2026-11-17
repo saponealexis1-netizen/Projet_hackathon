@@ -122,10 +122,10 @@ Ancien CRM ──écran──► Agents H Company ──JSON──► Vérificat
 
 | Fonction | Ce qu'elle nous apporte | État |
 |---|---|---|
-| Agent qui navigue à l'écran (`h/web-surfer-flash`) | Lire un logiciel sans API ni export | ✅ testé |
-| Sortie JSON structurée (schéma imposé à la réponse) | Chaque fiche arrive au format du contrat commun, prête à vérifier | ✅ testé |
-| Plusieurs agents en parallèle | 3 fiches lues en même temps (10 avec l'offre Builder) | ✅ testé |
-| Suivi des sessions (étapes, coût, statut) | Le coût et le temps par fiche affichés en direct | ✅ testé |
+| Agent qui navigue à l'écran (`h/web-surfer-flash`) | Lire un logiciel sans API ni export | ✅ testé sur un site public |
+| Sortie JSON structurée (schéma imposé à la réponse) | Chaque fiche arrive au format du contrat commun, prête à vérifier | ✅ testé sur un site public |
+| Plusieurs agents en parallèle | 3 fiches lues en même temps (10 avec l'offre Builder) | ✅ testé sur un site public |
+| Suivi des sessions (étapes, coût, statut) | Le coût et le temps par fiche affichés en direct | ✅ testé sur un site public |
 | Nombre maximal d'étapes par fiche | Un agent bloqué n'immobilise pas la migration | `[à confirmer par Victoria]` |
 
 **Ce qu'on dit**
@@ -202,7 +202,7 @@ Ancien CRM ──écran──► Agents H Company ──JSON──► Vérificat
 1. « Quand un nouveau client arrive avec un vieux logiciel, comment récupérez-vous ses données ? »
 2. « Ça vous est déjà arrivé qu'un logiciel n'ait aucun export ? Qu'avez-vous fait ? »
 3. « Combien de temps ça vous prend, en moyenne ? »
-4. « Une migration faite par un agent IA en quelques heures, à environ 1 000 € par client : ça vous intéresserait ? »
+4. « Une migration faite par un agent IA en quelques heures, pour 490 € jusqu'à 2 000 fiches et 990 € au-delà : ça vous intéresserait ? »
 5. « Je peux citer votre réponse, avec ou sans votre nom ? »
 
 **À noter après chaque appel** : le nom de l'agence (si accord), la phrase la plus forte mot pour mot, et la réponse à la question 4.
