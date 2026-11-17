@@ -12,7 +12,7 @@
 |---|---|---|---|---|
 | 01 | **Parcours utilisateur** | [parcours-utilisateur.md](../parcours/parcours-utilisateur.md) | Maxime | ✅ Version finale |
 | 02 | **Architecture technique** | [architecture/README.md](../architecture/README.md) · [schéma (PNG)](../architecture/architecture.png) | Inès (à la place de Victoria) | ✅ Version mardi, à mettre à jour mercredi |
-| 03 | **Mini pitch Loom** (2 min max) | [bascule-mini-pitch.mp4](bascule-mini-pitch.mp4) (1 min 43) · script : [script-loom.md](script-loom.md) | Inès (script de Maxime) | ✅ Enregistré mardi 17/11 (à réenregistrer mercredi si l'agent lit l'ancien CRM d'ici là) |
+| 03 | **Mini pitch Loom** (2 min max) | [bascule-mini-pitch.mp4](bascule-mini-pitch.mp4) (1 min 43) · script : [script-loom.md](script-loom.md) | Inès (script de Maxime) | ✅ Version finale, enregistrée mardi 17/11 |
 | 04 | **Roadmap** jusqu'à jeudi | [roadmap.md](roadmap.md) | Maxime | ✅ À mettre à jour mercredi |
 
 ## Mini pitch
