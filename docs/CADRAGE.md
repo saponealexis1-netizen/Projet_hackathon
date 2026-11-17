@@ -42,11 +42,31 @@ La première version des slides prévoyait une migration d'un faux CRM vers **Su
 | D4 | **Supabase est conservé, en version minimale** (2 tables). Ce n'est pas le CRM cible. | Sert de base cachée à l'ancien CRM et de journal de migration. Sur Vercel, aucun fichier n'est conservé : il faut une base pour garder les mesures. |
 | D5 | **Plan B Supabase** : fichier JSON pour les contacts, export CSV pour les mesures. | Le cœur de la démo (ancien CRM → agent → HubSpot) n'en dépend pas. |
 | D6 | **n8n est exclu du MVP.** | Pas nécessaire au parcours principal. |
-| D7 | **10 à 20 contacts synthétiques** (jeu de référence Hugging Face). | Aucune donnée personnelle réelle. |
+| D7 | **100 contacts synthétiques** dans l'ancien CRM (`data/contacts.legacy.json`), relevé de 20 à 100 le 17/11 pour plus de crédibilité. | Aucune donnée personnelle réelle ; volume crédible pour la démo et les mesures. |
 | D8 | **Écran de lancement et bilan final = deux parties de l'écran de suivi** (bouton « Lancer la migration » en haut, encadré « Bilan » en bas), construit par Inès. | Évite deux écrans supplémentaires. |
 | D9 | **Une fiche bloquée est affichée avec sa raison, mais n'est pas corrigeable dans l'outil.** | Un formulaire de correction n'est pas indispensable au parcours principal. En démo : « Thomas la corrige à la main ». |
 | D10 | **Les fiches « à vérifier » (warning) partent dans HubSpot, sans note.** L'anomalie est enregistrée dans `migration_log` et affichée sur l'écran de suivi. | Reste simple ; l'information n'est pas perdue. |
 | D11 | **L'ancien CRM n'a pas de mot de passe pour le MVP.** | Gestion des connexions par l'agent H encore inconnue ; à ajouter si le temps le permet. |
+| D12 | **Zéro configuration** : l'agent reçoit seulement l'adresse de l'ancien CRM. Il trouve seul la liste, la pagination et les fiches, et comprend les libellés (« Société » = « Entreprise »). | Ce qu'aucun script ni robot RPA ne sait faire : un autre logiciel ou une interface qui change ne demande aucun code. Démontré avec une **2e version de l'ancien CRM** (autre mise en page, autres libellés). |
+| D13 | **Relecture ciblée** : quand la vérification signale une anomalie (e-mail invalide, téléphone incomplet…), l'orchestration renvoie l'agent relire ce champ précis. | L'agent se corrige au lieu de seulement signaler. Mesure : part des anomalies corrigées par relecture. |
+| D14 | **Preuve visuelle** : pour chaque fiche migrée, on garde la capture d'écran de la fiche d'origine vue par l'agent. | Traçabilité complète ; réponse à « Et si l'agent se trompe ? ». |
+
+### Ce qui rend l'agent spécifique (D12 à D14)
+
+Un agent qui recopie des champs ne suffit pas : un juré demandera « pourquoi pas un simple script ? ». Bascule s'appuie sur ce que seul un agent qui **voit l'écran** sait faire.
+
+| | Script / outil de migration | Robot RPA classique | **Agent Bascule** |
+|---|---|---|---|
+| Logiciel sans API ni export | ❌ | ✅ | ✅ |
+| Aucune configuration par logiciel | ❌ | ❌ (clics enregistrés à la main) | ✅ (D12) |
+| Interface qui change | ❌ | ❌ (casse) | ✅ (D12) |
+| Obstacles humains : pop-up, onglets, bouton « Afficher » | ❌ | ⚠️ fragile | ✅ |
+| Se corrige après une anomalie | ❌ | ❌ | ✅ (D13) |
+| Preuve de chaque donnée | ❌ | ❌ | ✅ capture d'écran (D14) |
+
+**Obstacles volontaires dans l'ancien CRM** (Maxime) : pagination, téléphone derrière un bouton « Afficher le numéro », fiche sur 2 onglets (« Identité » / « Coordonnées »), fenêtre « Message du jour » à fermer.
+
+**Priorités** : 1) le parcours de base sur 5 fiches (mercredi) ; 2) D12, D13, D14 ; 3) en bonus : inventaire et devis avant migration (l'agent compte fiches et pages, estime temps et coût), agents en parallèle qui se répartissent les pages.
 
 ## 5. Architecture cible
 
@@ -86,7 +106,7 @@ La première version des slides prévoyait une migration d'un faux CRM vers **Su
 | Jour | Livrable Eugenia | Objectif de l'équipe |
 |---|---|---|
 | **Lun. 16** | Validation d'idée (17h) ✅ | Cadrage, création du compte HubSpot |
-| **Mar. 17** | — | Ancien CRM en ligne avec 20 contacts ; premier agent H qui lit **une fiche** |
+| **Mar. 17** | — | Ancien CRM en ligne avec 100 contacts ; premier agent H qui lit **une fiche** |
 | **Mer. 18** | Point intermédiaire (17h) : parcours, architecture, Loom de 2 min, roadmap | Parcours complet sur quelques fiches : ancien CRM → agent → vérification → HubSpot |
 | **Jeu. 19** | — | 20 fiches, mesures, plan B pour la démo live |
 | **Ven. 20** | Prototype, fiche projet + repo, vidéo démo (11h) · Pitch deck de 8 à 12 slides (15h) | Démo live, README complet, retour d'expérience sur l'Agent API, business model et coût de run |

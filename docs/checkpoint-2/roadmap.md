@@ -1,6 +1,6 @@
 # Bascule — Roadmap jusqu'à jeudi
 
-> État au **mardi 17/11/2026 au matin**, à mettre à jour avant le dépôt de mercredi 17h.
+> État au **mardi 17/11/2026 midi**, à mettre à jour avant le dépôt de mercredi 17h.
 > Règle de l'équipe : **on n'attend pas le lendemain**. Dès qu'une tâche est finie, on enchaîne sur la suivante.
 
 ---
@@ -12,8 +12,9 @@
 | Cadrage et décisions du MVP (D1 à D11) | Alexis |
 | Format commun des contacts + 20 contacts d'exemple + base Supabase | Alexis |
 | Vérification des fiches (ok / à vérifier / bloquée) | Inès |
-| Écran de suivi : bouton « Lancer la migration » et encadré « Bilan » | Inès |
-| Socle de l'ancien CRM simulé | Victoria |
+| Écran de suivi, en ligne en mode démo : [projet-hackathon-jow2.vercel.app](https://projet-hackathon-jow2.vercel.app) | Inès |
+| Ancien CRM en ligne (socle, sans les fiches pour l'instant) : [projet-hackathon-uffi.vercel.app](https://projet-hackathon-uffi.vercel.app) | Victoria |
+| Envoi des contacts vérifiés vers HubSpot + écriture dans `migration_log` | Alexis |
 | Business model et parcours utilisateur | Maxime |
 | Premier test de l'agent H sur un site public : 3 fiches sur 3, ~48 s et ~0,02 $ par fiche | Maxime |
 
@@ -23,7 +24,6 @@
 |---|---|---|
 | Ancien CRM : liste et fiches des 20 contacts, sans export, en ligne sur Vercel | Victoria | On ouvre chaque fiche dans le navigateur |
 | Agent H qui lit les fiches de l'ancien CRM | Victoria + Inès | 5 fiches extraites d'affilée |
-| Envoi des contacts vérifiés vers HubSpot | Alexis | 5 contacts arrivent dans HubSpot |
 | Schéma d'architecture | Victoria | Dans `docs/architecture/` |
 | 🎯 **Parcours complet : ancien CRM → agent → vérification → HubSpot** | Toute l'équipe | **Sur 5 fiches, en un seul lancement** |
 | 📦 **Dépôt du livrable 2** (parcours, architecture, Loom, roadmap) | Maxime, dépôt par Alexis | **Avant 17h** |

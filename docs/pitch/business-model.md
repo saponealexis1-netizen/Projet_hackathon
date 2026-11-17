@@ -21,7 +21,7 @@
 | | Qui | Ce qu'il gagne |
 |---|---|---|
 | 💶 **Paie** | **Thomas**, responsable onboarding chez un éditeur CRM ou dans une **agence partenaire HubSpot** | Des ventes qui ne tombent plus à cause de la migration, un onboarding plus court |
-| 🖥️ **Utilise** | L'équipe onboarding | Lance la migration, suit le tableau de bord, ne traite que les cas douteux |
+| 🖥️ **Utilise** | L'équipe onboarding | Ne traite que les cas douteux au lieu de tout ressaisir |
 | 🙂 **En profite** | **Camille**, gérante d'une petite agence | Change d'outil sans tout recopier ni perdre de données |
 
 **Pourquoi ce sont eux qui paient, et pas la PME ?**
@@ -82,7 +82,8 @@ Test de l'agent H Company `h/web-surfer-flash` sur un site public de démonstrat
 | Poste | Coût |
 |---|---|
 | ✅ Agent H Company (lecture d'une fiche) | ~0,020 $ |
-| 🔎 Vérification (règles + modèle Hugging Face pour les cas douteux) | < 0,005 $ |
+| ✅ Vérification (règles automatiques, sans modèle d'IA : `pipeline/verification/`) | 0 $ |
+| 🔎 Marge de sécurité (relance d'une fiche ratée par l'agent) | ~0,005 $ |
 | HubSpot, Supabase, Vercel | Offres gratuites pendant le MVP |
 | **Total** | **~0,025 $ par fiche** |
 

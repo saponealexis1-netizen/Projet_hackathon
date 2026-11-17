@@ -51,6 +51,15 @@ rows = migrate(
 HubSpot → *Paramètres* → *Développement* → **Clés → Clés de service** → *Créer*, avec les droits :
 `crm.objects.contacts.read`, `crm.objects.contacts.write`, `crm.schemas.contacts.read`, `crm.schemas.contacts.write`.
 
+## Remise à zéro avant une démo
+
+```bash
+python -m pipeline.hubspot.reset          # affiche les contacts Bascule, ne supprime rien
+python -m pipeline.hubspot.reset --yes    # les supprime : la vue « Bascule » de HubSpot redevient vide
+```
+
+Seuls les contacts portant un `bascule_legacy_id` sont supprimés. Les autres contacts du compte ne sont jamais touchés.
+
 ## Règles de l'envoi
 
 | Statut de vérification | Envoyée dans HubSpot ? | Statut dans `migration_log` |

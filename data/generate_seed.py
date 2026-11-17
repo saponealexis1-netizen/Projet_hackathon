@@ -1,7 +1,7 @@
-"""Génère supabase/seed.sql à partir de data/contacts.sample.json.
+"""Génère supabase/seed.sql à partir de data/contacts.legacy.json (base complète de l'ancien CRM).
 
 Usage : python data/generate_seed.py
-À relancer chaque fois que contacts.sample.json change.
+À relancer chaque fois que contacts.legacy.json change.
 """
 import json
 from pathlib import Path
@@ -17,14 +17,14 @@ def sql_value(value):
     return "'" + str(value).replace("'", "''") + "'"
 
 
-contacts = json.loads((ROOT / "data" / "contacts.sample.json").read_text(encoding="utf-8"))
+contacts = json.loads((ROOT / "data" / "contacts.legacy.json").read_text(encoding="utf-8"))
 rows = ",\n".join(
     "  (" + ", ".join(sql_value(c.get(k)) for k in COLS) + ")" for c in contacts
 )
 updates = ",\n  ".join(f"{k} = excluded.{k}" for k in COLS[1:])
 
 sql = f"""-- Bascule — chargement des {len(contacts)} contacts d'exemple dans legacy_contacts.
--- Fichier GÉNÉRÉ depuis data/contacts.sample.json par data/generate_seed.py : ne pas modifier à la main.
+-- Fichier GÉNÉRÉ depuis data/contacts.legacy.json par data/generate_seed.py : ne pas modifier à la main.
 -- À lancer APRÈS la migration des tables. Peut être relancé sans créer de doublons.
 
 insert into public.legacy_contacts ({", ".join(COLS)}) values
