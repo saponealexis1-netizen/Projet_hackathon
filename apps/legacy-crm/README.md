@@ -25,9 +25,9 @@ Deux versions du même ancien CRM, sur **la même base de 100 contacts** (décis
 
 Libellés = ceux des instructions de l'agent d'Inès (`agent/prompts/`) : « N° client », « Prénom », « Nom », « E-mail », « Téléphone », « Société », « Fonction », « Ville », « Commentaires », « Page suivante », « Retour à la liste ».
 
-### Version 2 — « GestiContacts Web » (adresse `/v2`)
+### Version 2 — « GestiContacts 2.4 » (adresse `/v2`)
 
-Autre mise en page (site web façon 2008, menu à gauche, fiche en 2 colonnes sans onglets), autres adresses et **autres libellés** :
+Même style « logiciel à l'ancienne » que la v1, mais une autre disposition (colonnes dans un autre ordre, pages numérotées, fiche en 2 encadrés « Société » / « Joindre le client » sans onglets), d'autres menus (Fichier, Répertoire, ?), d'autres adresses et **d'autres libellés** :
 
 | v1 | v2 |
 |---|---|
@@ -43,14 +43,14 @@ Autre mise en page (site web façon 2008, menu à gauche, fiche en 2 colonnes sa
 | Page suivante | Suiv. » (pages numérotées) |
 | Retour à la liste | ‹ Revenir au répertoire |
 
-Adresses : liste `/v2` (puis `/v2?p=2`…), fiche `/v2/fiche/C-0001`.
+Adresses : liste `/v2` (puis `/v2?p=2`…), fiche `/v2/fiche/C-0001`, à propos `/v2/a-propos`.
 
 ### Obstacles volontaires pour l'agent (CADRAGE.md)
 
 | Obstacle | v1 | v2 |
 |---|---|---|
 | Pagination | « Page suivante » | Pages numérotées « Suiv. » |
-| Infos réparties | 2 onglets à ouvrir | 2 colonnes |
+| Infos réparties | 2 onglets à ouvrir | 2 encadrés côte à côte |
 | Téléphone caché | « Afficher le numéro » | « Voir le tél. » |
 | Fenêtre à fermer | « Message du jour » | — |
 

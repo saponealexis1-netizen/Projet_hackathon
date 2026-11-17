@@ -11,7 +11,7 @@ type Item =
   | { separator: true };
 
 /** Menus d'époque. Volontairement : aucune entrée « Exporter ». */
-const MENUS: { label: string; items: Item[] }[] = [
+export const V1_MENUS: { label: string; items: Item[] }[] = [
   {
     label: "Fichier",
     items: [
@@ -49,7 +49,28 @@ const MENUS: { label: string; items: Item[] }[] = [
   },
 ];
 
-export default function MenuBar() {
+/** Menus de la version 2 (« GestiContacts ») : autres noms, mêmes principes, toujours aucun export. */
+export const V2_MENUS: { label: string; items: Item[] }[] = [
+  {
+    label: "Fichier",
+    items: [
+      { label: "Imprimer…", action: "print" },
+      { separator: true },
+      { label: "Quitter", action: "quit" },
+    ],
+  },
+  {
+    label: "Répertoire",
+    items: [{ label: "Liste des clients", href: "/v2" }],
+  },
+  {
+    label: "?",
+    items: [{ label: "À propos de GestiContacts", href: "/v2/a-propos" }],
+  },
+];
+
+export default function MenuBar({ variant = "v1", appName = "CRM Agence 2010" }: { variant?: "v1" | "v2"; appName?: string }) {
+  const MENUS = variant === "v2" ? V2_MENUS : V1_MENUS;
   const [open, setOpen] = useState<string | null>(null);
   const [quitting, setQuitting] = useState(false);
   const ref = useRef<HTMLElement>(null);
@@ -111,20 +132,20 @@ export default function MenuBar() {
 
       {quitting && (
         <Dialog
-          title="CRM Agence 2010"
+          title={appName}
           icon="❓"
           buttons={[
             {
               label: "Oui",
               onClick: () => {
                 setQuitting(false);
-                router.push("/au-revoir");
+                router.push(variant === "v2" ? "/v2/au-revoir" : "/au-revoir");
               },
             },
             { label: "Non", onClick: () => setQuitting(false) },
           ]}
         >
-          Voulez-vous vraiment quitter CRM Agence 2010 ?
+          Voulez-vous vraiment quitter {appName} ?
         </Dialog>
       )}
     </>

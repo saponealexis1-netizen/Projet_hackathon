@@ -6,9 +6,9 @@ import { useState } from "react";
 export default function PhoneReveal({ phone, label }: { phone: string | null; label: string }) {
   const [shown, setShown] = useState(false);
   return shown ? (
-    <span>{phone ?? ""}</span>
+    <span className="field field-compact">{phone ?? ""}</span>
   ) : (
-    <button type="button" className="v2-btn" onClick={() => setShown(true)}>
+    <button type="button" onClick={() => setShown(true)}>
       {label}
     </button>
   );

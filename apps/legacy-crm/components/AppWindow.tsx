@@ -11,8 +11,30 @@ function subscribeMotd(callback: () => void) {
   return () => window.removeEventListener(MOTD_KEY, callback);
 }
 
+const VERSIONS = {
+  v1: {
+    appName: "CRM Agence 2010",
+    title: "CRM Agence 2010 — version 3.1",
+    status: ["Utilisateur : accueil", "Base locale · installée le 12/03/2010"],
+    motd: true,
+  },
+  v2: {
+    appName: "GestiContacts",
+    title: "GestiContacts 2.4 — Répertoire clients",
+    status: ["Poste : accueil-02", "Licence consultation · © 2008"],
+    motd: false,
+  },
+} as const;
+
 /** Fenêtre principale du logiciel : barre de titre, menus, contenu, barre d'état. */
-export default function AppWindow({ children }: { children: React.ReactNode }) {
+export default function AppWindow({
+  children,
+  variant = "v1",
+}: {
+  children: React.ReactNode;
+  variant?: "v1" | "v2";
+}) {
+  const v = VERSIONS[variant];
   const [minimized, setMinimized] = useState(false);
   const [maximized, setMaximized] = useState(false);
   const [closing, setClosing] = useState(false);
@@ -33,7 +55,7 @@ export default function AppWindow({ children }: { children: React.ReactNode }) {
     <>
       <div className={`window${maximized ? " window-max" : ""}`}>
         <div className="titlebar" onDoubleClick={() => setMaximized(!maximized)}>
-          <span>CRM Agence 2010 — version 3.1</span>
+          <span>{v.title}</span>
           <span className="titlebar-buttons">
             <button type="button" aria-label="Réduire" title="Réduire" onClick={() => setMinimized(true)}>
               _
@@ -54,11 +76,11 @@ export default function AppWindow({ children }: { children: React.ReactNode }) {
 
         {!minimized && (
           <>
-            <MenuBar />
+            <MenuBar variant={variant} appName={v.appName} />
             <main className="content">{children}</main>
             <footer className="statusbar">
-              <span>Utilisateur : accueil</span>
-              <span>Base locale · installée le 12/03/2010</span>
+              <span>{v.status[0]}</span>
+              <span>{v.status[1]}</span>
             </footer>
           </>
         )}
@@ -67,12 +89,12 @@ export default function AppWindow({ children }: { children: React.ReactNode }) {
       {minimized && (
         <div className="taskbar">
           <button type="button" className="taskbar-item" onClick={() => setMinimized(false)}>
-            CRM Agence 2010
+            {v.appName}
           </button>
         </div>
       )}
 
-      {!motdClosed && (
+      {v.motd && !motdClosed && (
         <Dialog title="Message du jour" icon="💡" buttons={[{ label: "Fermer", onClick: closeMotd }]}>
           <p style={{ margin: "0 0 6px" }}>
             <b>Le saviez-vous ?</b> Vous pouvez parcourir vos fiches une à une avec les boutons
@@ -84,20 +106,20 @@ export default function AppWindow({ children }: { children: React.ReactNode }) {
 
       {closing && (
         <Dialog
-          title="CRM Agence 2010"
+          title={v.appName}
           icon="❓"
           buttons={[
             {
               label: "Oui",
               onClick: () => {
                 setClosing(false);
-                router.push("/au-revoir");
+                router.push(variant === "v2" ? "/v2/au-revoir" : "/au-revoir");
               },
             },
             { label: "Non", onClick: () => setClosing(false) },
           ]}
         >
-          Voulez-vous vraiment quitter CRM Agence 2010 ?
+          Voulez-vous vraiment quitter {v.appName} ?
         </Dialog>
       )}
     </>

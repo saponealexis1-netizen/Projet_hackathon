@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import PhoneReveal from "@/components/PhoneReveal";
+import PrintButton from "@/components/PrintButton";
 import { getContact, PAGE_SIZE } from "@/lib/contacts";
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 };
 
 /**
- * Fiche client de la v2 : une seule page en deux colonnes (pas d'onglets),
+ * Fiche client de la v2 : deux encadrés côte à côte (pas d'onglets),
  * libellés différents de la v1 (« Raison sociale », « Tél. », « Courriel »…), téléphone derrière un bouton.
  */
 export default async function V2Fiche({ params }: Props) {
@@ -19,67 +20,101 @@ export default async function V2Fiche({ params }: Props) {
   const found = await getContact(ref);
   if (!found) notFound();
 
-  const { contact: c, previousId, nextId, position } = found;
+  const { contact: c, previousId, nextId, position, total } = found;
   const listPage = Math.ceil(position / PAGE_SIZE);
 
-  const left: [string, string | null][] = [
+  const society: [string, string | null][] = [
     ["Réf.", c.legacy_id],
+    ["Raison sociale", c.company],
     ["Nom de famille", c.last_name],
     ["Prénom", c.first_name],
-    ["Raison sociale", c.company],
     ["Poste occupé", c.job_title],
   ];
 
   return (
     <>
-      <p className="v2-crumbs">
-        <Link href={listPage > 1 ? `/v2?p=${listPage}` : "/v2"}>‹ Revenir au répertoire</Link>
-      </p>
-      <h2 className="v2-title">
-        {c.last_name.toUpperCase()} {c.first_name}
-      </h2>
+      <h1>
+        Client {c.last_name.toUpperCase()} {c.first_name}
+      </h1>
 
-      <div className="v2-card">
-        <dl className="v2-dl">
-          {left.map(([label, value]) => (
-            <div key={label}>
-              <dt>{label}</dt>
-              <dd>{value ?? ""}</dd>
-            </div>
-          ))}
-        </dl>
-        <dl className="v2-dl">
-          <div>
-            <dt>Courriel</dt>
-            <dd>{c.email ?? ""}</dd>
-          </div>
-          <div>
-            <dt>Tél.</dt>
-            <dd>
-              <PhoneReveal key={c.legacy_id} phone={c.phone} label="Voir le tél." />
-            </dd>
-          </div>
-          <div>
-            <dt>Localité</dt>
-            <dd>{c.city ?? ""}</dd>
-          </div>
-          <div>
-            <dt>Observations</dt>
-            <dd>{c.notes ?? ""}</dd>
-          </div>
-        </dl>
+      <div className="toolbar">
+        <Link className="button" href={listPage > 1 ? `/v2?p=${listPage}` : "/v2"}>
+          ‹ Revenir au répertoire
+        </Link>
+        <PrintButton />
+        <span>
+          Enregistrement {position} / {total}
+        </span>
       </div>
 
-      <nav className="v2-pages" aria-label="Clients voisins">
+      <div className="two-columns">
+        <fieldset>
+          <legend>Société</legend>
+          <table className="form form-compact">
+            <tbody>
+              {society.map(([label, value]) => (
+                <tr key={label}>
+                  <th scope="row">{label} :</th>
+                  <td>
+                    <span className="field field-compact">{value ?? ""}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </fieldset>
+
+        <fieldset>
+          <legend>Joindre le client</legend>
+          <table className="form form-compact">
+            <tbody>
+              <tr>
+                <th scope="row">Courriel :</th>
+                <td>
+                  <span className="field field-compact">{c.email ?? ""}</span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Tél. :</th>
+                <td>
+                  <PhoneReveal key={c.legacy_id} phone={c.phone} label="Voir le tél." />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Localité :</th>
+                <td>
+                  <span className="field field-compact">{c.city ?? ""}</span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Observations :</th>
+                <td>
+                  <span className="field field-compact">{c.notes ?? ""}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </fieldset>
+      </div>
+
+      <nav className="pagination" aria-label="Clients voisins">
         {previousId ? (
-          <Link href={`/v2/fiche/${previousId}`}>‹ Client précédent</Link>
+          <Link className="button" href={`/v2/fiche/${previousId}`}>
+            ‹ Client précédent
+          </Link>
         ) : (
-          <span className="v2-off">‹ Client précédent</span>
+          <span className="button" aria-disabled="true">
+            ‹ Client précédent
+          </span>
         )}
         {nextId ? (
-          <Link href={`/v2/fiche/${nextId}`}>Client suivant ›</Link>
+          <Link className="button" href={`/v2/fiche/${nextId}`}>
+            Client suivant ›
+          </Link>
         ) : (
-          <span className="v2-off">Client suivant ›</span>
+          <span className="button" aria-disabled="true">
+            Client suivant ›
+          </span>
         )}
       </nav>
     </>

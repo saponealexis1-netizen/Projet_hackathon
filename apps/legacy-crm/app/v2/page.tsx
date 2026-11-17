@@ -18,13 +18,16 @@ export default async function V2List({ searchParams }: Props) {
 
   return (
     <>
-      <h2 className="v2-title">Répertoire clients</h2>
-      <p className="v2-count">
-        {contacts.length} enregistrements · affichage {(page - 1) * PAGE_SIZE + 1} à{" "}
-        {(page - 1) * PAGE_SIZE + rows.length}
-      </p>
+      <h1>Répertoire clients</h1>
 
-      <table className="v2-table">
+      <div className="toolbar">
+        <span>
+          {contacts.length} enregistrements · affichage {(page - 1) * PAGE_SIZE + 1} à{" "}
+          {(page - 1) * PAGE_SIZE + rows.length}
+        </span>
+      </div>
+
+      <table className="grid">
         <thead>
           <tr>
             <th scope="col">Raison sociale</th>
@@ -51,20 +54,36 @@ export default async function V2List({ searchParams }: Props) {
         </tbody>
       </table>
 
-      <nav className="v2-pages" aria-label="Pages">
-        {page > 1 ? <Link href={`/v2?p=${page - 1}`}>« Préc.</Link> : <span className="v2-off">« Préc.</span>}
+      <nav className="pagination" aria-label="Pages">
+        {page > 1 ? (
+          <Link className="button" href={`/v2?p=${page - 1}`}>
+            « Préc.
+          </Link>
+        ) : (
+          <span className="button" aria-disabled="true">
+            « Préc.
+          </span>
+        )}
         {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) =>
           n === page ? (
-            <b key={n} aria-current="page">
+            <b key={n} aria-current="page" className="page-number">
               {n}
             </b>
           ) : (
-            <Link key={n} href={`/v2?p=${n}`}>
+            <Link key={n} href={`/v2?p=${n}`} className="page-number">
               {n}
             </Link>
           ),
         )}
-        {page < pageCount ? <Link href={`/v2?p=${page + 1}`}>Suiv. »</Link> : <span className="v2-off">Suiv. »</span>}
+        {page < pageCount ? (
+          <Link className="button" href={`/v2?p=${page + 1}`}>
+            Suiv. »
+          </Link>
+        ) : (
+          <span className="button" aria-disabled="true">
+            Suiv. »
+          </span>
+        )}
       </nav>
     </>
   );

@@ -54,7 +54,9 @@ export default function ContactTabs({ contact: c, labels: l }: { contact: Contac
   ];
 
   return (
-    <div className="tabs">
+    <fieldset>
+      <legend>Informations du contact</legend>
+      <div className="tabs">
       <div className="tab-list" role="tablist">
         <button
           type="button"
@@ -119,6 +121,7 @@ export default function ContactTabs({ contact: c, labels: l }: { contact: Contac
           </tbody>
         </table>
       </div>
-    </div>
+      </div>
+    </fieldset>
   );
 }

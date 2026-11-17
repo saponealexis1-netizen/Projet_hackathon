@@ -3,9 +3,11 @@ import Link from "next/link";
 export default function V2NotFound() {
   return (
     <>
-      <h2 className="v2-title">Client introuvable</h2>
+      <h1>Client introuvable</h1>
       <p>Aucun client ne correspond à cette référence.</p>
-      <Link href="/v2">‹ Revenir au répertoire</Link>
+      <Link className="button" href="/v2">
+        ‹ Revenir au répertoire
+      </Link>
     </>
   );
 }

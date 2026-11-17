@@ -398,216 +398,62 @@ ol.help {
   }
 }
 
-/* Onglets de la fiche (v1) */
+/* Onglets de la fiche : discrets, à l'intérieur de l'encadré « Informations du contact » */
 .tabs {
-  margin-bottom: 10px;
+  margin: 0;
 }
 
 .tab-list {
   display: flex;
   gap: 2px;
-  padding-left: 4px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #808080;
 }
 
 .tab {
-  padding: 3px 14px;
-  margin-bottom: -2px;
+  padding: 2px 12px;
+  margin-bottom: -1px;
   background: #d4d0c8;
-  border: 2px solid;
-  border-color: #fff #404040 transparent #fff;
-  border-bottom: none;
+  border: 1px solid;
+  border-color: #fff #808080 #808080 #fff;
   font: inherit;
   cursor: pointer;
 }
 
 .tab-active {
-  position: relative;
-  z-index: 1;
-  padding-top: 5px;
-  margin-top: -2px;
   font-weight: bold;
+  border-bottom-color: #d4d0c8;
 }
 
 .tab-panel {
-  padding: 10px;
-  border: 2px solid;
-  border-color: #fff #404040 #404040 #fff;
+  padding: 4px 0 0;
 }
 
-/* ───────────── Version 2 : « GestiContacts Web » (style site web 2008) ───────────── */
-body:has(.v2) {
-  background: #eef2f7;
-}
-
-.v2 {
-  max-width: 1000px;
-  margin: 0 auto;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 13px;
-  color: #222;
-  background: #fff;
-  min-height: 100vh;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
-}
-
-.v2-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  background: linear-gradient(#5b8fd1, #2f63a8);
-  color: #fff;
-}
-
-.v2-logo {
-  font-size: 20px;
-  font-weight: bold;
-  font-family: Georgia, serif;
-}
-
-.v2-logo span {
-  color: #ffcc66;
-}
-
-.v2-user {
-  font-size: 11px;
-}
-
-.v2-body {
-  display: flex;
-}
-
-.v2-side {
-  width: 170px;
-  padding: 12px 0;
-  background: #f3f6fb;
-  border-right: 1px solid #c9d6e8;
-}
-
-.v2-side-title {
-  padding: 0 14px 6px;
-  font-size: 11px;
-  font-weight: bold;
-  color: #6b7a90;
-  text-transform: uppercase;
-}
-
-.v2-side a,
-.v2-side span {
-  display: block;
-  padding: 6px 14px;
-}
-
-.v2-side a {
-  color: #1b4f9c;
-  font-weight: bold;
-  background: #dfe9f7;
-  border-left: 4px solid #f08c00;
-}
-
-.v2-main {
-  flex: 1;
-  padding: 14px 20px 24px;
-}
-
-.v2-title {
-  margin: 0 0 4px;
-  font-size: 18px;
-  color: #1b4f9c;
-}
-
-.v2-count {
-  margin: 0 0 10px;
-  color: #6b7a90;
-  font-size: 12px;
-}
-
-.v2-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.v2-table th {
-  padding: 6px 8px;
-  text-align: left;
-  font-size: 12px;
-  color: #fff;
-  background: #f08c00;
-}
-
-.v2-table td {
-  padding: 6px 8px;
-  border-bottom: 1px dotted #c9d6e8;
-}
-
-.v2-table tr:hover td {
-  background: #fff8e6;
-}
-
-.v2 a {
-  color: #1b4f9c;
-}
-
-.v2-pages {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-top: 12px;
-}
-
-.v2-off {
-  color: #a0a8b4;
-}
-
-.v2-crumbs {
-  margin: 0 0 8px;
-  font-size: 12px;
-}
-
-.v2-card {
+/* ───────────── Version 2 « GestiContacts » : même style 2010, autre disposition ───────────── */
+.two-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  padding: 14px;
-  background: #f9fbfe;
-  border: 1px solid #c9d6e8;
-  border-radius: 6px;
+  gap: 10px;
 }
 
-.v2-dl {
-  margin: 0;
+table.form-compact th {
+  width: 110px;
 }
 
-.v2-dl div {
-  display: flex;
-  padding: 5px 0;
-  border-bottom: 1px solid #e3eaf4;
+.field-compact {
+  min-width: 0;
+  width: 280px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-.v2-dl dt {
-  width: 120px;
-  font-weight: bold;
-  color: #6b7a90;
+.page-number {
+  padding: 2px 6px;
+  color: #0000ee;
 }
 
-.v2-dl dd {
-  margin: 0;
-}
-
-.v2-btn {
-  padding: 2px 10px;
-  font: inherit;
-  font-size: 12px;
-  color: #fff;
-  background: #2f63a8;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.v2-footer {
-  padding: 10px 16px;
-  font-size: 11px;
-  color: #6b7a90;
-  border-top: 1px solid #c9d6e8;
+b.page-number {
+  color: #000;
+  border: 1px solid #808080;
+  background: #fff;
 }
