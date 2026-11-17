@@ -122,3 +122,13 @@ class TestStatut(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestSupabaseUrl(unittest.TestCase):
+    def test_avec_ou_sans_rest_v1(self):
+        from unittest import mock
+        from pipeline.hubspot.send import supabase_rest_url
+        for base in ["https://x.supabase.co", "https://x.supabase.co/", "https://x.supabase.co/rest/v1",
+                     "https://x.supabase.co/rest/v1/", " https://x.supabase.co/rest/v1/ "]:
+            with mock.patch.dict("os.environ", {"SUPABASE_URL": base}):
+                self.assertEqual(supabase_rest_url("migration_log"), "https://x.supabase.co/rest/v1/migration_log")
