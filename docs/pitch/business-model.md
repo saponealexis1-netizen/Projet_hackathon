@@ -60,32 +60,31 @@
 | **Forfait par client migré** | Éditeur ou agence qui offre la migration | **490 €** jusqu'à 2 000 fiches · **990 €** jusqu'à 10 000 fiches |
 | **Partenaire** | Plusieurs migrations par mois | Abonnement mensuel avec volume inclus, sur devis |
 
-**Repère** : pour 3 000 fiches, Bascule coûte **990 €** au lieu de **~3 000 €** de ressaisie, et tourne en **~4 h** au lieu de 3 semaines (voir section 7).
+**Repère** : pour 3 000 fiches, Bascule coûte **990 €** au lieu de **~3 000 €** de ressaisie, et tourne en **~2 h 30 avec 10 agents** (offre Builder) ou ~8 h avec 3, au lieu de 3 semaines (voir section 7).
 
 ## 7. Coût de fonctionnement et marge
 
-### ✅ Mesure réelle (16/11)
+### ✅ Mesures réelles : deux migrations complètes (17/11)
 
-Test de l'agent H Company `h/web-surfer-flash` sur un site public de démonstration (books.toscrape.com), dans les conditions de notre cas : **ouvrir une liste → cliquer sur une fiche → extraire 5 champs en JSON**. 3 agents lancés en parallèle.
+Le même agent H Company (`h/web-surfer-flash`), avec les mêmes consignes, sur **les deux versions de notre ancien CRM** (mise en page et libellés différents), 3 agents en parallèle. Détail : [retour d'expérience](../retour-agent-api/README.md).
 
-| | Fiche 1 | Fiche 2 | Fiche 3 | **Moyenne** |
-|---|---|---|---|---|
-| Réussite | ✅ | ✅ | ✅ | **3 / 3** |
-| Étapes de l'agent | 6 | 8 | 11 | **~8** |
-| Durée | 47 s | 49 s | 48 s | **~48 s** |
-| Coût H Company | 0,015 $ | 0,019 $ | 0,026 $ | **~0,020 $** |
+| | Ancien CRM v1 | Ancien CRM v2 |
+|---|---|---|
+| Fiches exactes (9 champs sur 9) | **100 / 100** | **100 / 100** (+ 5 / 5 pièges traités comme prévu) |
+| Temps par fiche | 31 s en moyenne | **21 s** (médiane) |
+| Durée réelle, 3 agents | 33 min (avant une correction de notre code) | **16,9 min** pour 105 fiches |
+| Coût de l'agent H | 1,53 $ → **~0,015 $ / fiche** | 0,87 $ → **~0,008 $ / fiche** |
 
-⚠️ Mesuré sur 3 fiches d'un site de test, pas encore sur notre ancien CRM. À confirmer jeudi sur 20 fiches.
+*Premier test du 16/11 sur un site public (3 fiches, ~48 s et ~0,02 $ par fiche) : remplacé par ces mesures.*
 
 ### Coût par fiche
 
 | Poste | Coût |
 |---|---|
-| ✅ Agent H Company (lecture d'une fiche) | ~0,020 $ |
+| ✅ Agent H Company (lecture d'une fiche, relances et relectures comprises) | **0,008 à 0,015 $** |
 | ✅ Vérification (règles automatiques, sans modèle d'IA : `pipeline/verification/`) | 0 $ |
-| 🔎 Marge de sécurité (relance d'une fiche ratée par l'agent) | ~0,005 $ |
 | HubSpot, Supabase, Vercel | Offres gratuites pendant le MVP |
-| **Total** | **~0,025 $ par fiche** |
+| **Total (hypothèse prudente)** | **~0,015 $ par fiche** |
 
 ### Marge (exemple : 3 000 fiches, forfait 990 €)
 
@@ -94,17 +93,19 @@ En comptant 1 $ ≈ 1 € pour rester prudent :
 | | Montant |
 |---|---|
 | Prix de vente | 990 € |
-| Coût de fonctionnement (3 000 × 0,025) | ~75 € |
-| **Marge brute** | **~92 %** |
-| Si le coût réel est 5 fois plus élevé | ~375 € → marge **~62 %** |
+| Coût de fonctionnement (3 000 × 0,015) | ~45 € |
+| **Marge brute** | **~95 %** |
+| Si le coût réel est 5 fois plus élevé | ~225 € → marge **~77 %** |
 
 ### Vitesse selon l'offre H Company 📚
 
-| Offre H Company | Prix | Agents en parallèle | Fiches / heure (à ~48 s) | 3 000 fiches en… |
+Mesuré : **105 fiches en 16,9 min avec 3 agents**, soit ~370 fiches par heure. Au-delà de 3 agents, c'est une extrapolation 🔎.
+
+| Offre H Company | Prix | Agents en parallèle | Fiches / heure | 3 000 fiches en… |
 |---|---|---|---|---|
-| Free (actuelle) | 0 $ | 3 | ~225 | ~13 h |
-| Builder | 20 $ / mois | 10 | ~750 | **~4 h** |
-| Startup | 200 $ / mois | 100 | ~7 500 | < 30 min |
+| Free (actuelle) | 0 $ | 3 | ✅ ~370 | **~8 h** |
+| Builder | 20 $ / mois | 10 | 🔎 ~1 240 | **~2 h 30** |
+| Startup | 200 $ / mois | 100 | 🔎 ~12 000 | ~15 min |
 
 → Dès le premier client, l'offre **Builder (20 $/mois)** suffit pour migrer une agence en une demi-journée.
 
@@ -156,14 +157,14 @@ Les autres éditeurs (Salesforce, Pipedrive, Zoho, éditeurs métier) élargisse
 | « Pourquoi pas un simple script ou un outil de migration ? » | Pas d'API, pas d'export : la seule porte d'entrée est l'écran. |
 | « Et si l'agent se trompe ? » | Chaque fiche est classée **ok / à vérifier / bloquée** ; les fiches bloquées ne partent pas dans HubSpot. |
 | « Et la sécurité des données ? » | Accès en lecture seule, serveurs européens de H Company. Coffre-fort à mots de passe (vault) de H Company **prévu** après le MVP. |
-| « Combien ça coûte à faire tourner ? » | ✅ ~0,02 $ par fiche mesuré côté agent ; ~92 % de marge sur un forfait. |
+| « Combien ça coûte à faire tourner ? » | ✅ 0,008 à 0,015 $ par fiche, mesuré sur 205 fiches ; ~95 % de marge sur un forfait. |
 | « Pourquoi les éditeurs paieraient ? » | Ils facturent déjà l'onboarding, et la migration est le premier obstacle à la mise en place d'un nouveau CRM (44 %). |
 
 ---
 
 ## Sources
 
-- ✅ Mesures H Company : sessions de test du 16/11/2026, champ `metrics` de l'API (`GET /sessions/{id}/changes`).
+- ✅ Mesures H Company : migrations complètes du 17/11/2026 (v1 et v2, voir `agent/runner/README.md`), champ `metrics` de l'API.
 - Offres et limites H Company : [Plans and limits](https://hub.hcompany.ai/agents-api/plans-and-limits) (documentation officielle, vérifiée le 16/11/2026).
 - Obstacle n°1 = migration (44 %) : [Digital Strategy Consulting (enquête Workbooks)](https://digitalstrategyconsulting.com/content/content-marketing/more-than-half-of-british-small-and-medium-businesses-have-changed-crm-supplier/32429).
 - Frais d'onboarding HubSpot (source tierce, mise à jour le 12/11/2026) : [INSIDEA](https://insidea.com/blog/hubspot/hubspot-onboarding-cost).
