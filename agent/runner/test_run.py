@@ -122,5 +122,25 @@ class TestFiletsDeSecurite(unittest.TestCase):
         self.assertIn("C-0070 n'est pas C-0007", calls["tasks"][0])
 
 
+    def test_relecture_partielle_ne_vide_pas_la_fiche(self):
+        # Cas réel du 17/11 (C-0102) : en relecture, l'agent ne renvoie que le champ demandé.
+        bad = dict(GOOD, email="jean.dupont@dupont-plomberie")
+        partial = {f: "" for f in FIELDS} | {"legacy_id": "C-0001", "email": "jean.dupont@dupont-plomberie", "error": ""}
+        create, wait, calls = fake_session([bad, partial])
+        with mock.patch.object(run.hclient, "create_session", create), mock.patch.object(run.hclient, "wait", wait):
+            r = run.process("https://crm.example", "C-0001", "run-1", reread=True)
+        self.assertEqual(r["contact"]["first_name"], "Julien")          # la 1re lecture est conservée
+        self.assertEqual(r["contact"]["email"], "jean.dupont@dupont-plomberie")
+        self.assertEqual(r["reread"]["after"], "jean.dupont@dupont-plomberie")   # confirmé
+
+    def test_relecture_vide_garde_la_valeur(self):
+        bad = dict(GOOD, phone="06 39 98")
+        empty_field = dict(GOOD, phone="")
+        create, wait, calls = fake_session([bad, empty_field])
+        with mock.patch.object(run.hclient, "create_session", create), mock.patch.object(run.hclient, "wait", wait):
+            r = run.process("https://crm.example", "C-0001", "run-1", reread=True)
+        self.assertEqual(r["contact"]["phone"], "06 39 98")
+
+
 if __name__ == "__main__":
     unittest.main()
