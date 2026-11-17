@@ -59,6 +59,14 @@ export default function SuiviMigration() {
     };
   }, [run]);
 
+  // Afficher une migration existante : ?run=tout (toutes les fiches) ou ?run=<identifiant du lancement>
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const param = params.get("run");
+    // L'adresse n'est connue que dans le navigateur : on l'applique juste après l'affichage initial.
+    if (param) queueMicrotask(() => setRun({ runId: param, mode: "live", total: Number(params.get("total")) || 0 }));
+  }, []);
+
   const progress = total ? Math.round((bilan.traitees / total) * 100) : 0;
   const bloquees = rows.filter((r) => UI_STATUS[r.status] === "bloquee");
 
@@ -106,7 +114,7 @@ export default function SuiviMigration() {
               <Counter label="À vérifier" value={bilan.aVerifier} tone="warn" />
               <Counter label="Bloquées" value={bilan.bloquees} tone="err" />
               <Counter label="Temps moyen / fiche" value={formatDuree(bilan.dureeMoyenneMs)} />
-              <Counter label="Crédits utilisés" value={bilan.creditsTotal} />
+              <Counter label="Coût agent H" value={formatDollars(bilan.creditsTotal, 2)} />
             </div>
 
             <table className="table">
@@ -142,10 +150,10 @@ export default function SuiviMigration() {
             <div className="bilan-grid">
               <Stat label="Fiches envoyées dans HubSpot" value={`${bilan.migrees} / ${bilan.traitees}`} big />
               <Stat label="Taux de réussite" value={bilan.tauxReussite === null ? "—" : `${bilan.tauxReussite} %`} big />
-              <Stat label="Durée totale de l'agent" value={formatDuree(bilan.dureeTotaleMs)} />
+              <Stat label="Temps cumulé des agents" value={formatDuree(bilan.dureeTotaleMs)} />
               <Stat label="Temps moyen par fiche" value={formatDuree(bilan.dureeMoyenneMs)} />
-              <Stat label="Crédits Agent API" value={String(bilan.creditsTotal)} />
-              <Stat label="Crédits par fiche" value={bilan.creditsParFiche === null ? "—" : String(bilan.creditsParFiche)} />
+              <Stat label="Coût Agent API" value={formatDollars(bilan.creditsTotal, 2)} />
+              <Stat label="Coût par fiche" value={bilan.creditsParFiche === null ? "—" : formatDollars(bilan.creditsParFiche, 3)} />
             </div>
 
             <div className="bilan-cols">
@@ -242,4 +250,8 @@ function Stat({ label, value, big }: { label: string; value: string; big?: boole
       <div className="stat-label">{label}</div>
     </div>
   );
+}
+
+function formatDollars(value: number, digits: number): string {
+  return `${value.toLocaleString("fr-FR", { minimumFractionDigits: digits, maximumFractionDigits: digits })} $`;
 }

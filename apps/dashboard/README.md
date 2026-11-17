@@ -67,3 +67,15 @@ Ce qui est attendu dans chaque ligne de `migration_log` :
 | `lib/bilan.ts` | Calcul du bilan et correspondance des statuts |
 | `lib/demo.ts`, `lib/demo-data.json` | Mode démo |
 | `lib/supabase.ts` | Lecture Supabase par l'API REST (aucune dépendance) |
+
+## Afficher une migration réelle
+
+Une fois `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY` configurées (dans `.env.local` ou dans Vercel) :
+
+| Adresse | Ce qui s'affiche |
+|---|---|
+| `/?run=tout` | **L'état de chaque fiche migrée**, tous lancements confondus (dernière lecture de chaque fiche) |
+| `/?run=<identifiant>` | Un lancement précis, déjà terminé |
+| `/?run=<identifiant>&total=100` | Un lancement **en cours**, lancé depuis `agent/runner` avec `--run-id <identifiant>` : l'écran se remplit en direct |
+
+Coûts affichés en dollars (`credits_used` = coût de la fiche en $, mesuré par l'Agent API).

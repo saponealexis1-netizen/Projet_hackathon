@@ -89,7 +89,7 @@ export function computeBilan(rows: LogRow[], total: number): Bilan {
     dureeTotaleMs,
     dureeMoyenneMs: traitees ? Math.round(dureeTotaleMs / traitees) : null,
     creditsTotal,
-    creditsParFiche: traitees ? Math.round((creditsTotal / traitees) * 100) / 100 : null,
+    creditsParFiche: traitees ? Math.round((creditsTotal / traitees) * 10000) / 10000 : null,
     anomaliesParType: [...parCode.entries()]
       .map(([code, n]) => ({ code, label: CODE_LABEL[code] ?? code, count: n }))
       .sort((a, b) => b.count - a.count),
