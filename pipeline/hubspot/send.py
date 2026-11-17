@@ -83,6 +83,10 @@ def migrate(
             "duration_ms": m.get("duration_ms"),
             "credits_used": m.get("credits_used"),
             "error": error,
+            # Preuves de l'agent (D13, D14) : fournies par l'orchestration, sinon vides
+            "agent_session_id": m.get("agent_session_id"),
+            "screenshot_url": m.get("screenshot_url"),
+            "reread": m.get("reread"),
         })
 
     if write_log is None and not dry_run and supabase_configured():
