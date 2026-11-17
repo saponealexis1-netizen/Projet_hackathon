@@ -18,6 +18,9 @@ export type LogRow = {
   credits_used: number | null;
   error: string | null;
   created_at: string;
+  run_id?: string;
+  agent_started_at?: string | null;
+  agent_finished_at?: string | null;
 };
 
 /** Statut affiché à Thomas sur l'écran de suivi. */

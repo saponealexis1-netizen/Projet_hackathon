@@ -8,7 +8,9 @@ export function supabaseConfigured(): boolean {
   return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
-const COLUMNS = "legacy_id,status,extracted,anomalies,hubspot_id,duration_ms,credits_used,error,created_at";
+const COLUMNS =
+  "legacy_id,status,extracted,anomalies,hubspot_id,duration_ms,credits_used,error,created_at," +
+  "run_id,agent_started_at,agent_finished_at";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export function isRunId(value: string): boolean {

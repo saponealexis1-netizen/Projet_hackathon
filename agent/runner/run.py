@@ -103,6 +103,7 @@ def reread_if_needed(url: str, run_id: str, result: dict) -> dict:
         if result.get(k) is not None and second.get(k) is not None:
             second[k] = second[k] + result[k]
     second["screenshots"] = result.get("screenshots", []) + second.get("screenshots", [])
+    second["started_at"] = result.get("started_at") or second.get("started_at")
     return second
 
 
@@ -160,6 +161,8 @@ def main(argv: list[str]) -> int:
         "agent_session_id": r.get("session_id"),
         "screenshot_url": (r.get("screenshots") or [None])[-1],
         "reread": r.get("reread"),
+        "agent_started_at": r.get("started_at"),
+        "agent_finished_at": r.get("finished_at"),
     } for r in ok}
     rows = migrate([r["contact"] for r in ok], run_id, metrics=metrics, dry_run=dry_run)
     sent = sum(1 for row in rows if row["hubspot_id"])
