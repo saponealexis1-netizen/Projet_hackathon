@@ -87,6 +87,8 @@ def migrate(
             "agent_session_id": m.get("agent_session_id"),
             "screenshot_url": m.get("screenshot_url"),
             "reread": m.get("reread"),
+            "agent_started_at": m.get("agent_started_at"),
+            "agent_finished_at": m.get("agent_finished_at"),
         })
 
     if write_log is None and not dry_run and supabase_configured():

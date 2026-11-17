@@ -27,7 +27,7 @@ for r in verify_batch(contacts):
         "extracted": r["contact"],
         "anomalies": r["anomalies"],
         "duration_ms": random.randint(38_000, 58_000),
-        "credits_used": 1,
+        "credits_used": 0.015,  # coût réel mesuré par fiche (en $)
     })
 out = ROOT / "apps/dashboard/lib/demo-data.json"
 out.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

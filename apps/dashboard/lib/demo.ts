@@ -30,6 +30,8 @@ export function demoRows(runId: string, now = Date.now()): LogRow[] {
     .slice(0, done)
     .map((r, i) => ({
       ...r,
+      // Coût simulé = coût réel mesuré sur les 100 fiches de l'ancien CRM (~0,015 $ par fiche).
+      credits_used: 0.015,
       anomalies: r.anomalies ?? [],
       hubspot_id: r.status === "success" || r.status === "partial" ? `demo-${1000 + i}` : null,
       error: null,

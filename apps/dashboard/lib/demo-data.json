@@ -15,7 +15,7 @@
   },
   "anomalies": [],
   "duration_ms": 55104,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0002",
@@ -33,7 +33,7 @@
   },
   "anomalies": [],
   "duration_ms": 51571,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0003",
@@ -51,7 +51,7 @@
   },
   "anomalies": [],
   "duration_ms": 47942,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0004",
@@ -69,7 +69,7 @@
   },
   "anomalies": [],
   "duration_ms": 49980,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0005",
@@ -87,7 +87,7 @@
   },
   "anomalies": [],
   "duration_ms": 47490,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0006",
@@ -105,7 +105,7 @@
   },
   "anomalies": [],
   "duration_ms": 43724,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0007",
@@ -123,7 +123,7 @@
   },
   "anomalies": [],
   "duration_ms": 55700,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0008",
@@ -141,7 +141,7 @@
   },
   "anomalies": [],
   "duration_ms": 47118,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0009",
@@ -159,7 +159,7 @@
   },
   "anomalies": [],
   "duration_ms": 41609,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0010",
@@ -177,7 +177,7 @@
   },
   "anomalies": [],
   "duration_ms": 38882,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0011",
@@ -195,7 +195,7 @@
   },
   "anomalies": [],
   "duration_ms": 46156,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0012",
@@ -213,7 +213,7 @@
   },
   "anomalies": [],
   "duration_ms": 50588,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0013",
@@ -231,7 +231,7 @@
   },
   "anomalies": [],
   "duration_ms": 51748,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0014",
@@ -249,7 +249,7 @@
   },
   "anomalies": [],
   "duration_ms": 46270,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0015",
@@ -267,7 +267,7 @@
   },
   "anomalies": [],
   "duration_ms": 54436,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0016",
@@ -285,7 +285,7 @@
   },
   "anomalies": [],
   "duration_ms": 48401,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0017",
@@ -303,7 +303,7 @@
   },
   "anomalies": [],
   "duration_ms": 51159,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0018",
@@ -321,7 +321,7 @@
   },
   "anomalies": [],
   "duration_ms": 42506,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0019",
@@ -339,7 +339,7 @@
   },
   "anomalies": [],
   "duration_ms": 56061,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0020",
@@ -357,7 +357,7 @@
   },
   "anomalies": [],
   "duration_ms": 40037,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0021",
@@ -412,7 +412,7 @@
    }
   ],
   "duration_ms": 42583,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0022",
@@ -443,7 +443,7 @@
    }
   ],
   "duration_ms": 44441,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0023",
@@ -474,7 +474,7 @@
    }
   ],
   "duration_ms": 42945,
-  "credits_used": 1
+  "credits_used": 0.015
  },
  {
   "legacy_id": "C-0024",
@@ -505,6 +505,6 @@
    }
   ],
   "duration_ms": 55460,
-  "credits_used": 1
+  "credits_used": 0.015
  }
 ]

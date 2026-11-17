@@ -106,10 +106,23 @@ Ancien CRM v1 en ligne → 3 agents H en parallèle → vérification → HubSpo
 | Fiches migrées dans HubSpot | **100 / 100** |
 | Fiches **100 % exactes** (9/9 champs) | **100 / 100** |
 | Temps moyen par fiche | 31 s (médiane 29 s) |
-| Durée réelle (3 agents en parallèle) | ~17 min |
+| Durée réelle (3 agents en parallèle) | **32 min 56 s** mesurées (≈ 33 s perdues par tour d'agents, voir ci-dessous) |
 | Coût total agent H | **1,53 $** (~0,015 $ par fiche) |
 | Extrapolation 3 000 fiches | ~46 $ · ~8,7 h avec 3 agents (~2,6 h avec 10, offre Builder) |
 
 **Ce qui a coincé** : au 1er passage, 3 fiches sur 100 (C-0070, C-0077, C-0088) ont été **bloquées par le contrôle d'identité** : l'agent avait ouvert C-0007 / C-0008, dont le numéro ressemble. Aucune mauvaise fiche n'est partie dans HubSpot. Correction : consigne « l'identifiant doit être exactement {legacy_id}, caractère par caractère » + **relance automatique une fois** si la fiche renvoyée n'est pas la bonne. Les 3 fiches relancées : 3/3 exactes.
 
 Runs : `b961da00-eb32-4e73-b21f-4b705cf9d198` (97 fiches) et `f7962b57-39f2-4829-9440-a0647263a5a6` (3 fiches relancées), dans `migration_log`.
+
+## Durée réelle : 33 min mesurées, ~17 min après correction (17/11/2026)
+
+Les horaires de début et de fin de chaque session d'agent (API H : `started_at`, `finished_at`) sont maintenant enregistrés dans `migration_log` (`agent_started_at`, `agent_finished_at`) et récupérés pour les migrations passées.
+
+| | Avant | Après correction |
+|---|---|---|
+| Migration des 100 fiches (du 1er agent démarré au dernier terminé) | **32 min 56 s** | ~17-18 min (projection) |
+| Test : 6 fiches, 3 agents | — | **62 s** |
+
+**Cause** : une fois la réponse de l'agent reçue, `hclient.wait` relançait une attente longue (20 s) de l'API pour confirmer qu'il n'y avait plus rien : **~20 s perdues par fiche**. Correction : arrêt dès que la session est terminée et la réponse reçue ; plus d'attente longue après la fin.
+
+L'écran de suivi affiche désormais la **durée réelle** (dernière fin − premier début, par lancement), et non plus le temps cumulé des agents.

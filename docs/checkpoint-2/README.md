@@ -34,7 +34,8 @@ ancien CRM sans export → **agent H Company** qui lit chaque fiche à l'écran 
 | Fiches migrées dans HubSpot | **100 / 100** |
 | Fiches **100 % exactes** (9 champs sur 9, comparés à la base d'origine) | **100 / 100** |
 | Fiches bloquées à tort / envoyées avec une erreur | **0** |
-| Temps moyen de l'agent par fiche | **31 s** (3 agents en parallèle : ~17 min pour les 100) |
+| Temps moyen de l'agent par fiche | **31 s** |
+| Durée réelle de la migration des 100 fiches (3 agents en parallèle) | **33 min** mesurées ; ~20 s perdues par fiche à cause de notre code d'attente, corrigé depuis → **~17 min** (test : 6 fiches en 62 s) |
 | Coût Agent API H Company | **1,53 $ au total**, soit **~0,015 $ par fiche** |
 | Extrapolation à 3 000 fiches | **~46 $** · ~8,7 h avec 3 agents (~2,6 h avec 10, offre Builder) |
 

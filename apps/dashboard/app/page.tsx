@@ -156,7 +156,11 @@ export default function SuiviMigration() {
             <div className="bilan-grid">
               <Stat label="Fiches envoyées dans HubSpot" value={`${bilan.migrees} / ${bilan.traitees}`} big />
               <Stat label="Taux de réussite" value={bilan.tauxReussite === null ? "—" : `${bilan.tauxReussite} %`} big />
-              <Stat label="Temps cumulé des agents" value={formatDuree(bilan.dureeTotaleMs)} />
+              {bilan.dureeReelleMs !== null ? (
+                <Stat label="Durée réelle de la migration" value={formatDuree(bilan.dureeReelleMs)} />
+              ) : (
+                <Stat label="Temps cumulé des agents" value={formatDuree(bilan.dureeTotaleMs)} />
+              )}
               <Stat label="Temps moyen par fiche" value={formatDuree(bilan.dureeMoyenneMs)} />
               <Stat label="Coût Agent API" value={formatDollars(bilan.creditsTotal, 2)} />
               <Stat label="Coût par fiche" value={bilan.creditsParFiche === null ? "—" : formatDollars(bilan.creditsParFiche, 3)} />
