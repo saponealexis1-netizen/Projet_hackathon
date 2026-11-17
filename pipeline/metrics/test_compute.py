@@ -27,7 +27,8 @@ def row(contact, status="success", duration_ms=48000, credits=0.02):
 class TestMesures(unittest.TestCase):
     def test_migration_parfaite(self):
         m = compute([row(c) for c in SAMPLE], TRUTH)
-        self.assertEqual(m["fiches_traitees"], 20)
+        self.assertEqual(m["fiches_traitees"], len(SAMPLE))
+        self.assertEqual(len(SAMPLE), 100)
         self.assertEqual(m["taux_reussite_fiche_pct"], 100.0)
         self.assertEqual(m["taux_fiches_exactes_pct"], 100.0)
         self.assertTrue(all(p == 100.0 for p in m["precision_par_champ_pct"].values()))

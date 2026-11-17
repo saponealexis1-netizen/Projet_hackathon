@@ -6,7 +6,7 @@ Supabase n'est **pas** le CRM cible (c'est HubSpot). Il sert à deux choses :
 
 | Table | Rôle | Qui lit / écrit |
 |---|---|---|
-| `legacy_contacts` | Base **cachée** de l'ancien CRM simulé (20 contacts fictifs) | L'ancien CRM la lit côté serveur. **L'agent H n'y a pas accès** : il passe par l'écran. |
+| `legacy_contacts` | Base **cachée** de l'ancien CRM simulé (100 contacts fictifs) | L'ancien CRM la lit côté serveur. **L'agent H n'y a pas accès** : il passe par l'écran. |
 | `migration_log` | Journal de migration : **une ligne par fiche traitée** | L'orchestration écrit ; les mesures et l'écran de suivi lisent. |
 
 ## Fichiers
@@ -14,7 +14,7 @@ Supabase n'est **pas** le CRM cible (c'est HubSpot). Il sert à deux choses :
 | Fichier | Contenu |
 |---|---|
 | `migrations/20261117090000_init_tables.sql` | Création des 2 tables + sécurité (RLS) |
-| `seed.sql` | Chargement des 20 contacts de `data/contacts.sample.json` (généré par `data/generate_seed.py`) |
+| `seed.sql` | Chargement des 100 contacts de `data/contacts.legacy.json` (généré par `data/generate_seed.py`) |
 
 ## Installation (5 minutes, une seule fois)
 
@@ -23,7 +23,7 @@ Supabase n'est **pas** le CRM cible (c'est HubSpot). Il sert à deux choses :
 3. Nouvelle requête : coller le contenu de `seed.sql` → **Run**.
 4. Vérifier :
    ```sql
-   select count(*) from legacy_contacts;   -- doit afficher 20
+   select count(*) from legacy_contacts;   -- doit afficher 100
    ```
 5. **Table Editor** : les deux tables `legacy_contacts` et `migration_log` apparaissent, avec le badge RLS activé.
 
@@ -60,15 +60,15 @@ SUPABASE_SERVICE_ROLE_KEY=...
 
 ## Modifier les contacts
 
-1. Modifier `data/contacts.sample.json`.
-2. Vérifier : `python data/validate_contacts.py`
+1. Modifier `data/generate_contacts.py`, puis lancer `python data/generate_contacts.py`.
+2. Vérifier : `python data/validate_contacts.py data/contacts.legacy.json`
 3. Régénérer : `python data/generate_seed.py`
 4. Relancer `seed.sql` dans le SQL Editor.
 
 ## Tests effectués (PostgreSQL 16 local)
 
 - Migration et seed lancés **deux fois** : aucune erreur, aucun doublon.
-- 20 contacts chargés, dont 9 sans note (`null`).
+- 20 contacts chargés au départ (9 sans note), puis 100 le 17/11 (vérifié dans Supabase : 100 lignes, 100 e-mails distincts).
 - Statut inconnu dans `migration_log` → refusé.
 - Identifiant mal formé (`X1`) dans `legacy_contacts` → refusé.
 - Rôle `anon`, même avec un droit de lecture → **0 ligne visible** (RLS).
