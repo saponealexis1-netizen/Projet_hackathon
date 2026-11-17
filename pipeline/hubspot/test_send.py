@@ -132,3 +132,17 @@ class TestSupabaseUrl(unittest.TestCase):
                      "https://x.supabase.co/rest/v1/", " https://x.supabase.co/rest/v1/ "]:
             with mock.patch.dict("os.environ", {"SUPABASE_URL": base}):
                 self.assertEqual(supabase_rest_url("migration_log"), "https://x.supabase.co/rest/v1/migration_log")
+
+
+class TestSupabaseSchema(unittest.TestCase):
+    def test_schema_hackathon_par_defaut(self):
+        from unittest import mock
+        from pipeline.hubspot.send import supabase_headers
+        with mock.patch.dict("os.environ", {}, clear=False) as env:
+            env.pop("SUPABASE_SCHEMA", None)
+            h = supabase_headers("k", write=True)
+            self.assertEqual(h["Accept-Profile"], "hackathon")
+            self.assertEqual(h["Content-Profile"], "hackathon")
+            self.assertNotIn("Content-Profile", supabase_headers("k"))
+        with mock.patch.dict("os.environ", {"SUPABASE_SCHEMA": "public"}):
+            self.assertEqual(supabase_headers("k")["Accept-Profile"], "public")

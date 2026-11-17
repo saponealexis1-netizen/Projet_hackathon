@@ -27,7 +27,7 @@ sql = f"""-- Bascule — chargement des {len(contacts)} contacts d'exemple dans 
 -- Fichier GÉNÉRÉ depuis data/contacts.legacy.json par data/generate_seed.py : ne pas modifier à la main.
 -- À lancer APRÈS la migration des tables. Peut être relancé sans créer de doublons.
 
-insert into public.legacy_contacts ({", ".join(COLS)}) values
+insert into hackathon.legacy_contacts ({", ".join(COLS)}) values
 {rows}
 on conflict (legacy_id) do update set
   {updates};

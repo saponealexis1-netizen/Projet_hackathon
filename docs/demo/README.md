@@ -17,7 +17,7 @@
 
 ## 2. Le déroulé, seconde par seconde
 
-> Le vrai agent met **~30 s à démarrer**, puis **~100 s** pour les 6 fiches. On clique donc **dès le début**, et on parle de l'ancien CRM pendant qu'il démarre.
+> Mesuré le 17/11 (test réel) : les **premières fiches arrivent ~45 s** après le clic, la **dernière ~2 min 10 s** après (les 3 fiches relues par l'agent prennent plus d'une minute). Coût : **0,11 $**. On clique donc **dès la première seconde**, et on parle de l'ancien CRM pendant que l'agent démarre. Si la dernière fiche n'est pas arrivée à 1:45, Maxime enchaîne sur `?run=tout` : elle arrivera pendant ce temps.
 
 | Temps | À l'écran | Ce que dit Maxime | Ce que fait Mehdi |
 |---|---|---|---|
@@ -98,7 +98,7 @@
 
 **d) Accès de Mehdi** : collaborateur du dépôt GitHub (droit d'écriture, pour lancer l'action et fusionner) et utilisateur HubSpot.
 
-**Test** : cliquer une fois sur le bouton jeudi. Coût : ~0,05 $.
+**Test** : cliquer une fois sur le bouton jeudi. Coût : ~0,11 $.
 
 ## 7. Vendredi, les dépôts (Mehdi)
 
