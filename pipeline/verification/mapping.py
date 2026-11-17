@@ -24,6 +24,16 @@ FIELD_MAP = {
 }
 
 
+def current_map() -> dict:
+    """La correspondance du skill HubSpot (pipeline/hubspot_skill/, tenue à jour par 2 IA),
+    ou FIELD_MAP si le skill est absent ou invalide."""
+    try:
+        from pipeline.hubspot_skill.skill import current_mapping
+        return current_mapping()
+    except Exception:  # le skill ne doit jamais empêcher une migration
+        return FIELD_MAP
+
+
 def to_hubspot(contact: dict) -> dict:
     """Renvoie les propriétés HubSpot (les champs vides ne sont pas envoyés)."""
-    return {hs: contact[f] for f, hs in FIELD_MAP.items() if contact.get(f)}
+    return {hs: contact[f] for f, hs in current_map().items() if contact.get(f)}

@@ -361,12 +361,12 @@
  },
  {
   "legacy_id": "C-0021",
-  "status": "partial",
+  "status": "duplicate",
   "extracted": {
    "legacy_id": "C-0021",
    "first_name": "Julien",
    "last_name": "Moreau",
-   "email": "julien.moreau@boulangerie-moreau.example",
+   "email": "julien.moreau@boulangerie-moreau.example.com",
    "phone": "+33639980001",
    "company": "Boulangerie Moreau",
    "job_title": "Gérant",
@@ -394,6 +394,12 @@
    },
    {
     "field": null,
+    "code": "duplicate_email",
+    "severity": "error",
+    "message": "doublon possible de C-0001 (même e-mail)"
+   },
+   {
+    "field": null,
     "code": "duplicate_phone",
     "severity": "warning",
     "message": "doublon possible de C-0001 (même téléphone)"
@@ -415,7 +421,7 @@
    "legacy_id": "C-0022",
    "first_name": null,
    "last_name": "Dupont",
-   "email": "dupont@exemple.example",
+   "email": "dupont@exemple.example.com",
    "phone": "+33639980022",
    "company": null,
    "job_title": null,

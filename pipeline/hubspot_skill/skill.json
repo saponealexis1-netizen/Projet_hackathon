@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "updated_at": "2026-11-17",
+  "updated_by": "Inès (version de départ, écrite à la main)",
+  "mapping": {
+    "legacy_id": "bascule_legacy_id",
+    "first_name": "firstname",
+    "last_name": "lastname",
+    "email": "email",
+    "phone": "phone",
+    "company": "company",
+    "job_title": "jobtitle",
+    "city": "city",
+    "notes": "bascule_notes"
+  },
+  "rules": {
+    "refused_email_tlds": [".example"]
+  },
+  "known_errors": [
+    {
+      "message": "adresse e-mail invalide (e-mail en .example)",
+      "cause": "HubSpot refuse les domaines réservés en .example",
+      "action": "Bloquer ces e-mails dès la vérification (règle refused_email_tlds)",
+      "learned_at": "2026-11-17"
+    }
+  ],
+  "hubspot_news": [],
+  "alerts": [],
+  "schema_hash": null,
+  "history": [
+    {
+      "version": 1,
+      "date": "2026-11-17",
+      "trigger": "création",
+      "summary": "Reprise de pipeline/verification/mapping.py et de la leçon d'Alexis sur les e-mails en .example."
+    }
+  ]
+}

@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def base(**over):
     c = {
         "legacy_id": "C-0100", "first_name": "Julie", "last_name": "Test",
-        "email": "julie.test@exemple.example", "phone": "+33 6 39 98 01 00",
+        "email": "julie.test@exemple.example.com", "phone": "+33 6 39 98 01 00",
         "company": "Test SARL", "job_title": "Gérante", "city": "Lyon", "notes": None,
     }
     c.update(over)
@@ -62,9 +62,16 @@ class TestPieges(unittest.TestCase):
         self.assertIn("bad_email", codes(r))
 
     def test_email_nettoye(self):
-        r = verify_contact(base(email=" Julie.Test@Exemple.EXAMPLE "))
-        self.assertEqual(r["contact"]["email"], "julie.test@exemple.example")
+        r = verify_contact(base(email=" Julie.Test@Exemple.EXAMPLE.com "))
+        self.assertEqual(r["contact"]["email"], "julie.test@exemple.example.com")
         self.assertEqual(r["status"], "ok")
+
+    def test_email_refuse_par_hubspot(self):
+        # Règle apprise par le skill HubSpot (pipeline/hubspot_skill/skill.json) : « .example » refusé.
+        r = verify_contact(base(email="julie@test.example"))
+        self.assertEqual(r["status"], "error")
+        self.assertIn("email_refused_by_hubspot", codes(r))
+        self.assertEqual(verify_contact(base(email="julie@test.example.com"))["status"], "ok")
 
     def test_email_absent_avertit(self):
         r = verify_contact(base(email=None))
@@ -95,7 +102,7 @@ class TestPieges(unittest.TestCase):
 class TestDoublons(unittest.TestCase):
     def test_meme_email(self):
         reports = verify_batch([base(), base(legacy_id="C-0101", phone=None,
-                                             email="JULIE.TEST@exemple.example")])
+                                             email="JULIE.TEST@exemple.example.com")])
         self.assertEqual(reports[0]["status"], "ok")
         self.assertEqual(reports[1]["status"], "error")
         self.assertIn("duplicate_email", codes(reports[1]))
@@ -103,14 +110,14 @@ class TestDoublons(unittest.TestCase):
     def test_meme_personne_ecrite_autrement(self):
         reports = verify_batch([
             base(),
-            base(legacy_id="C-0101", email="autre@test.example", phone=None,
+            base(legacy_id="C-0101", email="autre@test.example.com", phone=None,
                  first_name="JULIE", last_name="test", company="Test  SARL"),
         ])
         self.assertIn("duplicate_person", codes(reports[1]))
         self.assertEqual(reports[1]["status"], "warning")
 
     def test_meme_identifiant(self):
-        reports = verify_batch([base(), base(email="x@y.example", phone=None, first_name="Paul")])
+        reports = verify_batch([base(), base(email="x@y.example.com", phone=None, first_name="Paul")])
         self.assertIn("duplicate_id", codes(reports[1]))
 
 

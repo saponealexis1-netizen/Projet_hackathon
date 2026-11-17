@@ -74,6 +74,7 @@ const CODE_LABEL: Record<string, string> = {
   missing_required: "Champ obligatoire vide",
   bad_legacy_id: "Identifiant invalide",
   bad_email: "E-mail invalide",
+  email_refused_by_hubspot: "E-mail refusé par HubSpot",
   duplicate_id: "Doublon (identifiant)",
   duplicate_email: "Doublon (e-mail)",
   duplicate_person: "Doublon (même personne)",
