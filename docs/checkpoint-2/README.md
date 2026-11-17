@@ -12,12 +12,14 @@
 |---|---|---|---|---|
 | 01 | **Parcours utilisateur** | [parcours-utilisateur.md](../parcours/parcours-utilisateur.md) | Maxime | ✅ Version finale |
 | 02 | **Architecture technique** | [architecture/README.md](../architecture/README.md) · [schéma (PNG)](../architecture/architecture.png) | Inès (à la place de Victoria) | ✅ Version mardi, à mettre à jour mercredi |
-| 03 | **Mini pitch Loom** (2 min max) | Lien ci-dessous · script : [script-loom.md](script-loom.md) | Inès (script de Maxime) | ⏳ Script prêt, à enregistrer mercredi |
+| 03 | **Mini pitch Loom** (2 min max) | [bascule-mini-pitch.mp4](bascule-mini-pitch.mp4) (1 min 43) · script : [script-loom.md](script-loom.md) | Inès (script de Maxime) | ✅ Enregistré mardi 17/11 (à réenregistrer mercredi si l'agent lit l'ancien CRM d'ici là) |
 | 04 | **Roadmap** jusqu'à jeudi | [roadmap.md](roadmap.md) | Maxime | ✅ À mettre à jour mercredi |
 
 ## Mini pitch
 
-🎥 **Lien Loom :** *à ajouter après l'enregistrement*
+🎥 **Vidéo (1 min 43) :** [bascule-mini-pitch.mp4](https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/bascule-mini-pitch.mp4) · [téléchargement direct](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-mini-pitch.mp4)
+
+> Enregistrée avec l'enregistreur d'écran (Loom ne fonctionnait pas), puis déposée dans le dépôt GitHub : elle s'ouvre sans compte.
 
 ## Conformité aux attentes Eugenia
 
@@ -25,7 +27,7 @@
 |---|---|---|
 | Parcours utilisateur | Maquette Figma, Miro, Airtable Interface ou schéma | ⏳ Schéma et tableaux dans le parcours |
 | Architecture technique | Simple, même dessinée à la main | ✅ Schéma + explication |
-| Mini pitch | Loom, 2 min max : problème + solution + avancement | ⏳ |
+| Mini pitch | Loom, 2 min max : problème + solution + avancement | ✅ Vidéo de 1 min 43 dans le dépôt |
 | Roadmap | Jusqu'à jeudi | ⏳ |
 
 > Les cases passent à ✅ au moment du dépôt, une fois chaque élément relu.
@@ -37,6 +39,6 @@
 - [x] Le schéma d'architecture est fusionné et lié ci-dessus.
 - [ ] Le tableau « Les briques » de l'architecture reflète l'état réel du mercredi.
 - [ ] La roadmap reflète l'avancement réel du mercredi.
-- [ ] Le Loom est enregistré, partagé « toute personne ayant le lien », et son lien est collé ci-dessus.
+- [x] La vidéo est enregistrée (1 min 43) et liée ci-dessus.
 - [ ] Tous les liens de cette page s'ouvrent depuis une fenêtre de navigation privée.
 - [ ] Alexis dépose le livrable.
