@@ -16,7 +16,7 @@ Propriétaire : **Alexis (CDO)**.
 | `legacy_id` | ✅ | `C-0001` (format `C-` + 4 chiffres) |
 | `first_name` | ✅ | `Julien` |
 | `last_name` | ✅ | `Moreau` |
-| `email` | — | `julien.moreau@boulangerie-moreau.example` |
+| `email` | — | `julien.moreau@boulangerie-moreau.example.com` |
 | `phone` | — | `+33 6 39 98 00 01` |
 | `company` | — | `Boulangerie Moreau` |
 | `job_title` | — | `Gérant` |
@@ -27,7 +27,7 @@ Un champ absent dans l'ancien CRM vaut `null`.
 
 ## Données 100 % fictives
 
-- Les adresses e-mail utilisent le domaine réservé **`.example`** : elles ne peuvent appartenir à personne.
+- Les adresses e-mail se terminent par **`.example.com`**, un domaine réservé : elles ne peuvent appartenir à personne. (Le domaine `.example` seul est refusé par HubSpot.)
 - Les numéros utilisent la plage **06 39 98 xx xx**, réservée par l'ARCEP aux œuvres de fiction.
 - Les noms et entreprises sont inventés.
 
