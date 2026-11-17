@@ -12,7 +12,7 @@ from agent.runner.prompts import ANSWER_FORMAT, FIELDS
 GOOD = {"legacy_id": "C-0001", "first_name": "Julien", "last_name": "Moreau",
         "email": "julien.moreau@boulangerie-moreau.example.com", "phone": "+33 6 39 98 00 01",
         "company": "Boulangerie Moreau", "job_title": "Gérant", "city": "Lyon",
-        "notes": "Commande hebdomadaire de flyers", "error": None}
+        "notes": "Commande hebdomadaire de flyers", "error": ""}
 
 
 def fake_session(answers):
@@ -59,7 +59,7 @@ class TestOrchestration(unittest.TestCase):
         self.assertEqual(len(r["screenshots"]), 2)
 
     def test_fiche_introuvable(self):
-        missing = {f: None for f in FIELDS} | {"error": "fiche introuvable"}
+        missing = {f: "" for f in FIELDS} | {"error": "fiche introuvable"}
         create, wait, calls = fake_session([missing])
         with mock.patch.object(run.hclient, "create_session", create), mock.patch.object(run.hclient, "wait", wait):
             r = run.process("https://crm.example", "C-0999", "run-1", reread=True)
@@ -74,6 +74,40 @@ class TestOrchestration(unittest.TestCase):
             r = run.process("https://crm.example", "C-0001", "run-1", reread=True)
         self.assertEqual(r["status"], "failed")
         self.assertIn("429", r["error"])
+
+
+class TestFiletsDeSecurite(unittest.TestCase):
+    """Cas réels observés le 17/11 sur l'ancien CRM."""
+
+    def test_fiche_rangee_dans_notes(self):
+        import json as _json
+        inner = {k: v for k, v in GOOD.items() if k != "error"}
+        answer = {f: "" for f in FIELDS} | {"legacy_id": "C-0001", "notes": _json.dumps(inner), "error": "None"}
+        contact, error = run.normalize_answer(answer, "C-0001")
+        self.assertIsNone(error)
+        self.assertEqual(contact["first_name"], "Julien")
+        self.assertEqual(contact["notes"], "Commande hebdomadaire de flyers")
+
+    def test_none_en_texte_n_est_pas_une_erreur(self):
+        contact, error = run.normalize_answer(dict(GOOD, error="None", notes="null"), "C-0001")
+        self.assertIsNone(error)
+        self.assertIsNone(contact["notes"])
+
+    def test_autre_fiche_renvoyee(self):
+        contact, error = run.normalize_answer(dict(GOOD, legacy_id="C-0002"), "C-0001")
+        self.assertIn("C-0002", error)
+
+    def test_reponse_vide(self):
+        contact, error = run.normalize_answer({f: "" for f in FIELDS} | {"legacy_id": "C-0001", "error": ""}, "C-0001")
+        self.assertEqual(error, "réponse vide")
+
+    def test_pas_de_relecture_si_fiche_vide(self):
+        empty = {f: "" for f in FIELDS} | {"legacy_id": "C-0010", "error": ""}
+        create, wait, calls = fake_session([empty])
+        with mock.patch.object(run.hclient, "create_session", create), mock.patch.object(run.hclient, "wait", wait):
+            r = run.process("https://crm.example", "C-0010", "run-1", reread=True)
+        self.assertEqual(calls["n"], 1)
+        self.assertEqual(r["agent_error"], "réponse vide")
 
 
 if __name__ == "__main__":

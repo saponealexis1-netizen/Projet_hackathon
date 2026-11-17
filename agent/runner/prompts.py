@@ -10,11 +10,14 @@ FIELDS = ["legacy_id", "first_name", "last_name", "email", "phone",
 
 # Format JSON imposé à la réponse de l'agent (agent.answer_format) :
 # les 9 champs du contrat commun + un champ « error » si la fiche est introuvable.
+# Uniquement des chaînes : plus simple pour l'agent (« texte ou null » le perturbait).
+# Chaîne vide = information absente ; la vérification transforme "" en null.
 ANSWER_FORMAT = {
     "type": "object",
     "properties": {
-        **{f: {"type": ["string", "null"]} for f in FIELDS},
-        "error": {"type": ["string", "null"]},
+        **{f: {"type": "string", "description": f"valeur affichée pour « {f} », ou chaîne vide si absente"}
+           for f in FIELDS},
+        "error": {"type": "string", "description": "chaîne vide si la fiche a été lue, sinon le problème"},
     },
     "required": FIELDS + ["error"],
     "additionalProperties": False,
@@ -45,10 +48,11 @@ RÈGLES STRICTES
   qui apparaît. Ne déduis JAMAIS une valeur d'un motif, d'une autre fiche ou de l'identifiant.
 - Avant de répondre, vérifie sur l'écran que chaque valeur renvoyée y est bien visible,
   caractère par caractère (attention aux chiffres des numéros de téléphone).
-- Champ vide, absent ou que tu n'as pas pu afficher : null. Mieux vaut null qu'une valeur inventée.
+- Champ vide, absent ou que tu n'as pas pu afficher : chaîne vide "". Mieux vaut vide qu'une valeur inventée.
+- Chaque champ contient UNE seule valeur : ne mets jamais toute la fiche dans un champ.
 - Lecture seule : ne clique jamais sur Enregistrer, Modifier ou Supprimer.
-- Si la fiche est introuvable, mets les champs à null et explique le problème dans « error ».
-  Sinon, « error » vaut null.
+- Si la fiche est introuvable, laisse les champs vides et explique le problème dans « error ».
+  Sinon, « error » est une chaîne vide.
 """
 
 REREAD_FIELD = """Tu vérifies une information dans un ancien logiciel CRM (lecture seule).
@@ -57,7 +61,7 @@ Ouvre {url}, trouve la fiche du contact {legacy_id} et relis attentivement le ch
 « {field_label} ». Une première lecture a donné : « {previous} », ce qui semble incorrect
 ({reason}). Il est peut-être caché derrière un onglet ou un bouton « afficher » : ouvre-le.
 
-Renvoie la fiche complète (mêmes règles : recopier exactement, null si absent, ne rien modifier).
+Renvoie la fiche complète (mêmes règles : recopier exactement, chaîne vide si absent, ne rien modifier).
 """
 
 FIELD_LABELS = {"email": "e-mail", "phone": "téléphone", "first_name": "prénom",
