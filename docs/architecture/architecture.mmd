@@ -1,0 +1,32 @@
+flowchart TB
+    L["🗂️ <b>Ancien CRM</b><br/>logiciel « 2010 »<br/>sans export ni API"]
+    H["🤖 <b>Agent H Company</b><br/>voit l'écran, clique,<br/>lit chaque fiche"]
+    V["✅ <b>Vérification</b><br/>ok · à vérifier · bloquée"]
+    S["📤 <b>Envoi</b><br/>API HubSpot"]
+    HS[("🟠 <b>HubSpot</b><br/>CRM cible réel")]
+
+    T(["👤 <b>Thomas</b>"])
+    D["🖥️ <b>Écran de suivi</b><br/>lancement · direct · bilan"]
+    O["⚙️ <b>Orchestration</b>"]
+    DB[("🗄️ <b>Supabase</b><br/>journal de migration")]
+
+    T -- "1. Lancer la migration" --> D
+    D -- "2." --> O
+    O -- "3. pilote" --> H
+    L -. "4. lu à l'écran" .-> H
+    H -- "5. contact JSON" --> V
+    V -- "6. fiches valides" --> S
+    S -- "7. API" --> HS
+    S -- "8. une ligne par fiche" --> DB
+    DB -. "9. en direct" .-> D
+
+    classDef agent fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1f1147
+    classDef ours fill:#e0ecff,stroke:#2f54eb,stroke-width:1.5px,color:#0b1a44
+    classDef ext fill:#fff1e6,stroke:#ea580c,stroke-width:1.5px,color:#431407
+    classDef legacy fill:#f1f1f1,stroke:#6b7280,stroke-width:1.5px,stroke-dasharray:4 3,color:#111
+    classDef person fill:#fff,stroke:#111,color:#111
+    class H agent
+    class V,S,D,O ours
+    class HS,DB ext
+    class L legacy
+    class T person

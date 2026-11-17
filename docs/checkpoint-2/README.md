@@ -11,8 +11,8 @@
 | # | Élément demandé | Où | Responsable | État |
 |---|---|---|---|---|
 | 01 | **Parcours utilisateur** | [parcours-utilisateur.md](../parcours/parcours-utilisateur.md) | Maxime | ✅ Version finale |
-| 02 | **Architecture technique** | `docs/architecture/` | Victoria | ⏳ À venir |
-| 03 | **Mini pitch Loom** (2 min max) | Lien ci-dessous · script : [script-loom.md](script-loom.md) | Maxime | ⏳ Script prêt, à enregistrer mercredi |
+| 02 | **Architecture technique** | [architecture/README.md](../architecture/README.md) · [schéma (PNG)](../architecture/architecture.png) | Inès (à la place de Victoria) | ✅ Version mardi, à mettre à jour mercredi |
+| 03 | **Mini pitch Loom** (2 min max) | Lien ci-dessous · script : [script-loom.md](script-loom.md) | Inès (script de Maxime) | ⏳ Script prêt, à enregistrer mercredi |
 | 04 | **Roadmap** jusqu'à jeudi | [roadmap.md](roadmap.md) | Maxime | ✅ À mettre à jour mercredi |
 
 ## Mini pitch
@@ -24,7 +24,7 @@
 | Élément demandé | Format attendu | ✓ |
 |---|---|---|
 | Parcours utilisateur | Maquette Figma, Miro, Airtable Interface ou schéma | ⏳ Schéma et tableaux dans le parcours |
-| Architecture technique | Simple, même dessinée à la main | ⏳ |
+| Architecture technique | Simple, même dessinée à la main | ✅ Schéma + explication |
 | Mini pitch | Loom, 2 min max : problème + solution + avancement | ⏳ |
 | Roadmap | Jusqu'à jeudi | ⏳ |
 
@@ -32,7 +32,8 @@
 
 ## Avant le dépôt (mercredi, avant 17h)
 
-- [ ] Le schéma d'architecture de Victoria est fusionné et lié ci-dessus.
+- [x] Le schéma d'architecture est fusionné et lié ci-dessus.
+- [ ] Le tableau « Les briques » de l'architecture reflète l'état réel du mercredi.
 - [ ] La roadmap reflète l'avancement réel du mercredi.
 - [ ] Le Loom est enregistré, partagé « toute personne ayant le lien », et son lien est collé ci-dessus.
 - [ ] Tous les liens de cette page s'ouvrent depuis une fenêtre de navigation privée.
