@@ -15,6 +15,7 @@ Projet réalisé lors du **Hackathon Eugenia 2026 — « Build The Future »** (
 - [Personas](#personas)
 - [Stack technique](#stack-technique)
 - [L'équipe](#léquipe)
+- [Liens en ligne](#liens-en-ligne)
 - [Livrables](#livrables)
 - [Structure du dépôt](#structure-du-dépôt)
 
@@ -90,6 +91,15 @@ Team 8 — six rôles attribués.
 | Natalia Medrano | **CAO** | Automatisations, marketing |
 
 > **Cette semaine :** 4 membres actifs (Alexis, Victoria, Inès, Maxime) ; Mehdi et Natalia sont en standby. **Alexis est chef de projet** et seul responsable des fusions. Détail dans [docs/ORGANISATION.md](docs/ORGANISATION.md).
+
+## Liens en ligne
+
+| Application | Adresse | Statut |
+|---|---|---|
+| Ancien CRM simulé (`apps/legacy-crm`) | https://projet-hackathon-uffi.vercel.app | ✅ En ligne (socle) |
+| Écran de suivi de migration (`apps/dashboard`) | à venir | ⏳ À déployer |
+
+Chaque fusion sur `main` redéploie automatiquement sur Vercel.
 
 ## Livrables
 
