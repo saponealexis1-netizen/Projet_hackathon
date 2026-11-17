@@ -89,9 +89,15 @@ export default function SuiviMigration() {
             avant d&apos;être envoyée dans HubSpot.
           </p>
         </div>
-        <button className="btn" onClick={lancer} disabled={launching || running}>
-          {launching ? "Lancement…" : running ? "Migration en cours…" : run ? "Relancer la migration" : "Lancer la migration"}
-        </button>
+        {run?.mode === "live" ? (
+          // Migration réelle, lancée par l'orchestration (agent/runner) : pas de bouton qui
+          // relancerait une simulation par erreur pendant la démo.
+          <span className="badge-live">{running ? "Migration réelle en cours…" : "Migration réelle · agent H Company"}</span>
+        ) : (
+          <button className="btn" onClick={lancer} disabled={launching || running}>
+            {launching ? "Lancement…" : running ? "Migration en cours…" : run ? "Relancer la migration" : "Lancer la migration"}
+          </button>
+        )}
       </section>
 
       {error && <p className="alert">⚠️ {error}</p>}
