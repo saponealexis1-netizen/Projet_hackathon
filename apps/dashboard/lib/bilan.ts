@@ -40,6 +40,8 @@ export type Bilan = {
   ignorees: number;
   tauxReussite: number | null; // migrées / traitées, en %
   dureeTotaleMs: number;
+  /** Durée réelle (horloge) : du premier agent démarré au dernier terminé, additionnée par lancement. */
+  dureeReelleMs: number | null;
   dureeMoyenneMs: number | null;
   creditsTotal: number;
   creditsParFiche: number | null;
@@ -93,6 +95,7 @@ export function computeBilan(rows: LogRow[], total: number): Bilan {
   const migrees = ok + aVerifier;
 
   const dureeTotaleMs = rows.reduce((s, r) => s + (r.duration_ms ?? 0), 0);
+  const dureeReelleMs = dureeReelle(rows);
   const creditsTotal = rows.reduce((s, r) => s + Number(r.credits_used ?? 0), 0);
 
   const parCode = new Map<string, number>();
@@ -109,6 +112,7 @@ export function computeBilan(rows: LogRow[], total: number): Bilan {
     ignorees,
     tauxReussite: traitees ? Math.round((migrees / traitees) * 100) : null,
     dureeTotaleMs,
+    dureeReelleMs,
     dureeMoyenneMs: traitees ? Math.round(dureeTotaleMs / traitees) : null,
     creditsTotal,
     creditsParFiche: traitees ? Math.round((creditsTotal / traitees) * 10000) / 10000 : null,
@@ -119,6 +123,25 @@ export function computeBilan(rows: LogRow[], total: number): Bilan {
     corrigeesParRelecture: rows.filter(rereadChanged).length,
     avecPreuve: rows.filter((r) => r.screenshot_url).length,
   };
+}
+
+/**
+ * Les agents travaillent en parallèle : la durée réelle n'est pas la somme de leurs temps.
+ * Pour chaque lancement : dernière fin − premier début. Les lancements sont additionnés
+ * (ex. 97 fiches puis 3 relancées). null si les horaires ne sont pas connus.
+ */
+function dureeReelle(rows: LogRow[]): number | null {
+  const parRun = new Map<string, { debut: number; fin: number }>();
+  for (const r of rows) {
+    if (!r.agent_started_at || !r.agent_finished_at) continue;
+    const debut = Date.parse(r.agent_started_at);
+    const fin = Date.parse(r.agent_finished_at);
+    const key = r.run_id ?? "run";
+    const cur = parRun.get(key);
+    parRun.set(key, cur ? { debut: Math.min(cur.debut, debut), fin: Math.max(cur.fin, fin) } : { debut, fin });
+  }
+  if (parRun.size === 0) return null;
+  return [...parRun.values()].reduce((s, p) => s + (p.fin - p.debut), 0);
 }
 
 export function formatDuree(ms: number | null): string {

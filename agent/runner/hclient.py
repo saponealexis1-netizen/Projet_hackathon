@@ -89,8 +89,11 @@ def wait(session_id: str, max_wait_s: int = 600) -> dict:
     last: dict = {}
     screenshots: list[str] = []
     while time.time() < deadline:
+        # Long-poll de 20 s tant que l'agent travaille ; une fois la session terminée,
+        # on ne fait plus que des lectures immédiates (sinon ~20 s perdues par fiche).
+        wait_s = 0 if last.get("status") in TERMINAL else 20
         data, code = request(
-            "GET", f"/sessions/{session_id}/changes?from_index={index}&wait_for_seconds=20", timeout=40)
+            "GET", f"/sessions/{session_id}/changes?from_index={index}&wait_for_seconds={wait_s}", timeout=40)
         if code == 204 or not data:
             if last.get("status") in TERMINAL:
                 break
@@ -103,8 +106,8 @@ def wait(session_id: str, max_wait_s: int = 600) -> dict:
             if isinstance(image, dict) and image.get("source"):
                 screenshots.append(image["source"])
         index = (data.get("first_index") or index) + len(events)
-        if data.get("status") in TERMINAL and not events:
-            break
+        if data.get("status") in TERMINAL and (not events or data.get("answer") is not None):
+            break   # session terminée et réponse reçue : inutile d'attendre davantage
     else:
         raise TimeoutError(f"session {session_id} toujours en cours après {max_wait_s} s")
 
@@ -123,5 +126,7 @@ def wait(session_id: str, max_wait_s: int = 600) -> dict:
         "steps": metrics.get("steps"),
         "cost_usd": metrics.get("total_cost"),
         "duration_ms": int((end - start).total_seconds() * 1000) if start and end else None,
+        "started_at": last.get("started_at"),
+        "finished_at": last.get("finished_at"),
         "screenshots": screenshots,
     }

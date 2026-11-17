@@ -23,6 +23,10 @@ export type LogRow = {
   screenshot_url?: string | null;
   /** Relecture ciblée (D13) : le champ relu par l'agent, avant / après. */
   reread?: Reread | null;
+  /** Durée réelle : lancement et horaires de l'agent. */
+  run_id?: string;
+  agent_started_at?: string | null;
+  agent_finished_at?: string | null;
 };
 
 export type Reread = {

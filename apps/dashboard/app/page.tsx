@@ -163,7 +163,11 @@ export default function SuiviMigration() {
             <div className="bilan-grid">
               <Stat label="Fiches envoyées dans HubSpot" value={`${bilan.migrees} / ${bilan.traitees}`} big />
               <Stat label="Taux de réussite" value={bilan.tauxReussite === null ? "—" : `${bilan.tauxReussite} %`} big />
-              <Stat label="Temps cumulé des agents" value={formatDuree(bilan.dureeTotaleMs)} />
+              {bilan.dureeReelleMs !== null ? (
+                <Stat label="Durée réelle de la migration" value={formatDuree(bilan.dureeReelleMs)} />
+              ) : (
+                <Stat label="Temps cumulé des agents" value={formatDuree(bilan.dureeTotaleMs)} />
+              )}
               <Stat label="Temps moyen par fiche" value={formatDuree(bilan.dureeMoyenneMs)} />
               <Stat label="Coût Agent API" value={formatDollars(bilan.creditsTotal, 2)} />
               <Stat label="Coût par fiche" value={bilan.creditsParFiche === null ? "—" : formatDollars(bilan.creditsParFiche, 3)} />
@@ -282,6 +286,8 @@ function Relecture({ row }: { row: LogRow }) {
 /** D14 : ce que l'agent a vu (capture) à côté de ce qu'il a lu (champs extraits). */
 function FenetrePreuve({ row, onClose }: { row: LogRow; onClose: () => void }) {
   const [imageKo, setImageKo] = useState(false);
+  // Les captures H Company demandent la clé API : on passe par le relais serveur /api/capture.
+  const capture = row.screenshot_url && row.agent_session_id ? `/api/capture/${row.agent_session_id}` : null;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -308,10 +314,10 @@ function FenetrePreuve({ row, onClose }: { row: LogRow; onClose: () => void }) {
         <div className="modal-body">
           <div className="shot">
             <h3>Ce que l&apos;agent a vu</h3>
-            {row.screenshot_url && !imageKo ? (
-              <a href={row.screenshot_url} target="_blank" rel="noreferrer">
+            {capture && !imageKo ? (
+              <a href={capture} target="_blank" rel="noreferrer">
                 {/* eslint-disable-next-line @next/next/no-img-element -- capture externe (Agent API) */}
-                <img src={row.screenshot_url} alt={`Fiche ${row.legacy_id} vue par l'agent`} onError={() => setImageKo(true)} />
+                <img src={capture} alt={`Fiche ${row.legacy_id} vue par l'agent`} onError={() => setImageKo(true)} />
               </a>
             ) : (
               <p className="muted">{row.screenshot_url ? "Capture d'écran expirée ou inaccessible." : "Pas de capture pour cette fiche."}</p>
