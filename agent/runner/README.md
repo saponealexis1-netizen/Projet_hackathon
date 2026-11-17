@@ -67,3 +67,14 @@ En attendant l'ancien CRM, l'agent a lu la fiche C-0003 sur la page GitHub de `d
 | Capture d'écran | 1 récupérée |
 
 Paramètres : agent `h/web-surfer-flash`, `max_steps` 40, `max_time_s` 240, quota de 3 agents en parallèle (offre gratuite).
+
+## Tests sur l'ancien CRM (17/11/2026) — ce qu'on a appris
+
+| Test | Résultat | Leçon |
+|---|---|---|
+| v1, C-0042 (page 5, onglets, bouton « Afficher le numéro »), instructions v1 | 8/9 : **téléphone inventé** | La capture finale montre le bouton jamais cliqué : l'agent a deviné un numéro plausible. La vérification ne peut pas le voir (format correct). |
+| Même fiche, instructions durcies (« une valeur n'est valable que si tu la vois », « clique sur les boutons Afficher ») | ✅ 9/9, 34 s, 0,019 $ | L'agent clique bien sur le bouton. |
+| v2 (autre mise en page, autres libellés), C-0057 | 8/9 : chiffre mal lu (« 39 » → « 99 ») | Erreur de lecture de l'image. |
+| Mode visuel **avec le texte de la page** (`markdown: true`) | ✅ v2 : 9/9, 21 s, 0,013 $ · v1 : 9/9, 36 s, 0,024 $ | L'agent navigue sur les captures mais lit les caractères exacts. |
+
+**Pour le pitch** : c'est la preuve visuelle (D14) qui a permis de comprendre l'erreur, et le **même agent, sans configuration, lit les deux versions du CRM** (D12).

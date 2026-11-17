@@ -55,7 +55,12 @@ def create_session(task: str, answer_format: dict, start_url: str | None = None,
                    agent: str = "h/web-surfer-flash", max_steps: int = 40,
                    max_time_s: int = 240, group_id: str | None = None) -> str:
     """Lance un agent sur une tâche. Renvoie l'identifiant de session."""
-    overrides: dict = {"agent.answer_format": answer_format}
+    overrides: dict = {
+        "agent.answer_format": answer_format,
+        # Mode visuel (captures d'écran : navigation + preuve D14) AVEC le texte de la page :
+        # l'agent lit les caractères exacts au lieu de les déchiffrer sur l'image (évite « 39 » lu « 99 »).
+        "agent.environments[kind=web].mode": {"type": "visual", "width": 1200, "height": 1200, "markdown": True},
+    }
     if start_url:
         overrides["agent.environments[kind=web].start_url"] = start_url
     body = {
