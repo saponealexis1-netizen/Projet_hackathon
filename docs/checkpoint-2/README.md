@@ -32,6 +32,8 @@
 
 ## Avant le dépôt (mercredi, avant 17h)
 
+👉 **Checklist détaillée, horaires, vérification des liens et message de dépôt : [checklist-depot.md](checklist-depot.md).**
+
 - [x] Le schéma d'architecture est fusionné et lié ci-dessus.
 - [ ] Le tableau « Les briques » de l'architecture reflète l'état réel du mercredi.
 - [ ] La roadmap reflète l'avancement réel du mercredi.
