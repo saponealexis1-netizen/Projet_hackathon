@@ -79,3 +79,18 @@ Une fois `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY` configurées (dans `.env.
 | `/?run=<identifiant>&total=100` | Un lancement **en cours**, lancé depuis `agent/runner` avec `--run-id <identifiant>` : l'écran se remplit en direct |
 
 Coûts affichés en dollars (`credits_used` = coût de la fiche en $, mesuré par l'Agent API).
+
+## Preuves de l'agent (D13, D14)
+
+- **Colonne « Preuve » → bouton « 📷 Voir »** : ouvre une fenêtre avec, à gauche, **la capture d'écran de la fiche vue par l'agent** (`screenshot_url`, D14) et, à droite, **les 9 champs qu'il a lus**. C'est la réponse à « Et si l'agent se trompe ? ». Si la capture a expiré, un message le dit.
+- **Relecture ciblée (D13)** : quand l'agent a relu un champ, la colonne « Anomalies » affiche `🔁 Téléphone relu par l'agent : « avant » → « après »` (en bleu si la valeur a été corrigée, « confirmé » sinon), et le champ est surligné dans la fenêtre Preuve.
+- **Bilan** : nombre de champs relus (et corrigés), et nombre de fiches avec capture d'écran.
+
+## Captures d'écran de l'agent (preuve visuelle, D14)
+
+Les captures de l'Agent API H Company ne se téléchargent qu'**avec la clé API** : le navigateur ne peut pas les afficher directement. L'écran passe donc par un relais serveur, **`/api/capture/<session>`**, qui :
+- ne sert que les captures enregistrées dans `migration_log` pour cette session ;
+- n'interroge que l'hôte de l'Agent API ;
+- garde la clé côté serveur (variable **`HAI_API_KEY`**, à ajouter dans Vercel).
+
+Testé avec une vraie capture : image servie (PNG), session inconnue → 404, identifiant invalide → 400.

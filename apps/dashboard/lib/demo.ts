@@ -22,6 +22,11 @@ export function isDemoRunId(runId: string): boolean {
 
 export const DEMO_TOTAL = demoData.length;
 
+/** Exemple de relecture ciblée (D13) pour la démo : téléphone mal lu, relu par l'agent. */
+const DEMO_REREAD: Record<string, LogRow["reread"]> = {
+  "C-0005": { field: "phone", before: "06 39 98 00", after: "+33 6 39 98 00 05" },
+};
+
 export function demoRows(runId: string, now = Date.now()): LogRow[] {
   const start = Number(runId.slice(DEMO_PREFIX.length));
   if (!Number.isFinite(start)) return [];
@@ -30,11 +35,12 @@ export function demoRows(runId: string, now = Date.now()): LogRow[] {
     .slice(0, done)
     .map((r, i) => ({
       ...r,
-      // Coût simulé = coût réel mesuré sur les 100 fiches de l'ancien CRM (~0,015 $ par fiche).
-      credits_used: 0.015,
       anomalies: r.anomalies ?? [],
       hubspot_id: r.status === "success" || r.status === "partial" ? `demo-${1000 + i}` : null,
       error: null,
       created_at: new Date(start + (i + 1) * DEMO_STEP_MS).toISOString(),
+      agent_session_id: null,
+      screenshot_url: null,
+      reread: DEMO_REREAD[r.legacy_id] ?? null,
     }));
 }
