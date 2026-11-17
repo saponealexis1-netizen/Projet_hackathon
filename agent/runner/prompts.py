@@ -34,6 +34,8 @@ COMMENT FAIRE
 - Trouve la liste des contacts. Si la fiche n'est pas sur la page, passe aux pages suivantes.
 - Ouvre la fiche. Certaines informations peuvent être cachées : derrière un onglet, un bouton
   « afficher », « voir plus »… Ouvre-les pour tout lire.
+- Vérifie que l'identifiant affiché sur la fiche ouverte est EXACTEMENT {legacy_id}, caractère par
+  caractère (C-0070 n'est pas C-0007). Sinon, retourne à la liste et cherche la bonne fiche.
 - Les libellés peuvent varier (« Société », « Raison sociale » ou « Entreprise » veulent dire
   la même chose) : fie-toi au sens, pas au mot exact.
 

@@ -109,6 +109,11 @@ def reread_if_needed(url: str, run_id: str, result: dict) -> dict:
 def process(url: str, legacy_id: str, run_id: str, reread: bool) -> dict:
     try:
         result = read_record(url, legacy_id, run_id)
+        if result.get("agent_error") and "au lieu de" in result["agent_error"]:
+            # Mauvaise fiche ouverte (ex. C-0007 au lieu de C-0070) : une seconde tentative
+            first_error = result["agent_error"]
+            result = read_record(url, legacy_id, run_id)
+            result["retry"] = first_error
         if reread:
             result = reread_if_needed(url, run_id, result)
     except Exception as e:  # agent en panne, quota, réseau…
