@@ -25,6 +25,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from pipeline.hubspot.send import supabase_rest_url
 from pipeline.verification.verify import ALLOWED_FIELDS, verify_contact
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -133,7 +134,7 @@ def fetch_supabase_rows(run_id: str) -> list[dict]:
         "run_id": f"eq.{run_id}",
     })
     req = urllib.request.Request(
-        os.environ["SUPABASE_URL"].rstrip("/") + "/rest/v1/migration_log?" + query,
+        supabase_rest_url("migration_log") + "?" + query,
         headers={"apikey": key, "Authorization": f"Bearer {key}"},
     )
     with urllib.request.urlopen(req, timeout=30) as res:

@@ -166,7 +166,14 @@ def main(argv: list[str]) -> int:
     # Chaque fiche est vérifiée, envoyée dans HubSpot et journalisée DÈS qu'elle est lue :
     # l'écran de suivi se remplit en direct (et une coupure ne fait pas tout perdre).
     from pipeline.hubspot.send import failed_row, migrate_one, supabase_configured, write_supabase_log
-    write = write_supabase_log if (supabase_configured() and not dry_run) else (lambda rows: None)
+    def write(rows: list[dict]) -> None:
+        # Une panne du journal ne doit pas arrêter la migration : la fiche est déjà dans HubSpot.
+        if not supabase_configured() or dry_run:
+            return
+        try:
+            write_supabase_log(rows)
+        except Exception as e:  # noqa: BLE001
+            print(f"  ⚠️ journal Supabase non écrit ({e})", flush=True)
     lock = threading.Lock()
     done: list[dict] = []
     rows: list[dict] = []

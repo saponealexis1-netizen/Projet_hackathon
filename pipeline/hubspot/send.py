@@ -20,6 +20,7 @@ En ligne de commande :
 from __future__ import annotations
 
 import json
+import re
 import os
 import sys
 import urllib.error
@@ -152,10 +153,17 @@ def supabase_configured() -> bool:
     return bool(os.environ.get("SUPABASE_URL") and os.environ.get("SUPABASE_SERVICE_ROLE_KEY"))
 
 
+def supabase_rest_url(table: str) -> str:
+    """Adresse REST d'une table. Accepte SUPABASE_URL avec ou sans « /rest/v1 » à la fin."""
+    base = os.environ["SUPABASE_URL"].strip().rstrip("/")
+    base = re.sub(r"/rest/v1$", "", base)
+    return f"{base}/rest/v1/{table}"
+
+
 def write_supabase_log(rows: list[dict]) -> None:
     key = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
     req = urllib.request.Request(
-        os.environ["SUPABASE_URL"].rstrip("/") + "/rest/v1/migration_log",
+        supabase_rest_url("migration_log"),
         data=json.dumps(rows).encode("utf-8"),
         method="POST",
         headers={
