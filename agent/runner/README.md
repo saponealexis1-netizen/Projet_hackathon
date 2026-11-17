@@ -78,3 +78,21 @@ Paramètres : agent `h/web-surfer-flash`, `max_steps` 40, `max_time_s` 240, quot
 | Mode visuel **avec le texte de la page** (`markdown: true`) | ✅ v2 : 9/9, 21 s, 0,013 $ · v1 : 9/9, 36 s, 0,024 $ | L'agent navigue sur les captures mais lit les caractères exacts. |
 
 **Pour le pitch** : c'est la preuve visuelle (D14) qui a permis de comprendre l'erreur, et le **même agent, sans configuration, lit les deux versions du CRM** (D12).
+
+## Premier parcours complet : 5 fiches de bout en bout (17/11/2026)
+
+**1er essai (3 agents en parallèle) : 1/5 seulement.** L'agent avait bien lu les fiches, mais il a parfois rangé toute la fiche en JSON dans le champ « notes » et écrit le mot « None » comme erreur ; une relecture lancée sur une fiche vide a même produit « User User ».
+
+**Corrections** : format de réponse en texte seul (chaîne vide si absent), récupération d'une fiche rangée dans un champ, « None » / « null » ignorés, contrôle que la fiche renvoyée est bien celle demandée, pas de relecture d'une fiche vide (`run.normalize_answer`, 5 tests).
+
+**2e essai, mêmes fiches C-0006 à C-0010** (run `36cc087b-a298-43fe-b874-1f5f78d4378d`, enregistré dans `migration_log`) :
+
+| Mesure | Valeur |
+|---|---|
+| Fiches lues par l'agent | 5 / 5 |
+| Fiches 100 % exactes | **5 / 5** (9/9 champs chacune) |
+| Envoyées dans HubSpot | 5 / 5 |
+| Temps moyen par fiche | 24 s |
+| Coût moyen par fiche | **0,013 $** |
+| Durée totale (3 agents en parallèle) | ~1 min |
+| Extrapolation 3 000 fiches | ~39 $ · ~6,7 h avec 3 agents |

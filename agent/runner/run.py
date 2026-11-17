@@ -31,16 +31,54 @@ ROOT = Path(__file__).resolve().parents[2]
 REREAD_CODES = {"bad_email", "bad_phone", "missing_required"}   # anomalies qui justifient une relecture
 
 
+EMPTY = {"", "none", "null", "n/a", "-"}
+
+
+def _blank(value) -> bool:
+    return value is None or (isinstance(value, str) and value.strip().lower() in EMPTY)
+
+
+def normalize_answer(answer, legacy_id: str) -> tuple[dict, str | None]:
+    """Transforme la réponse de l'agent en contact + éventuelle erreur, avec filets de sécurité.
+
+    - réponse sous forme de texte JSON → décodée ;
+    - fiche entière rangée dans un champ (ex. « notes ») → récupérée ;
+    - « None », « null », "" → absent ;
+    - fiche différente de celle demandée → erreur.
+    """
+    if isinstance(answer, str):
+        try:
+            answer = json.loads(answer)
+        except ValueError:
+            answer = {}
+    answer = answer if isinstance(answer, dict) else {}
+    for value in list(answer.values()):            # fiche JSON cachée dans un champ
+        if isinstance(value, str) and value.lstrip().startswith("{") and '"legacy_id"' in value:
+            try:
+                inner = json.loads(value)
+            except ValueError:
+                continue
+            if isinstance(inner, dict) and inner.get("legacy_id") == legacy_id:
+                answer = {**answer, **inner}
+                break
+    contact = {f: (None if _blank(answer.get(f)) else str(answer.get(f)).strip()) for f in FIELDS}
+    error = None if _blank(answer.get("error")) else str(answer["error"]).strip()
+    if contact["legacy_id"] and contact["legacy_id"] != legacy_id and not error:
+        error = f"l'agent a renvoyé la fiche {contact['legacy_id']} au lieu de {legacy_id}"
+    if not error and all(contact[f] is None for f in FIELDS if f != "legacy_id"):
+        error = "réponse vide"
+    contact["legacy_id"] = legacy_id
+    return contact, error
+
+
 def read_record(url: str, legacy_id: str, run_id: str, task: str | None = None) -> dict:
     """Lance un agent sur une fiche et attend sa réponse."""
     task = task or READ_RECORD.format(url=url, legacy_id=legacy_id)
     session_id = hclient.create_session(task, ANSWER_FORMAT, start_url=url, group_id=f"bascule-{run_id}")
     result = hclient.wait(session_id)
-    answer = result["answer"] if isinstance(result["answer"], dict) else {}
-    contact = {f: answer.get(f) for f in FIELDS}
-    contact["legacy_id"] = contact["legacy_id"] or legacy_id
-    result["contact"] = contact
-    result["agent_error"] = answer.get("error")
+    result["contact"], result["agent_error"] = normalize_answer(result["answer"], legacy_id)
+    if result.get("status") != "completed" and not result["agent_error"]:
+        result["agent_error"] = result.get("error") or f"session {result.get('status')}"
     return result
 
 
@@ -55,6 +93,10 @@ def reread_if_needed(url: str, run_id: str, result: dict) -> dict:
                                field_label=FIELD_LABELS.get(a["field"], a["field"]),
                                previous=result["contact"].get(a["field"]), reason=a["message"])
     second = read_record(url, result["contact"]["legacy_id"], run_id, task=task)
+    if second.get("agent_error"):
+        result["reread"] = {"field": a["field"], "before": result["contact"].get(a["field"]),
+                            "after": None, "error": second["agent_error"]}
+        return result
     second["reread"] = {"field": a["field"], "before": result["contact"].get(a["field"]),
                         "after": second["contact"].get(a["field"])}
     for k in ("cost_usd", "duration_ms", "steps"):   # on additionne les deux lectures
