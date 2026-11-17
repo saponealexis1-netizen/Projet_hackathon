@@ -1,12 +1,6 @@
-import type { Metadata } from "next";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Bascule — ancien CRM (simulé)",
-  description:
-    "Ancien CRM simulé pour la démo Bascule : pas d'export, pas d'API.",
-};
-
+/** Racine commune aux deux versions de l'ancien CRM (v1 « 2010 » et /v2). */
 export default function RootLayout({
   children,
 }: Readonly<{

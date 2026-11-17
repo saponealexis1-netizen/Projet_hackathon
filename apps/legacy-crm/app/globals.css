@@ -1,10 +1,459 @@
-/* Style volontairement « vieux logiciel » (affiné dans la tâche victoria/legacy-crm). */
+/* Style volontairement « vieux logiciel de 2010 » (inspiré des fenêtres Windows classiques). */
 html,
 body {
   margin: 0;
   padding: 0;
-  background: #d4d0c8;
+  background: #3a6ea5;
   color: #000;
   font-family: Tahoma, Verdana, "Segoe UI", sans-serif;
   font-size: 13px;
+}
+
+.window {
+  max-width: 980px;
+  margin: 24px auto;
+  background: #d4d0c8;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 6px;
+  background: linear-gradient(90deg, #0a246a, #a6caf0);
+  color: #fff;
+  font-weight: bold;
+}
+
+.titlebar-buttons button {
+  display: inline-block;
+  width: 16px;
+  margin-left: 2px;
+  text-align: center;
+  background: #d4d0c8;
+  color: #000;
+  border: 1px solid;
+  border-color: #fff #404040 #404040 #fff;
+  font-size: 11px;
+  line-height: 14px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.menubar {
+  display: flex;
+  gap: 2px;
+  padding: 2px 4px;
+  border-bottom: 1px solid #808080;
+}
+
+.menu {
+  position: relative;
+}
+
+.menu-title {
+  padding: 2px 8px;
+  background: none;
+  border: 1px solid transparent;
+  font: inherit;
+  color: #000;
+  cursor: default;
+}
+
+.menu-title:hover,
+.menu-open {
+  background: #0a246a;
+  color: #fff;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 210px;
+  padding: 2px;
+  background: #d4d0c8;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.menu-dropdown a,
+.menu-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 3px 20px;
+  background: none;
+  border: none;
+  font: inherit;
+  color: #000;
+  text-align: left;
+  text-decoration: none;
+  cursor: default;
+}
+
+.menu-dropdown a:hover,
+.menu-dropdown button:hover {
+  background: #0a246a;
+  color: #fff;
+}
+
+.menu-dropdown hr {
+  margin: 2px 1px;
+  border: none;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #fff;
+}
+
+.content {
+  padding: 10px 12px 14px;
+  min-height: 420px;
+}
+
+h1 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.button,
+button {
+  display: inline-block;
+  padding: 3px 12px;
+  background: #d4d0c8;
+  color: #000;
+  font: inherit;
+  text-decoration: none;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  cursor: pointer;
+}
+
+.button:active {
+  border-color: #404040 #fff #fff #404040;
+}
+
+.button[aria-disabled="true"],
+button:disabled {
+  color: #808080;
+  text-shadow: 1px 1px 0 #fff;
+  cursor: default;
+  pointer-events: none;
+}
+
+table.grid {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 2px solid;
+  border-color: #404040 #fff #fff #404040;
+}
+
+table.grid th {
+  background: #d4d0c8;
+  text-align: left;
+  font-weight: normal;
+  padding: 3px 6px;
+  border: 1px solid;
+  border-color: #fff #808080 #808080 #fff;
+}
+
+table.grid td {
+  padding: 3px 6px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+table.grid tr:nth-child(even) td {
+  background: #f4f4f4;
+}
+
+table.grid a {
+  color: #0000ee;
+}
+
+.pagination {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+fieldset {
+  border: 1px solid;
+  border-color: #808080 #fff #fff #808080;
+  padding: 8px 10px 10px;
+  margin: 0 0 10px;
+}
+
+legend {
+  padding: 0 4px;
+}
+
+table.form th {
+  width: 140px;
+  text-align: right;
+  font-weight: normal;
+  padding: 4px 8px 4px 0;
+  vertical-align: top;
+}
+
+table.form td {
+  padding: 3px 0;
+}
+
+.field {
+  display: inline-block;
+  min-width: 360px;
+  min-height: 16px;
+  padding: 2px 4px;
+  background: #fff;
+  border: 2px solid;
+  border-color: #404040 #fff #fff #404040;
+  white-space: pre-wrap;
+}
+
+.statusbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 6px;
+  border-top: 1px solid #808080;
+  font-size: 11px;
+}
+
+.window-max {
+  max-width: none;
+  margin: 0;
+  min-height: 100vh;
+}
+
+input,
+select,
+textarea {
+  min-width: 360px;
+  padding: 2px 4px;
+  background: #fff;
+  font: inherit;
+  border: 2px solid;
+  border-color: #404040 #fff #fff #404040;
+}
+
+select {
+  min-width: 120px;
+}
+
+input[type="checkbox"] {
+  min-width: 0;
+}
+
+input[readonly] {
+  background: #ece9d8;
+}
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.dialog {
+  min-width: 340px;
+  max-width: 460px;
+  background: #d4d0c8;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  box-shadow: 3px 3px 0 #000;
+}
+
+.dialog-body {
+  display: flex;
+  gap: 12px;
+  padding: 14px 14px 8px;
+}
+
+.dialog-icon {
+  font-size: 26px;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 0 12px;
+}
+
+.dialog-buttons button {
+  min-width: 75px;
+}
+
+table.calendar {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: #fff;
+  border: 2px solid;
+  border-color: #404040 #fff #fff #404040;
+}
+
+table.calendar th {
+  background: #d4d0c8;
+  font-weight: normal;
+  padding: 3px;
+  border: 1px solid;
+  border-color: #fff #808080 #808080 #fff;
+}
+
+table.calendar td {
+  height: 72px;
+  padding: 2px 3px;
+  vertical-align: top;
+  border: 1px solid #c0c0c0;
+}
+
+.calendar-empty {
+  background: #ece9d8;
+}
+
+.calendar-today {
+  background: #ffffe1;
+}
+
+.calendar-day {
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.calendar-event {
+  display: block;
+  margin-top: 2px;
+  padding: 1px 3px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: #000;
+  text-decoration: none;
+  background: #c6dbf7;
+  border-left: 3px solid #0a246a;
+}
+
+.calendar-event:hover {
+  background: #0a246a;
+  color: #fff;
+}
+
+.help {
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+ol.help {
+  padding-left: 20px;
+}
+
+.taskbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3px 4px;
+  background: #d4d0c8;
+  border-top: 2px solid #fff;
+}
+
+.taskbar-item {
+  min-width: 180px;
+  text-align: left;
+  font-weight: bold;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+  .titlebar,
+  .menubar,
+  .toolbar,
+  .pagination,
+  .statusbar {
+    display: none;
+  }
+  .window {
+    border: none;
+    box-shadow: none;
+    margin: 0;
+  }
+}
+
+/* Onglets de la fiche : discrets, à l'intérieur de l'encadré « Informations du contact » */
+.tabs {
+  margin: 0;
+}
+
+.tab-list {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #808080;
+}
+
+.tab {
+  padding: 2px 12px;
+  margin-bottom: -1px;
+  background: #d4d0c8;
+  border: 1px solid;
+  border-color: #fff #808080 #808080 #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.tab-active {
+  font-weight: bold;
+  border-bottom-color: #d4d0c8;
+}
+
+.tab-panel {
+  padding: 4px 0 0;
+}
+
+/* ───────────── Version 2 « GestiContacts » : même style 2010, autre disposition ───────────── */
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+table.form-compact th {
+  width: 110px;
+}
+
+.field-compact {
+  min-width: 0;
+  width: 280px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.page-number {
+  padding: 2px 6px;
+  color: #0000ee;
+}
+
+b.page-number {
+  color: #000;
+  border: 1px solid #808080;
+  background: #fff;
 }
