@@ -13,7 +13,7 @@
 | 01 | **Parcours utilisateur** | [parcours-utilisateur.md](../parcours/parcours-utilisateur.md) | Maxime | ✅ Version finale |
 | 02 | **Architecture technique** | [architecture/README.md](../architecture/README.md) · [schéma (PNG)](../architecture/architecture.png) | Inès (à la place de Victoria) | ✅ Version finale |
 | 03 | **Mini pitch Loom** (2 min max) | [bascule-mini-pitch.mp4](bascule-mini-pitch.mp4) (1 min 43) · script : [script-loom.md](script-loom.md) | Inès (script de Maxime) | ✅ Version finale, enregistrée mardi 17/11 |
-| 04 | **Roadmap** jusqu'à jeudi | [roadmap.md](roadmap.md) | Maxime | ✅ À mettre à jour mercredi |
+| 04 | **Roadmap** jusqu'à jeudi | [roadmap.md](roadmap.md) | Maxime (mise à jour : Alexis) | ✅ À jour (mardi soir) |
 
 ## Mini pitch
 
@@ -78,7 +78,7 @@ Mesures calculées à partir du journal `migration_log` par [`pipeline/metrics/`
 | Parcours utilisateur | Maquette Figma, Miro, Airtable Interface ou schéma | ✅ Schéma Mermaid et tableaux dans le parcours |
 | Architecture technique | Simple, même dessinée à la main | ✅ Schéma + explication |
 | Mini pitch | Loom, 2 min max : problème + solution + avancement | ✅ Vidéo de 1 min 43 dans le dépôt |
-| Roadmap | Jusqu'à jeudi | ⏳ |
+| Roadmap | Jusqu'à jeudi | ✅ Avancement réel + mercredi et jeudi |
 
 > Les cases passent à ✅ au moment du dépôt, une fois chaque élément relu.
 
@@ -87,8 +87,8 @@ Mesures calculées à partir du journal `migration_log` par [`pipeline/metrics/`
 👉 **Checklist détaillée, horaires, vérification des liens et message de dépôt : [checklist-depot.md](checklist-depot.md).**
 
 - [x] Le schéma d'architecture est fusionné et lié ci-dessus.
-- [ ] Le tableau « Les briques » de l'architecture reflète l'état réel du mercredi.
-- [ ] La roadmap reflète l'avancement réel du mercredi.
+- [x] Le tableau « Les briques » de l'architecture reflète l'état réel.
+- [x] La roadmap reflète l'avancement réel.
 - [x] La vidéo est enregistrée (1 min 43) et liée ci-dessus.
 - [ ] Tous les liens de cette page s'ouvrent depuis une fenêtre de navigation privée.
 - [ ] Alexis dépose le livrable.
