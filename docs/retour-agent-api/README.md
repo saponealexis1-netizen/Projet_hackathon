@@ -1,6 +1,6 @@
 # Retour d'expérience — Agent API H Company
 
-Propriétaire : **Inès (CAIO)** · **Version du mardi 17/11 (soir)**. Reste à ajouter les résultats des tests de mercredi et jeudi (section 12), puis à finaliser vendredi avant 11h.
+Propriétaire : **Inès (CAIO)** · **Version 3 du mardi 17/11**. Reste à ajouter les résultats des tests de mercredi et jeudi (section 13), puis à finaliser vendredi avant 11h.
 
 > Sources : tests d'Alexis dans [`agent/runner/README.md`](../../agent/runner/README.md), mesures de Maxime dans [`docs/pitch/business-model.md`](../pitch/business-model.md), journal `migration_log` (Supabase).
 
@@ -19,7 +19,7 @@ Propriétaire : **Inès (CAIO)** · **Version du mardi 17/11 (soir)**. Reste à 
 | Temps moyen de lecture d'une fiche | **31 s** (médiane 29 s) | idem |
 | Coût moyen par fiche | **~0,015 $** (1,53 $ pour 100 fiches) | Métriques renvoyées par l'API |
 | Agents en parallèle | 3 (limite de l'offre gratuite) | Documentation H Company |
-| Durée réelle pour 100 fiches | 33 min mesurées, ~17 min après correction de notre code | `agent/runner` |
+| Durée réelle pour 100 fiches | ~17 min après correction de notre code (33 min mesurées avant) | `agent/runner` |
 | Premier essai sur 5 fiches, avant les garde-fous | **1 / 5** seulement | 17/11 |
 
 ## 3. La progression, test après test
@@ -35,13 +35,14 @@ Propriétaire : **Inès (CAIO)** · **Version du mardi 17/11 (soir)**. Reste à 
 | Même parcours, format texte simple + nettoyage | **5 / 5** | Format simplifié |
 | Migration des 100 fiches | 97 / 100, **0 erreur envoyée dans HubSpot** | Le contrôle d'identité a bloqué les 3 mauvaises fiches |
 | Relance automatique des 3 fiches | **100 / 100** | Relance une fois si la fiche n'est pas la bonne |
+| 5 fiches pièges + 1 fiche normale | **5 / 5 pièges traités comme prévu** | Vérification + relecture ciblée (D13) |
 
 ## 4. Ce qui a marché
 
 | Constat | Ce que ça nous apporte |
 |---|---|
 | **Zéro configuration (D12)** : l'agent ne reçoit que l'adresse et l'identifiant de la fiche. Il trouve seul la liste, la pagination, les onglets, ferme la fenêtre « Message du jour » et clique sur « Afficher le numéro ». | C'est l'argument face à un script ou un robot RPA : un autre logiciel ne demande aucun code. |
-| **Le même agent lit les deux versions de l'ancien CRM** (mise en page et libellés différents : « Société » / « Entreprise »…). | Preuve que l'agent comprend le sens des libellés, pas leur position. |
+| **Le même agent, sans configuration, a lu une fiche de la 2e version de l'ancien CRM** (mise en page et libellés différents : « Société » / « Entreprise »…). | Premier signe que l'agent comprend le sens des libellés, pas leur position. Pas encore testé sur toute la v2. |
 | **Format de réponse imposé** (`answer_format` : un objet JSON avec nos 9 champs + « error »). | La réponse arrive directement au format du contrat commun. |
 | **Mode visuel + texte de la page** (`markdown: true`). | L'agent navigue en regardant l'écran, mais recopie les caractères exacts : plus d'erreurs de lecture de chiffres. |
 | **Coût et durée renvoyés par l'API** pour chaque session. | Mesures de coût par fiche sans calcul de notre côté. |
@@ -53,20 +54,38 @@ Propriétaire : **Inès (CAIO)** · **Version du mardi 17/11 (soir)**. Reste à 
 | # | Problème observé | Pourquoi | Ce qu'on a changé | Résultat |
 |---|---|---|---|---|
 | 1 | **Téléphone inventé** : le numéro était caché derrière un bouton « Afficher », l'agent a renvoyé un numéro plausible sans cliquer. | L'agent préfère compléter plutôt que laisser vide. Le format était correct : notre vérification ne pouvait pas le voir. | Consigne : « une valeur n'est valable que si tu la vois écrite à l'écran ; si un champ affiche un bouton, clique dessus ». | 9/9 sur la même fiche |
-| 2 | **Chiffre mal lu** : « 39 » lu « 99 » sur la 2e version du CRM. | Lecture de l'image seule. | Texte de la page transmis en plus de la capture (`markdown: true`). | 9/9 sur les deux versions |
+| 2 | **Chiffre mal lu** : « 39 » lu « 99 » sur la 2e version du CRM. | Lecture de l'image seule. | Texte de la page transmis en plus de la capture (`markdown: true`). | 9/9 sur une fiche de chaque version |
 | 3 | **Mauvaise fiche ouverte** : C-0007 au lieu de C-0070 (3 fiches sur 100). | Identifiants qui se ressemblent. | Consigne « l'identifiant doit être exactement {legacy_id}, caractère par caractère » + contrôle de l'identifiant renvoyé + **une relance automatique**. | Aucune mauvaise fiche envoyée dans HubSpot ; 3/3 exactes après relance |
 | 4 | **Réponse mal rangée** : toute la fiche en JSON dans le champ « notes », le mot « None » écrit comme erreur. | Format « texte ou null » trop compliqué pour l'agent. | Champs en texte uniquement (chaîne vide si absent) ; nettoyage de la réponse côté code. | Passage de 1/5 à 5/5 |
 | 5 | **Relecture sur une fiche vide** → l'agent a produit « User User ». | Relecture lancée alors que la première lecture avait échoué. | Pas de relecture si la fiche est vide. | — |
-| 6 | **~20 s perdues par fiche** après la réponse de l'agent. | Notre code attendait encore une confirmation de l'API (attente longue) après la fin de la session. | Arrêt dès que la session est terminée et la réponse reçue. | 100 fiches : ~33 min → ~17 min (projection) |
+| 6 | **~20 s perdues par fiche** après la réponse de l'agent. | Notre code attendait encore une confirmation de l'API (attente longue) après la fin de la session. | Arrêt dès que la session est terminée et la réponse reçue. | 100 fiches : ~17 min après correction (33 min mesurées avant) |
+| 7 | **Relecture qui efface la fiche** : la relecture de l'e-mail n'a renvoyé que l'e-mail, et le code a remplacé toute la fiche (prénom et nom perdus). | Notre code reprenait toute la réponse de la relecture. | Une relecture ne remplace plus que le champ relu (2 tests ajoutés). | Fiches pièges : prénom et nom conservés |
 
-## 6. Ce qui nous a surpris
+## 6. Les fiches pièges : l'agent face à des données fausses
+
+5 fiches piégées ont été ajoutées à l'ancien CRM (C-0101 à C-0105) et migrées avec C-0004, dont l'une est le doublon (6 fiches en 102 s).
+
+| Fiche | Piège | Ce qu'a fait Bascule |
+|---|---|---|
+| C-0101 | Doublon de C-0004 (même e-mail) | ❌ **Bloquée** : « doublon possible de C-0004 » |
+| C-0102 | E-mail invalide | 🔁 Relue par l'agent, valeur **confirmée**, puis ❌ **bloquée** : « e-mail invalide » |
+| C-0103 | Prénom « - » | 🔁 Relue, puis ❌ **bloquée** : « champ obligatoire vide » |
+| C-0104 | Téléphone incomplet | 🔁 Relue, valeur **confirmée**, puis ⚠️ **à vérifier**, envoyée dans HubSpot |
+| C-0105 | `MARCHETTI`, `toulouse` | ⚠️ Corrigée (Marchetti, Toulouse), envoyée dans HubSpot |
+
+**Ce qu'on en retient**
+- **La vérification fait son travail** : les 3 fiches qui ne doivent pas partir (doublon, e-mail invalide, prénom vide) restent hors de HubSpot, avec leur raison affichée.
+- **La relecture (D13) sait dire « c'est bien écrit comme ça »** : quand la donnée est fausse dans l'ancien CRM, l'agent la confirme au lieu d'inventer une correction. C'est le comportement voulu : Bascule recopie, il ne corrige pas les données du client.
+- **Les tests de pièges ont trouvé un bug de notre code** (n° 7 ci-dessus), corrigé avant la démo.
+
+## 7. Ce qui nous a surpris
 
 - **L'agent « veut » répondre** : face à une information cachée, il invente une valeur crédible plutôt que de dire qu'il ne la voit pas. Il faut lui dire explicitement que le vide vaut mieux qu'une invention.
 - **Une erreur « parfaite » ne se voit pas** : un faux numéro bien formaté passe toutes les règles de vérification. Seule la **capture d'écran** a permis de comprendre ce qui s'était passé.
 - **Les consignes en français simple suffisent** : pas besoin de décrire le logiciel, seulement le but et les règles.
 - **La moitié du travail est autour de l'agent**, pas dans l'agent : format imposé, contrôles, relances, mesures.
 
-## 7. Les garde-fous qu'on a mis autour de l'agent
+## 8. Les garde-fous qu'on a mis autour de l'agent
 
 | Garde-fou | Où | Il protège contre… |
 |---|---|---|
@@ -78,7 +97,7 @@ Propriétaire : **Inès (CAIO)** · **Version du mardi 17/11 (soir)**. Reste à 
 | Capture d'écran gardée pour chaque fiche (D14) | `migration_log` + écran de suivi | Les erreurs invisibles : on peut toujours vérifier |
 | Upsert sur `bascule_legacy_id` | `pipeline/hubspot/` | Les doublons dans HubSpot en cas de relance |
 
-## 8. Nos conseils à une équipe qui démarre avec l'Agent API
+## 9. Nos conseils à une équipe qui démarre avec l'Agent API
 
 1. **Imposer un format de réponse simple** (texte uniquement, chaîne vide si absent) dès le premier test.
 2. **Activer le texte de la page** (`markdown: true`) dès qu'il faut recopier des chiffres ou des identifiants.
@@ -88,7 +107,7 @@ Propriétaire : **Inès (CAIO)** · **Version du mardi 17/11 (soir)**. Reste à 
 6. **Une session par fiche** plutôt qu'une longue session : plus facile à relancer, à mesurer et à paralléliser.
 7. **Arrêter d'attendre dès que la réponse est là** : sinon on perd du temps à chaque fiche.
 
-## 9. Nos retours à H Company
+## 10. Nos retours à H Company
 
 Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 
@@ -98,12 +117,12 @@ Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 | Mettre en avant **`markdown: true`** dans la documentation pour les tâches de recopie | Il a supprimé les erreurs de lecture de chiffres ; nous l'avons découvert en cherchant |
 | Un exemple officiel de **fin de session** (« la réponse est là, arrête d'attendre ») | Notre code perdait ~20 s par fiche à attendre une confirmation inutile |
 | Des **captures d'écran durables** (ou un export) | Elles sont notre preuve pour l'utilisateur ; nous avons dû les faire relayer par notre serveur |
-| Plus d'**agents en parallèle** sur l'offre gratuite pendant un hackathon | Avec 3 agents, 100 fiches prennent ~17 min ; une démo live en montre 5 ou 6 |
+| Plus d'**agents en parallèle** sur l'offre gratuite pendant un hackathon | Avec 3 agents, 100 fiches prennent ~17 min après correction de notre code (33 min mesurées avant) ; une démo live en montre 5 ou 6 |
 
-## 10. Pour le pitch et les questions du jury
+## 11. Pour le pitch et les questions du jury
 
 **Trois messages à retenir**
-1. **L'agent lit un logiciel qu'il n'a jamais vu** : il ne reçoit que l'adresse, et lit aussi bien les deux versions de l'ancien CRM.
+1. **L'agent lit un logiciel qu'il n'a jamais vu** : il ne reçoit que l'adresse. Il a migré les 100 fiches de la v1, et lu sans réglage une fiche de la v2 (autre mise en page, autres libellés).
 2. **Il ne fait jamais seul** : 1 fiche exacte sur 5 sans garde-fous, 100 sur 100 avec.
 3. **Chaque donnée est prouvée** : capture d'écran de la fiche d'origine pour chaque contact migré.
 
@@ -117,17 +136,17 @@ Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 | « Combien ça coûte ? » | ~0,015 $ par fiche mesuré sur 100 fiches, soit ~46 $ pour 3 000 fiches. |
 | « Qu'est-ce qui a été le plus difficile ? » | Rendre l'agent fiable, pas le faire marcher : la première lecture a réussi tout de suite, les garde-fous ont pris le reste de la journée. |
 
-## 11. Limites actuelles
+## 12. Limites actuelles
 
 - **Pas de connexion par mot de passe** dans l'ancien CRM (D11) : l'agent n'a pas encore été testé derrière un écran de connexion.
 - **3 agents en parallèle** sur l'offre gratuite : une grosse migration prend plusieurs heures.
 - **Les captures d'écran dépendent de H Company** : il faudra les copier chez nous pour les garder.
 - **Données fictives uniquement** : pas encore testé sur un vrai vieux logiciel de client.
 
-## 12. À compléter jeudi et vendredi
+## 13. À compléter jeudi et vendredi
 
-- [ ] Migration complète sur la **2e version** de l'ancien CRM (zéro configuration à grande échelle).
-- [ ] Résultat sur les **fiches pièges** (doublons, champs vides, e-mails invalides) : bloquées par la vérification ?
-- [ ] Part des anomalies **corrigées par la relecture** (D13), lue sur l'écran de suivi.
+- [ ] Migration complète sur la **2e version** de l'ancien CRM (zéro configuration à grande échelle) : seule une fiche a été testée.
+- [x] Résultat sur les **fiches pièges** : 5 / 5 traités comme prévu (section 6).
+- [ ] Part des anomalies **corrigées par la relecture** (D13) sur une vraie erreur de lecture de l'agent. Sur les pièges, aucune des 3 relectures n'a inventé de correction (2 ont explicitement confirmé la donnée de l'ancien CRM) : c'était la donnée qui était fausse, pas la lecture.
 - [ ] Durée réelle des 100 fiches **après correction** (mesurée, pas projetée). Premier indice : 6 fiches en 62 s avec 3 agents.
 - [ ] Ce qui s'est passé pendant la **démo live** de vendredi.
