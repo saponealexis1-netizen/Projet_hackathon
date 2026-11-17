@@ -1,13 +1,6 @@
-import type { Metadata } from "next";
-import AppWindow from "@/components/AppWindow";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "CRM Agence 2010 — Gestion des contacts",
-  description:
-    "Ancien CRM simulé pour la démo Bascule : pas d'export, pas d'API.",
-};
-
+/** Racine commune aux deux versions de l'ancien CRM (v1 « 2010 » et /v2). */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -15,9 +8,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body>
-        <AppWindow>{children}</AppWindow>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

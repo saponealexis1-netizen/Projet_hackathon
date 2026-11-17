@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
+import ContactTabs, { V1_LABELS } from "@/components/ContactTabs";
 import PrintButton from "@/components/PrintButton";
 import { getContact, PAGE_SIZE } from "@/lib/contacts";
 
@@ -9,8 +10,8 @@ type Props = {
 };
 
 /**
- * Fiche d'un contact. L'agent H lit cette page à l'écran :
- * chaque champ a un libellé visible et stable, une valeur vide reste vide.
+ * Fiche d'un contact, sur 2 onglets (« Identité » / « Coordonnées »), téléphone derrière un bouton.
+ * L'agent H lit cette page à l'écran : libellés stables, une valeur vide reste vide.
  */
 export default async function ContactPage({ params }: Props) {
   await connection();
@@ -21,18 +22,6 @@ export default async function ContactPage({ params }: Props) {
 
   const { contact: c, previousId, nextId, position, total } = found;
   const listPage = Math.ceil(position / PAGE_SIZE);
-
-  const fields: [string, string | null][] = [
-    ["N° fiche", c.legacy_id],
-    ["Prénom", c.first_name],
-    ["Nom", c.last_name],
-    ["Société", c.company],
-    ["Fonction", c.job_title],
-    ["Téléphone", c.phone],
-    ["E-mail", c.email],
-    ["Ville", c.city],
-    ["Notes", c.notes],
-  ];
 
   return (
     <>
@@ -53,21 +42,8 @@ export default async function ContactPage({ params }: Props) {
         </span>
       </div>
 
-      <fieldset>
-        <legend>Informations du contact</legend>
-        <table className="form">
-          <tbody>
-            {fields.map(([label, value]) => (
-              <tr key={label}>
-                <th scope="row">{label} :</th>
-                <td>
-                  <span className="field">{value ?? ""}</span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </fieldset>
+      {/* key : l'onglet et le numéro se referment quand on change de fiche */}
+      <ContactTabs key={c.legacy_id} contact={c} labels={V1_LABELS} />
 
       <nav className="pagination" aria-label="Navigation entre les fiches">
         {previousId ? (

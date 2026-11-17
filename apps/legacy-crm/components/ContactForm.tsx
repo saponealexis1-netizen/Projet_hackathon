@@ -6,7 +6,7 @@ import type { Contact } from "@/lib/contacts";
 import Dialog from "./Dialog";
 
 const FIELDS: { key: keyof Contact; label: string; multiline?: boolean }[] = [
-  { key: "legacy_id", label: "N° fiche" },
+  { key: "legacy_id", label: "N° client" },
   { key: "first_name", label: "Prénom" },
   { key: "last_name", label: "Nom" },
   { key: "company", label: "Société" },
@@ -14,7 +14,7 @@ const FIELDS: { key: keyof Contact; label: string; multiline?: boolean }[] = [
   { key: "phone", label: "Téléphone" },
   { key: "email", label: "E-mail" },
   { key: "city", label: "Ville" },
-  { key: "notes", label: "Notes", multiline: true },
+  { key: "notes", label: "Commentaires", multiline: true },
 ];
 
 /**

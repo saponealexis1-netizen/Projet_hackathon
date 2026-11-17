@@ -24,10 +24,10 @@ export default function OptionsForm() {
                   <label htmlFor="per-page">Fiches par page :</label>
                 </th>
                 <td>
-                  <select id="per-page" defaultValue="8">
-                    <option>8</option>
-                    <option>15</option>
+                  <select id="per-page" defaultValue="10">
+                    <option>10</option>
                     <option>25</option>
+                    <option>50</option>
                   </select>
                 </td>
               </tr>
@@ -37,7 +37,7 @@ export default function OptionsForm() {
                 </th>
                 <td>
                   <select id="sort" defaultValue="fiche">
-                    <option value="fiche">N° fiche</option>
+                    <option value="fiche">N° client</option>
                     <option value="nom">Nom</option>
                     <option value="ville">Ville</option>
                   </select>

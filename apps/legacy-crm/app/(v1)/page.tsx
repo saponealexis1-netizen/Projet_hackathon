@@ -34,7 +34,7 @@ export default async function ContactList({ searchParams }: Props) {
       <table className="grid">
         <thead>
           <tr>
-            <th scope="col">N° fiche</th>
+            <th scope="col">N° client</th>
             <th scope="col">Nom</th>
             <th scope="col">Prénom</th>
             <th scope="col">Société</th>
@@ -51,7 +51,7 @@ export default async function ContactList({ searchParams }: Props) {
               <td>{c.company ?? ""}</td>
               <td>{c.city ?? ""}</td>
               <td>
-                <Link href={`/contacts/${c.legacy_id}`}>Ouvrir la fiche</Link>
+                <Link href={`/contacts/${c.legacy_id}`}>Voir la fiche</Link>
               </td>
             </tr>
           ))}

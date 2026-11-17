@@ -11,7 +11,7 @@ export default function HelpPage() {
             « Page suivante » et « Page précédente » pour parcourir la base.
           </li>
           <li>
-            <b>Ouvrir une fiche</b> : cliquez sur « Ouvrir la fiche » sur la ligne du contact.
+            <b>Ouvrir une fiche</b> : cliquez sur « Voir la fiche » sur la ligne du contact.
           </li>
           <li>
             <b>Créer ou modifier un contact</b> : boutons « Nouveau contact » et « Modifier ».
