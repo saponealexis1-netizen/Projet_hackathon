@@ -1,6 +1,7 @@
 # Bascule — Fiche projet
 
-> **Brouillon du 17/11/2026** (Inès, pour Maxime). À relire vendredi matin et à adapter au formulaire Eugenia du livrable 3 (vendredi 20/11, 11h) : couper ou fusionner les rubriques selon les champs demandés.
+> **Version finale du 18/11/2026** (Inès). Déposée par **Mehdi** vendredi 20/11 à 11h (livrable 3), avec le dépôt GitHub et la vidéo de 5 min.
+> Seul point à compléter jeudi : le **lien de la vidéo** (section Liens). Adapter au formulaire Eugenia si ses rubriques diffèrent (copier-coller rubrique par rubrique).
 
 ---
 
@@ -24,6 +25,7 @@ Une petite entreprise qui veut changer de CRM est bloquée quand son ancien logi
 2. **Vérifier** : chaque fiche est nettoyée et classée **ok / à vérifier / bloquée** (e-mail invalide, champ obligatoire vide, doublon…). Un champ suspect est relu par l'agent.
 3. **Importer** : les fiches valides sont créées dans **HubSpot** par son API, sans doublon.
 4. **Suivre** : un écran de suivi montre la migration en direct, le bilan, et **la capture d'écran de chaque fiche** vue par l'agent, comme preuve.
+5. **Se réparer** : ce que Bascule sait de HubSpot est rangé dans un **skill** tenu à jour par **deux IA Hugging Face**. Si HubSpot refuse une fiche (champ disparu, valeur refusée), la première IA propose une correction, des garde-fous la vérifient, la seconde la valide, et la fiche repart. Une veille quotidienne suit aussi les nouveautés de HubSpot.
 
 ## Pour qui
 
@@ -39,6 +41,7 @@ Une petite entreprise qui veut changer de CRM est bloquée quand son ancien logi
 | Mauvaise fiche envoyée dans HubSpot | **0** | **0** |
 | Durée réelle, 3 agents en parallèle | 33 min (avant correction) | **16,9 min** pour 105 fiches |
 | Coût de l'agent par fiche | ~0,015 $ | ~0,008 $ |
+| Réparation automatique (champ HubSpot disparu, essai réel du 18/11) | — | ✅ fiche refusée → skill réparé par les 2 IA → **envoyée** ; la suivante passe directement |
 
 **Le même agent, avec les mêmes consignes, a migré deux logiciels différents.** C'est ce qu'un script ou un robot RPA ne sait pas faire.
 
@@ -47,10 +50,12 @@ Une petite entreprise qui veut changer de CRM est bloquée quand son ancien logi
 | Outil | Rôle |
 |---|---|
 | **H Company — Agent API** (`h/web-surfer-flash`) | Lecture visuelle de l'ancien CRM, réponse JSON imposée, captures d'écran, coût et durée par fiche |
+| **Hugging Face** (Qwen3, Inference Providers) | Les 2 IA qui tiennent à jour et réparent le skill HubSpot |
 | **HubSpot** (API) | CRM cible réel |
 | **Next.js sur Vercel** | Ancien CRM simulé (2 versions) et écran de suivi |
 | **Python** | Orchestration des agents, vérification, envoi HubSpot, mesures |
 | **Supabase** | Base cachée de l'ancien CRM et journal de migration |
+| **GitHub Actions** | Lancement de la vraie migration en un clic, veille quotidienne du skill HubSpot |
 | **GitHub + Claude Code** | Développement en équipe |
 
 ## Ce qu'on a appris sur l'Agent API
@@ -84,5 +89,8 @@ Détail : [business model](../pitch/business-model.md).
 | Dépôt GitHub | https://github.com/saponealexis1-netizen/Projet_hackathon |
 | Ancien CRM simulé | https://projet-hackathon-uffi.vercel.app |
 | Écran de suivi (vraie migration) | https://projet-hackathon-jow2.vercel.app/?run=tout |
-| Vidéo démo (5 min) | `[à ajouter vendredi]` |
+| Vidéo démo (5 min) | `[à ajouter jeudi, après l'enregistrement]` · script : [docs/demo/video-prototype.md](../demo/video-prototype.md) |
+| Réparation automatique (essai réel) | https://projet-hackathon-jow2.vercel.app/?run=59f6de90-7885-42ea-abae-d6cffbc4f32b&total=2 |
+| Mini-pitch (livrable 2) | [docs/checkpoint-2/bascule-mini-pitch.mp4](../checkpoint-2/bascule-mini-pitch.mp4) |
+| Retour d'expérience Agent API | [docs/retour-agent-api/](../retour-agent-api/README.md) |
 | Architecture | [docs/architecture/](../architecture/README.md) |
