@@ -12,21 +12,16 @@
 |---|---|---|---|---|
 | 01 | **Parcours utilisateur** | [parcours-utilisateur.md](../parcours/parcours-utilisateur.md) | Maxime | ✅ Version finale |
 | 02 | **Architecture technique** | [architecture/README.md](../architecture/README.md) · [schéma (PNG)](../architecture/architecture.png) | Inès (à la place de Victoria) | ✅ Version finale |
-| 03 | **Mini pitch Loom** (2 min max) | [bascule-mini-pitch.mp4](bascule-mini-pitch.mp4) (1 min 43) · script : [script-loom.md](script-loom.md) | Inès (script de Maxime) | ✅ Version finale, enregistrée mardi 17/11 |
+| 03 | **Mini pitch vidéo** (2 min max) | [bascule-avancement.mp4](bascule-avancement.mp4) (2 min) · [téléchargement direct](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4) | Inès (voix) · Alexis (tournage) | ✅ Version finale, tournée sur le vrai prototype le 18/11 |
 | 04 | **Roadmap** jusqu'à jeudi | [roadmap.md](roadmap.md) | Maxime (mise à jour : Alexis) | ✅ À jour (mercredi 18/11) |
 
-## Vidéo de l'avancement (mercredi 18/11, 2 min) 🆕
+## Mini pitch vidéo (2 min)
 
 🎥 **[bascule-avancement.mp4](https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/bascule-avancement.mp4)** · [téléchargement direct](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4) — voix : Inès
 
+> GitHub n'affiche pas les vidéos dans la page : cliquer sur **téléchargement direct**, la vidéo se télécharge puis s'ouvre.
+
 Tournée sur le vrai prototype, le 18/11 : l'ancien CRM sans export, **une vraie migration lancée en un clic**, les agents H Company en direct, les preuves, une fiche piège bloquée, la réparation automatique quand HubSpot refuse une fiche, le bilan, les chiffres et les contacts arrivés dans HubSpot.
-
-## Mini pitch
-
-🎥 **Vidéo (1 min 43) :** [bascule-mini-pitch.mp4](https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/bascule-mini-pitch.mp4) · [téléchargement direct](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-mini-pitch.mp4)
-
-> Enregistrée avec l'enregistreur d'écran (Loom ne fonctionnait pas), puis déposée dans le dépôt GitHub : elle s'ouvre sans compte.
-> La vidéo a été tournée **mardi midi, avant la première vraie migration** : l'écran de suivi y apparaît en mode démo. **L'avancement réel, obtenu depuis, est détaillé juste en dessous.**
 
 ## Avancement réel : la migration complète fonctionne
 
@@ -101,7 +96,7 @@ Mesures calculées à partir du journal `migration_log` par [`pipeline/metrics/`
 |---|---|---|
 | Parcours utilisateur | Maquette Figma, Miro, Airtable Interface ou schéma | ✅ Schéma Mermaid et tableaux dans le parcours |
 | Architecture technique | Simple, même dessinée à la main | ✅ Schéma + explication |
-| Mini pitch | Loom, 2 min max : problème + solution + avancement | ✅ Vidéo de 1 min 43 dans le dépôt |
+| Mini pitch | Loom, 2 min max : problème + solution + avancement | ✅ Vidéo de 2 min dans le dépôt (Loom ne fonctionnait pas) |
 | Roadmap | Jusqu'à jeudi | ✅ Avancement réel + mercredi et jeudi |
 
 > Les cases passent à ✅ au moment du dépôt, une fois chaque élément relu.
@@ -113,6 +108,6 @@ Mesures calculées à partir du journal `migration_log` par [`pipeline/metrics/`
 - [x] Le schéma d'architecture est fusionné et lié ci-dessus.
 - [x] Le tableau « Les briques » de l'architecture reflète l'état réel.
 - [x] La roadmap reflète l'avancement réel.
-- [x] La vidéo est enregistrée (1 min 43) et liée ci-dessus.
+- [x] La vidéo est enregistrée (2 min, voix d'Inès) et liée ci-dessus.
 - [x] Tous les liens de cette page s'ouvrent depuis une fenêtre de navigation privée (vérifiés le 18/11).
 - [ ] Alexis dépose le livrable.

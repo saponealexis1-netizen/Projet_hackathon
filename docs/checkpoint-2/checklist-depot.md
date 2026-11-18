@@ -11,7 +11,7 @@ Responsable du dépôt : **Alexis**. Objectif : tout est vérifié et déposé *
 | 12h | Alexis | Faire tourner l'agent sur l'ancien CRM de Maxime (1 fiche, puis 5) | Le résultat est connu, même partiel |
 | 13h | Maxime | Mettre à jour [roadmap.md](roadmap.md) avec l'avancement réel du mercredi | PR fusionnée |
 | 13h | Inès | Mettre à jour le tableau « Les briques » de l'[architecture](../architecture/README.md) | PR fusionnée |
-| — | Inès | ✅ Vidéo du mini-pitch déjà enregistrée et déposée ([bascule-mini-pitch.mp4](bascule-mini-pitch.mp4), 1 min 43) : **version finale, on la garde** | Fait |
+| — | Inès | ✅ Vidéo du mini-pitch : [bascule-avancement.mp4](bascule-avancement.mp4), 2 min, tournée sur le vrai prototype le 18/11 (remplace la vidéo de mardi) | Fait |
 | 15h30 | Alexis | Cocher la conformité dans le [README du livrable](README.md) | PR fusionnée |
 | 16h | Alexis | **Vérifier tous les liens en navigation privée** (section 3) | Tout s'ouvre |
 | **16h30** | **Alexis** | **Déposer le livrable** (section 4) | Dépôt confirmé |
@@ -34,7 +34,7 @@ Ouvrir chaque lien **sans être connecté** (Chrome : Ctrl+Maj+N). Tout doit s'a
 - [ ] Parcours utilisateur : https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/parcours/parcours-utilisateur.md (le schéma Mermaid s'affiche)
 - [ ] Architecture : https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/architecture/README.md (l'image s'affiche en haut)
 - [ ] Roadmap : https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/roadmap.md
-- [ ] Vidéo : https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/bascule-mini-pitch.mp4 se lit ou se télécharge sans compte (1 min 43)
+- [ ] Vidéo : https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4 se télécharge sans compte (2 min)
 - [ ] Ancien CRM : https://projet-hackathon-uffi.vercel.app
 - [ ] Écran de suivi : https://projet-hackathon-jow2.vercel.app (le bouton « Lancer la migration » fonctionne)
 
@@ -56,8 +56,8 @@ https://github.com/saponealexis1-netizen/Projet_hackathon/tree/main/docs/checkpo
 https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/parcours/parcours-utilisateur.md
 2. Architecture technique :
 https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/architecture/README.md
-3. Mini pitch (vidéo, 1 min 43) :
-https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/bascule-mini-pitch.mp4
+3. Mini pitch (vidéo, 2 min — le lien la télécharge) :
+https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4
 4. Roadmap jusqu'à jeudi :
 https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/roadmap.md
 
@@ -70,7 +70,7 @@ Prototype en ligne :
 
 | Problème | Que faire |
 |---|---|
-| La vidéo ne se lit pas directement sur GitHub | Donner le lien de téléchargement direct : https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-mini-pitch.mp4 |
+| La vidéo ne se lit pas directement sur GitHub | Donner le lien de téléchargement direct : https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4 |
 | L'agent ne lit pas encore l'ancien CRM | Le dire honnêtement dans le Loom : « l'agent a été testé sur une page publique, le branchement sur l'ancien CRM est en cours » |
 | Un lien ne s'ouvre pas en navigation privée | Vérifier que le dépôt GitHub est **public** (*Settings → General → Danger Zone*) et que le Loom est partagé « toute personne ayant le lien » |
 | Vercel affiche une erreur | Ouvrir le projet dans Vercel → *Deployments* → *Redeploy* sur le dernier déploiement « Ready » |
