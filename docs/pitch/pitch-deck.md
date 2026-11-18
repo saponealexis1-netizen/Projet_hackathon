@@ -1,6 +1,6 @@
 # Bascule — Pitch deck (brouillon)
 
-> **Brouillon du 17/11/2026**, à relire par Alexis. Version finale vendredi avant 15h, avec les vrais chiffres de `pipeline/metrics/`.
+> **Brouillon du 17/11/2026, mis à jour avec les vrais chiffres** (migrations complètes v1 et v2, voir [retour d'expérience](../retour-agent-api/README.md)). À relire par Alexis. Version finale vendredi avant 15h.
 > **Format demandé** : 8 à 12 slides, dans cet ordre : problème, solution, démo, business model, go-to-market, architecture technique, limites et roadmap, coût de run.
 > **Temps de parole** : 6 min de pitch + 4 min de questions.
 
@@ -75,7 +75,7 @@
 | 1:10 | Le tableau de bord se remplit ; une fiche bloquée s'affiche avec sa raison |
 | 1:40 | Les contacts sont dans HubSpot |
 
-**À préparer** : les 20 fiches sont lancées **juste avant le pitch** (✅ ~48 s par fiche, 3 agents en parallèle par personne). On montre le lancement en direct, puis le résultat déjà rempli.
+**À préparer** : la migration complète est lancée **juste avant le pitch** (✅ 105 fiches en 16,9 min avec 3 agents, médiane 21 s par fiche). On montre le lancement en direct de quelques fiches, puis le résultat déjà rempli.
 
 **Plan B** : vidéo enregistrée de la même démo.
 
@@ -86,7 +86,6 @@
 **À l'écran**
 - **Qui paie** : l'éditeur ou l'agence qui vend le nouveau CRM
 - **990 €** par client migré (jusqu'à 10 000 fiches) 🔎
-- 🗣️ `[citation d'interview à remplir — voir « Interviews à faire » en bas]`
 
 **Ce qu'on dit**
 > « Ce n'est pas Camille qui paie, c'est Thomas. Chaque migration réussie lui débloque un abonnement, et il facture déjà l'onboarding : entre 1 500 et 3 500 dollars chez HubSpot. Nous lui vendons la migration 490 euros jusqu'à 2 000 fiches, 990 euros jusqu'à 10 000. Pour 3 000 fiches, c'est trois fois moins cher que la ressaisie, et quelques heures au lieu de trois semaines. »
@@ -109,27 +108,25 @@ Grille complète (à la fiche, forfait, partenaire) : [business-model.md](busine
 
 ## Slide 7 — Architecture technique et Agent API
 
-**À l'écran** : le schéma de Victoria (`docs/architecture/`). En attendant, celui de [CADRAGE.md](../CADRAGE.md) :
+**À l'écran** : le schéma d'architecture.
 
-```
-Ancien CRM ──écran──► Agents H Company ──JSON──► Vérification ──API──► HubSpot
-                                                       │
-                                                       ▼
-                                          Supabase ──► Écran de suivi
-```
+![Architecture de Bascule](../architecture/architecture.png)
+
+Détail : [docs/architecture/](../architecture/README.md).
 
 **Ce qu'on utilise de l'Agent API de H Company**
 
 | Fonction | Ce qu'elle nous apporte | État |
 |---|---|---|
-| Agent qui navigue à l'écran (`h/web-surfer-flash`) | Lire un logiciel sans API ni export | ✅ testé sur un site public |
-| Sortie JSON structurée (schéma imposé à la réponse) | Chaque fiche arrive au format du contrat commun, prête à vérifier | ✅ testé sur un site public |
-| Plusieurs agents en parallèle | 3 fiches lues en même temps (10 avec l'offre Builder) | ✅ testé sur un site public |
-| Suivi des sessions (étapes, coût, statut) | Le coût et le temps par fiche affichés en direct | ✅ testé sur un site public |
-| Nombre maximal d'étapes par fiche | Un agent bloqué n'immobilise pas la migration | `[à confirmer par Victoria]` |
+| Agent qui navigue à l'écran (`h/web-surfer-flash`) | Lire un logiciel sans API ni export, **sans configuration** (il ne reçoit que l'adresse) | ✅ 2 versions de l'ancien CRM migrées |
+| Sortie JSON structurée (schéma imposé à la réponse) | Chaque fiche arrive au format du contrat commun, prête à vérifier | ✅ 205 fiches |
+| Texte de la page en plus de la capture (`markdown: true`) | Plus d'erreurs de lecture des chiffres | ✅ |
+| Plusieurs agents en parallèle | 3 fiches lues en même temps (10 avec l'offre Builder) | ✅ |
+| Suivi des sessions (étapes, coût, durée, captures d'écran) | Coût et temps par fiche en direct ; capture de chaque fiche comme preuve | ✅ |
+| Nombre maximal d'étapes et de temps par fiche | 40 étapes et 4 min maximum : un agent bloqué n'immobilise pas la migration | ✅ réglé dans `agent/runner` |
 
 **Ce qu'on dit**
-> « L'agent H est utilisé là où il est indispensable : lire un logiciel fermé. On lui impose un format de réponse, on en lance plusieurs en parallèle, et on suit le coût de chaque fiche en direct. Côté HubSpot, on passe par son API : c'est plus fiable. »
+> « L'agent H est utilisé là où il est indispensable : lire un logiciel fermé. Il ne reçoit que l'adresse : le même agent, avec les mêmes consignes, a migré deux versions différentes du logiciel. Autour de lui, des garde-fous : format imposé, contrôle de la fiche ouverte, vérification, relecture, et une capture d'écran de chaque fiche comme preuve. Côté HubSpot, on passe par son API : c'est plus fiable. »
 
 ---
 
@@ -154,12 +151,13 @@ Ancien CRM ──écran──► Agents H Company ──JSON──► Vérificat
 
 | | Valeur |
 |---|---|
-| Coût par fiche | **~0,02 $** ✅ `[à remplir : mesure jeudi sur 20 fiches]` |
-| Taux de réussite | **3 / 3** ✅ `[à remplir : x / 20]` |
-| Marge sur un forfait de 990 € | **~92 %** |
+| Fiches exactes | **100 / 100** sur chacune des 2 versions ✅ |
+| Coût par fiche | **0,008 à 0,015 $** ✅ |
+| 3 000 fiches | **~45 $** de coût · **~8 h** avec 3 agents ✅🔎 |
+| Marge sur un forfait de 990 € | **~95 %** |
 
 **Ce qu'on dit**
-> « Chaque fiche nous coûte environ deux centimes, en environ 48 secondes. Pour 3 000 fiches, c'est 75 dollars de coût pour 990 euros de chiffre d'affaires. Même si ce coût était cinq fois plus élevé, la marge resterait au-dessus de 60 %. »
+> « Sur nos deux migrations complètes, 100 fiches exactes sur 100, à chaque fois. Chaque fiche nous coûte entre un et deux centimes. Pour 3 000 fiches, c'est environ 45 dollars de coût pour 990 euros de chiffre d'affaires. Même si ce coût était cinq fois plus élevé, la marge resterait au-dessus de 75 %. »
 
 ---
 
@@ -182,38 +180,19 @@ Ancien CRM ──écran──► Agents H Company ──JSON──► Vérificat
 
 | Question | Réponse courte |
 |---|---|
-| « Pourquoi un agent plutôt qu'un script ? » | Pas d'API, pas d'export : la seule porte d'entrée est l'écran. |
-| « Et si l'agent se trompe ? » | Chaque fiche est classée ok / à vérifier / bloquée ; les fiches bloquées ne partent pas dans HubSpot. |
+| « Pourquoi un agent plutôt qu'un script ? » | Pas d'API, pas d'export : la seule porte d'entrée est l'écran. Et aucune configuration : le même agent a migré deux versions différentes du logiciel, là où un robot RPA aurait dû être réenregistré. |
+| « Et si l'agent se trompe ? » | Il a ouvert la mauvaise fiche 4 fois sur 205 : notre contrôle les a bloquées avant HubSpot, puis l'agent les a relues. Aucune mauvaise fiche n'est partie. Chaque fiche est classée ok / à vérifier / bloquée, et a sa capture d'écran. |
 | « Et la sécurité ? » | L'agent ne fait que lire. Serveurs européens de H Company. Coffre-fort à mots de passe prévu après le MVP. |
 | « Qui paie, et pourquoi ? » | L'éditeur ou l'agence : il facture déjà l'onboarding, et la migration bloque ses ventes. |
-| « Avez-vous parlé à des clients ? » | `[à remplir avec les interviews]` |
-| « Qu'avez-vous appris sur l'Agent API ? » | `[à remplir avec les retours d'Inès vendredi]` |
-
----
-
-## Interviews à faire d'ici jeudi (Maxime)
-
-**Objectif** : une vraie citation pour la slide 5 et une réponse à « Avez-vous parlé à des clients ? ».
-
-**Qui appeler** : 2 ou 3 agences partenaires HubSpot en France (annuaire des partenaires HubSpot, LinkedIn), ou des responsables onboarding d'éditeurs de CRM.
-
-**L'appel en 5 minutes**
-
-1. « Quand un nouveau client arrive avec un vieux logiciel, comment récupérez-vous ses données ? »
-2. « Ça vous est déjà arrivé qu'un logiciel n'ait aucun export ? Qu'avez-vous fait ? »
-3. « Combien de temps ça vous prend, en moyenne ? »
-4. « Une migration faite par un agent IA en quelques heures, pour 490 € jusqu'à 2 000 fiches et 990 € au-delà : ça vous intéresserait ? »
-5. « Je peux citer votre réponse, avec ou sans votre nom ? »
-
-**À noter après chaque appel** : le nom de l'agence (si accord), la phrase la plus forte mot pour mot, et la réponse à la question 4.
+| « Avez-vous parlé à des clients ? » | Pas encore : cette semaine, nous avons prouvé que la technologie marche. Nos prix sont des hypothèses ; la prochaine étape, ce sont des entretiens avec des agences partenaires HubSpot, et nos questions sont prêtes. |
+| « Qu'avez-vous appris sur l'Agent API ? » | Qu'il sait naviguer seul dans un logiciel inconnu, mais qu'il préfère inventer une valeur crédible plutôt que laisser vide. On le lui interdit, et on vérifie tout derrière lui : 1 fiche exacte sur 5 sans garde-fous, 100 sur 100 avec. Détail : [retour d'expérience](../retour-agent-api/README.md). |
 
 ---
 
 ## À faire avant vendredi 15h
 
-- [ ] 2 ou 3 interviews → citation de la slide 5 et réponse à « Avez-vous parlé à des clients ? » (Maxime)
-- [ ] Remplir les `[à remplir]` de la slide 9 avec les mesures d'Alexis (jeudi)
-- [ ] Remplacer le schéma de la slide 7 par celui de Victoria, et confirmer la ligne « nombre maximal d'étapes »
+- [x] Remplir la slide 9 avec les mesures réelles (v1 et v2)
+- [x] Schéma d'architecture sur la slide 7, ligne « nombre maximal d'étapes » confirmée
 - [ ] Ajouter les captures : ancien CRM, écran de suivi, HubSpot
 - [ ] Mettre en forme les slides (15 mots maximum à l'écran)
 - [ ] Chronométrer le pitch à voix haute : 6 min maximum
