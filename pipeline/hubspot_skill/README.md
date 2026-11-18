@@ -69,7 +69,7 @@ Principe expliqué par le professeur : quand une action échoue, le système rev
 | Où | Ce qui se passe |
 |---|---|
 | `pipeline/hubspot/send.py` → `migrate_one()` | En cas d'échec de l'envoi : `self_heal_and_retry()` (≈ 30 lignes, accord d'Alexis) |
-| `migration_log.self_heal` | Compte rendu : erreur HubSpot, ce que les IA ont fait, version du skill, résultat. **Colonne à créer** : `supabase/migrations/20261117180000_self_heal.sql` |
+| `migration_log.self_heal` | Compte rendu : erreur HubSpot, ce que les IA ont fait, version du skill, résultat. **Colonne à créer** : `supabase/migrations/20261118120000_self_heal.sql` |
 | Écran de suivi | Ligne `🩹 ❌ refusée par HubSpot → 🧠 skill vN corrigé par les 2 IA → ✅ envoyée après correction`, détail dans la fenêtre « Preuve », compteur dans le bilan. Tant que la colonne n'existe pas, l'écran fonctionne sans. |
 | Journal de la migration (GitHub Actions) | `🩹 envoyée après correction (skill vN)` sur la ligne de la fiche, et résumé des réparations en fin de lancement |
 

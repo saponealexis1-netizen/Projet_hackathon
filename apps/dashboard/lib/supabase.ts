@@ -12,7 +12,7 @@ const COLUMNS =
   "legacy_id,status,extracted,anomalies,hubspot_id,duration_ms,credits_used,error,created_at," +
   "agent_session_id,screenshot_url,reread," + // preuve visuelle (D14) et relecture (D13)
   "run_id,agent_started_at,agent_finished_at"; // durée réelle
-// Fallback (migration 20261117180000_self_heal.sql) : lue seulement si la colonne existe déjà.
+// Fallback (migration 20261118120000_self_heal.sql) : lue seulement si la colonne existe déjà.
 const COLUMNS_WITH_HEAL = COLUMNS + ",self_heal";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
