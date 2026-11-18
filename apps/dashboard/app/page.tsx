@@ -114,10 +114,19 @@ export default function SuiviMigration() {
   return (
     <main className="page">
       <header className="header">
-        <div>
-          <h1>Bascule</h1>
-          <p className="subtitle">Ancien CRM → agent H Company → vérification → HubSpot</p>
+        <div className="brand">
+          <span className="logo" aria-hidden="true">B</span>
+          <div>
+            <h1>Bascule</h1>
+            <p className="subtitle">Changez de logiciel, sans perdre vos données.</p>
+          </div>
         </div>
+        <ol className="pipeline" aria-label="Étapes de la migration">
+          <li>Ancien CRM</li>
+          <li>Agent H Company</li>
+          <li>Vérification</li>
+          <li>HubSpot</li>
+        </ol>
         {run?.mode === "demo" && <span className="badge-demo">Mode démo : données simulées</span>}
       </header>
 
@@ -293,7 +302,9 @@ function AgentsEnDirect({ agents, attente }: { agents: LiveAgent[]; attente: boo
   return (
     <section className="card live-agents">
       <div className="progress-head">
-        <h2>Agents en direct</h2>
+        <h2>
+          <span className="live-dot" aria-hidden="true" /> Agents en direct
+        </h2>
         <span className="muted">{agents.length} agent(s) H Company au travail</span>
       </div>
       {agents.length === 0 ? (
