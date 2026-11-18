@@ -141,7 +141,7 @@ export default function SuiviMigration() {
         </div>
         {run?.mode === "live" && (running || !peutLancerReel) ? (
           // Migration réelle : pas de bouton qui relancerait une simulation par erreur pendant la démo.
-          <span className="badge-live">{running ? "Migration réelle en cours…" : "Migration réelle · agent H Company"}</span>
+          <span className={`badge-live${running ? "" : " done"}`}>{running ? "Migration réelle en cours…" : "Migration réelle · agent H Company"}</span>
         ) : (
           <button className="btn" onClick={lancer} disabled={launching || running}>
             {launching
@@ -308,7 +308,7 @@ function AgentsEnDirect({ agents, attente }: { agents: LiveAgent[]; attente: boo
         <span className="muted">{agents.length} agent(s) H Company au travail</span>
       </div>
       {agents.length === 0 ? (
-        <p className="muted">
+        <p className={attente ? "muted starting" : "muted"}>
           {attente ? "Démarrage des agents…" : "Aucun agent en cours : toutes les fiches lancées ont été lues."}
         </p>
       ) : (
@@ -450,10 +450,10 @@ function FenetrePreuve({ row, onClose }: { row: LogRow; onClose: () => void }) {
         </div>
 
         <div className="modal-body">
-          <div className="shot">
+          <div>
             <h3>Ce que l&apos;agent a vu</h3>
             {capture && !imageKo ? (
-              <a href={capture} target="_blank" rel="noreferrer">
+              <a className="shot" href={capture} target="_blank" rel="noreferrer">
                 {/* eslint-disable-next-line @next/next/no-img-element -- capture externe (Agent API) */}
                 <img src={capture} alt={`Fiche ${row.legacy_id} vue par l'agent`} onError={() => setImageKo(true)} />
               </a>
@@ -461,9 +461,9 @@ function FenetrePreuve({ row, onClose }: { row: LogRow; onClose: () => void }) {
               <p className="muted">{row.screenshot_url ? "Capture d'écran expirée ou inaccessible." : "Pas de capture pour cette fiche."}</p>
             )}
             {row.agent_session_id && (
-              <p className="muted small">
+              <div className="muted small" style={{ marginTop: 10 }}>
                 Session de l&apos;agent : <span className="mono">{row.agent_session_id}</span>
-              </p>
+              </div>
             )}
           </div>
 
