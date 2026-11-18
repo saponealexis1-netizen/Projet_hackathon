@@ -39,6 +39,12 @@ les règles de ce que HubSpot refuse, les erreurs connues et les nouveautés Hub
 
 Règles :
 - Ne propose un changement QUE s'il est nécessaire. Sinon, renvoie une proposition vide.
+- Dans « mapping », les CLÉS sont TOUJOURS l'un des 9 champs Bascule ci-dessus (ex. « job_title »),
+  et les VALEURS sont TOUJOURS des propriétés HubSpot (ex. « jobtitle »). Jamais l'inverse.
+  Exemple de réparation : le skill contient "job_title": "jobtitle_ancien" et HubSpot répond
+  « Property "jobtitle_ancien" does not exist » ; la propriété « jobtitle » existe.
+  Bonne réponse : "mapping": {"job_title": "jobtitle"}.
+  Mauvaises réponses : {"jobtitle_ancien": "jobtitle"} ou {"jobtitle": "job_title"}.
 - « legacy_id » doit rester « bascule_legacy_id » (identifiant unique utilisé pour éviter les doublons).
 - N'utilise que des propriétés HubSpot qui existent dans la liste fournie (quand elle est fournie).
 - Une nouveauté qui pourrait casser l'envoi (API retirée, changement de format) est une ALERTE pour l'équipe :
@@ -65,6 +71,35 @@ def _empty(proposal: dict) -> bool:
                     proposal.get("known_error"), proposal.get("news"), proposal.get("alerts")])
 
 
+def normalize_mapping(skill: dict, proposal: dict) -> list[str]:
+    """Remet dans le bon sens une correspondance mal écrite par l'IA (constaté le 18/11, essai n°4).
+
+    - clé = ancienne propriété HubSpot du skill  →  remplacée par le champ Bascule qui l'utilisait
+      ex. {"jobtitle_ancien": "jobtitle"}  →  {"job_title": "jobtitle"}
+    - clé = propriété HubSpot et valeur = champ Bascule (inversion complète)  →  remise à l'endroit
+      ex. {"jobtitle": "job_title"}  →  {"job_title": "jobtitle"}
+    Les garde-fous vérifient toujours le résultat. Renvoie la liste des corrections faites."""
+    mapping = proposal.get("mapping")
+    if not isinstance(mapping, dict) or not mapping:
+        return []
+    current = skill.get("mapping") or {}
+    by_property = {hs: field for field, hs in current.items()}
+    fixed, notes = {}, []
+    for key, value in mapping.items():
+        if key in sk.CONTRACT_FIELDS:
+            fixed[key] = value
+        elif key in by_property and value not in sk.CONTRACT_FIELDS:
+            fixed[by_property[key]] = value
+            notes.append(f"« {key} » → champ « {by_property[key]} »")
+        elif value in sk.CONTRACT_FIELDS:
+            fixed[value] = key
+            notes.append(f"inversion « {key}: {value} » remise à l'endroit")
+        else:
+            fixed[key] = value  # inconnu : les garde-fous le refuseront
+    proposal["mapping"] = fixed
+    return notes
+
+
 def merged_mapping(skill: dict, proposal: dict) -> dict:
     return {**(skill.get("mapping") or {}), **(proposal.get("mapping") or {})}
 
@@ -82,6 +117,10 @@ def propose_and_review(skill: dict, trigger: str, context: str, properties: set[
 
     if _empty(proposal):
         return {"applied": False, "proposal": proposal, "review": None, "checks": [], "error": None}
+
+    normalized = normalize_mapping(skill, proposal)
+    if normalized:
+        proposal["normalized"] = normalized  # gardé dans le compte rendu, par transparence
 
     checks = sk.mapping_errors(merged_mapping(skill, proposal), properties)
     if checks:
