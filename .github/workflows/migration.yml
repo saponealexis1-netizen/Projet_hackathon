@@ -88,9 +88,13 @@ jobs:
       - name: Réparations du skill pendant la migration
         if: ${{ always() }}
         run: |
-          if git diff --quiet -- pipeline/hubspot_skill/skill.json; then
-            echo "Aucune réparation du skill pendant cette migration." >> "$GITHUB_STEP_SUMMARY"; exit 0
+          # Une réparation = une nouvelle version dans l'historique (la panne de démo n'en crée pas)
+          BEFORE=$(git show HEAD:pipeline/hubspot_skill/skill.json | python -c "import json,sys; print(json.load(sys.stdin)['version'])")
+          AFTER=$(python -c "import json; print(json.load(open('pipeline/hubspot_skill/skill.json'))['version'])")
+          REPAIRS=$((AFTER - BEFORE))
+          if [ "$REPAIRS" = "0" ]; then
+            echo "Aucune réparation du skill pendant cette migration (raison sur chaque ligne 🩹 du journal)." >> "$GITHUB_STEP_SUMMARY"; exit 0
           fi
           { echo "### 🩹 Le skill HubSpot a été réparé pendant la migration"; echo '```';
-            python -c "import json; h=json.load(open('pipeline/hubspot_skill/skill.json'))['history']; [print(f\"v{x['version']} · {x['trigger']} · {x['summary']}\") for x in h[-3:]]";
+            python -c "import json; h=json.load(open('pipeline/hubspot_skill/skill.json'))['history']; [print(f\"v{x['version']} · {x['trigger']} · {x['summary']}\") for x in h[-$REPAIRS:]]";
             echo '```'; } >> "$GITHUB_STEP_SUMMARY"

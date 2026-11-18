@@ -88,6 +88,19 @@ Le skill est cassé volontairement au début du lancement : la fonction (« job_
 
 La réparation faite pendant cette démo n'est **pas** enregistrée dans Git (le skill de `main` n'a jamais été cassé).
 
+## Diagnostic en un clic
+
+*GitHub → Actions → « Veille HubSpot (skill) » → cocher **diagnostic** → Run workflow* (ou `python -m pipeline.hubspot_skill.check`).
+N'écrit rien. Vérifie : le skill, **les 2 IA** (clé acceptée ? modèles servis avec notre clé ? réponse JSON ?), la lecture des propriétés HubSpot, le changelog. Chaque ❌ est suivi de « Que faire ».
+
+**Robustesse de l'appel aux IA** (après l'essai réel du 18/11, où la réparation n'a pas abouti) :
+- si le modèle principal n'est pas servi avec notre clé, les **modèles de secours** sont essayés (`SKILL_LLMn_FALLBACK_MODELS`) ; le modèle réellement utilisé est noté dans l'historique du skill ;
+- clé refusée (401/403) → message clair (droit « Make calls to Inference Providers », crédits) ;
+- secrets GitHub vides ignorés (valeurs par défaut) ;
+- réponse de Qwen3 rangée dans le raisonnement → récupérée ;
+- l'erreur HubSpot « Property "…" does not exist » est décodée et le champ concerné est indiqué à l'IA ;
+- la **raison** d'une réparation non aboutie est affichée sur la ligne 🩹 du journal de migration.
+
 ## Utilisation
 
 ```bash

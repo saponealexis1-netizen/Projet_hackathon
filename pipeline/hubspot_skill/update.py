@@ -23,6 +23,7 @@ Usage (depuis la racine du dépôt) :
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import date
 from typing import Callable
@@ -135,8 +136,8 @@ def apply(skill: dict, result: dict, trigger: str, today: str | None = None) -> 
 
     skill["version"] = int(skill.get("version") or 0) + 1
     skill["updated_at"] = today
-    skill["updated_by"] = (f"IA n°1 {llm.config(1)['model']} (proposition) + "
-                           f"IA n°2 {llm.config(2)['model']} (validation)")
+    skill["updated_by"] = (f"IA n°1 {llm.last_model.get(1, llm.config(1)['model'])} (proposition) + "
+                           f"IA n°2 {llm.last_model.get(2, llm.config(2)['model'])} (validation)")
     skill.setdefault("history", []).append({
         "version": skill["version"], "date": today, "trigger": trigger,
         "summary": p.get("summary") or "; ".join(changes),
@@ -186,6 +187,14 @@ def learn_from_error(skill: dict, message: str, payload: dict | None = None,
     """HubSpot a refusé une fiche : les 2 IA cherchent quoi changer dans le skill.
     Avec `props` (propriétés HubSpot), les garde-fous vérifient que les propriétés proposées existent."""
     info = {"erreur_hubspot": message, "donnees_envoyees": payload}
+    # Aide au diagnostic : propriétés que HubSpot dit inexistantes, et le champ Bascule qui les utilise.
+    missing = sorted(set(re.findall(r'Property \\*"([\w-]+)\\*" does not exist', message)))
+    if missing:
+        current = skill.get("mapping") or {}
+        info["proprietes_inexistantes"] = missing
+        info["champs_bascule_concernes"] = {f: hs for f, hs in current.items() if hs in missing}
+        info["consigne"] = ("Pour chaque champ concerné, choisis dans « proprietes_hubspot » la propriété "
+                            "existante qui correspond au même sens, et mets-la dans « mapping ».")
     if props:
         info["proprietes_hubspot"] = [{k: p.get(k) for k in ("name", "label", "type")} for p in props][:400]
     context = json.dumps(info, ensure_ascii=False)
