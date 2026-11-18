@@ -15,6 +15,12 @@
 | 03 | **Mini pitch Loom** (2 min max) | [bascule-mini-pitch.mp4](bascule-mini-pitch.mp4) (1 min 43) · script : [script-loom.md](script-loom.md) | Inès (script de Maxime) | ✅ Version finale, enregistrée mardi 17/11 |
 | 04 | **Roadmap** jusqu'à jeudi | [roadmap.md](roadmap.md) | Maxime (mise à jour : Alexis) | ✅ À jour (mercredi 18/11) |
 
+## Vidéo de l'avancement (mercredi 18/11, 2 min) 🆕
+
+🎥 **[bascule-avancement.mp4](https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/bascule-avancement.mp4)** · [téléchargement direct](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4) — voix : Inès
+
+Tournée sur le vrai prototype, le 18/11 : l'ancien CRM sans export, **une vraie migration lancée en un clic**, les agents H Company en direct, les preuves, une fiche piège bloquée, la réparation automatique quand HubSpot refuse une fiche, le bilan et les chiffres.
+
 ## Mini pitch
 
 🎥 **Vidéo (1 min 43) :** [bascule-mini-pitch.mp4](https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/bascule-mini-pitch.mp4) · [téléchargement direct](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-mini-pitch.mp4)
