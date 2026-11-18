@@ -17,6 +17,10 @@ on:
         description: "Lire le changelog HubSpot"
         type: boolean
         default: true
+      diagnostic:
+        description: "Diagnostic seulement : vérifier les clés, les 2 IA et HubSpot (n'écrit rien)"
+        type: boolean
+        default: false
 
 concurrency:
   group: skill-hubspot
@@ -46,15 +50,20 @@ jobs:
 
       - name: Vérifier les secrets
         run: |
-          for v in HUBSPOT_TOKEN HF_TOKEN; do
+          for v in HUBSPOT_TOKEN; do
             [ -n "${!v}" ] || { echo "::error::Secret manquant : $v (Settings > Secrets and variables > Actions)"; exit 1; }
           done
-          # Les secrets vides ne doivent pas écraser les valeurs par défaut
-          [ -n "$SKILL_LLM2_BASE_URL" ] || echo "SKILL_LLM2_BASE_URL=https://router.huggingface.co/v1" >> "$GITHUB_ENV"
-          [ -n "$SKILL_LLM2_API_KEY" ] || echo "SKILL_LLM2_API_KEY=$HF_TOKEN" >> "$GITHUB_ENV"
-          [ -n "$SKILL_LLM2_MODEL" ] || echo "SKILL_LLM2_MODEL=Qwen/Qwen3-Next-80B-A3B-Instruct" >> "$GITHUB_ENV"
+          [ -n "$HF_TOKEN" ] || echo "::warning::Secret HF_TOKEN absent : les 2 IA ne pourront pas répondre"
+          # (les secrets SKILL_LLM2_* vides sont ignorés par le code : valeurs par défaut)
+
+      - name: Diagnostic (clés, 2 IA, HubSpot)
+        if: ${{ inputs.diagnostic }}
+        run: |
+          python -m pipeline.hubspot_skill.check | tee diag.txt
+          { echo "### Diagnostic du skill HubSpot"; echo '```'; cat diag.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Veille (2 IA)
+        if: ${{ !inputs.diagnostic }}
         run: |
           ARGS=""
           if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.champs }}" = "true" ]; then ARGS="$ARGS --champs"; fi
@@ -63,6 +72,7 @@ jobs:
           { echo "### Veille HubSpot"; echo '```'; cat veille.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Proposer la mise à jour du skill (pull request)
+        if: ${{ !inputs.diagnostic }}
         run: |
           if git diff --quiet -- pipeline/hubspot_skill/; then
             echo "Skill inchangé : pas de pull request."; exit 0

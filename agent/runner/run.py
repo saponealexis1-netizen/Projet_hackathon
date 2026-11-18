@@ -198,7 +198,8 @@ def main(argv: list[str]) -> int:
             print(f"  [{len(rows)}/{len(ids)}] {c['legacy_id']}  {row['status']:<9} {dur:>5}  {cost}  "
                   f"{c.get('first_name')} {c.get('last_name')}"
                   f"{' · ' + str(row['error']) if row.get('error') else ''}{extra}"
-                  f"{' · 🩹 ' + row['self_heal']['result'] + ' (skill v' + str(row['self_heal']['skill_version']) + ')' if row.get('self_heal') else ''}",
+                  f"{' · 🩹 ' + row['self_heal']['result'] + ' (skill v' + str(row['self_heal']['skill_version']) + ')' if row.get('self_heal') else ''}"
+                  f"{' — ' + str(row['self_heal'].get('summary')) if row.get('self_heal') and not row['self_heal'].get('applied') else ''}",
                   flush=True)
 
     with ThreadPoolExecutor(max_workers=parallel) as pool:

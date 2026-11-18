@@ -186,3 +186,58 @@ class TestLLM(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestLLMReseau(unittest.TestCase):
+    """Le vrai client HTTP, contre un faux serveur compatible Hugging Face (127.0.0.1)."""
+
+    def setUp(self):
+        import threading
+        from http.server import BaseHTTPRequestHandler, HTTPServer
+
+        class Handler(BaseHTTPRequestHandler):
+            def log_message(self, *a):
+                pass
+
+            def do_POST(self):
+                body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+                if self.headers.get("Authorization") != "Bearer hf_test":
+                    code, obj = 401, {"error": "Invalid credentials"}
+                elif body["model"] == "modele/indisponible":
+                    code, obj = 400, {"error": "model not supported"}
+                else:
+                    code, obj = 200, {"choices": [{"message": {"content": '<think>…</think>{"ok": true}'}}]}
+                data = json.dumps(obj).encode()
+                self.send_response(code)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(data)
+
+        self.server = HTTPServer(("127.0.0.1", 0), Handler)
+        threading.Thread(target=self.server.serve_forever, daemon=True).start()
+        self.env = {"SKILL_LLM1_BASE_URL": f"http://127.0.0.1:{self.server.server_port}/v1",
+                    "SKILL_LLM1_MODEL": "modele/indisponible", "SKILL_LLM1_FALLBACK_MODELS": "modele/ok",
+                    "SKILL_LLM1_API_KEY": "", "no_proxy": "127.0.0.1", "NO_PROXY": "127.0.0.1"}
+
+    def tearDown(self):
+        self.server.shutdown()
+
+    def test_modele_de_secours(self):
+        from unittest import mock
+        with mock.patch.dict("os.environ", {**self.env, "HF_TOKEN": "hf_test"}):
+            self.assertEqual(llm.chat_json(1, "s", "u"), {"ok": True})
+            self.assertEqual(llm.last_model[1], "modele/ok")
+
+    def test_cle_refusee_message_clair(self):
+        from unittest import mock
+        with mock.patch.dict("os.environ", {**self.env, "HF_TOKEN": "hf_faux"}):
+            with self.assertRaises(llm.LLMError) as ctx:
+                llm.chat_json(1, "s", "u")
+            self.assertIn("Make calls to Inference Providers", str(ctx.exception))
+
+    def test_secret_vide_ignore(self):
+        from unittest import mock
+        with mock.patch.dict("os.environ", {"SKILL_LLM2_BASE_URL": "", "SKILL_LLM2_MODEL": ""}):
+            cfg = llm.config(2)
+            self.assertEqual(cfg["base_url"], llm.HF_ROUTER)
+            self.assertEqual(cfg["model"], llm.DEFAULTS[2]["model"])
