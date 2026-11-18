@@ -48,6 +48,7 @@
 - [ ] Mehdi fait la démo **en entier** une fois, avec le bouton.
 - [ ] Mehdi se connecte à **GitHub** (accès au dépôt) et à **HubSpot** sur l'ordinateur de la démo.
 - [ ] Enregistrer la **vidéo de secours** de la démo (Inès).
+- [ ] Répéter la **démo de la réparation** (section 4 bis) une fois, après la démo principale.
 
 ### Vendredi, 15 minutes avant le pitch
 - [ ] Ouvrir les 4 onglets du tableau 1. Zoom du navigateur à **125 %**.
@@ -65,6 +66,34 @@
 | Une fiche échoue en direct | C'est un argument : « elle est bloquée avec sa raison, rien de faux n'arrive dans HubSpot » |
 | Plus de crédits H Company | Remplacer le secret `HAI_API_KEY` par la clé d'Inès (section 6) |
 | Plus aucun réseau | Vidéo de secours |
+
+## 4 bis. Démo de la réparation (optionnelle)
+
+> **Seulement si on a le temps** (après la démo principale, ou pour répondre à « Et si HubSpot change ? »).
+> Réussie le 18/11 (essai n°6) : [le résultat](https://projet-hackathon-jow2.vercel.app/?run=75b26e36-afe9-49d4-b686-cb4960dcc869&total=2).
+> Durée : **~1 min**. Coût : ~0,03 $ d'agent H + quelques centimes d'IA Hugging Face. Le skill de `main` n'est **jamais** modifié : la panne n'existe que le temps de ce lancement.
+
+**Ce qu'on montre** : on casse volontairement ce que Bascule sait de HubSpot (la fonction des contacts part vers une propriété qui n'existe plus), HubSpot refuse la 1re fiche, **deux IA réparent le skill toutes seules**, la fiche repart et la suivante passe directement.
+
+**Comment la lancer (Mehdi)** — pas avec le bouton de l'écran de suivi, mais depuis GitHub :
+1. GitHub › **Actions** › « **Lancer la migration** » › **Run workflow** ;
+2. « Fiches à migrer » : **`C-0004,C-0105`** ;
+3. cocher **`panne_demo`** (laisser « Supprimer d'abord ces fiches de HubSpot » coché) ;
+4. **Run workflow**, puis ouvrir le lien « Suivi en direct » du résumé de l'action (ou l'écran de suivi `?run=dernier`).
+
+⚠️ Ne pas la lancer **en même temps** que la démo principale (même compte H Company, 3 agents maximum).
+
+| Temps | À l'écran | Ce que dit Maxime | Ce que fait Mehdi |
+|---|---|---|---|
+| **0:00** | Résumé de l'action GitHub | « Et si HubSpot change ? On casse volontairement ce que Bascule sait de HubSpot : la fonction des contacts part vers un champ qui n'existe plus. » | Lance l'action (étapes ci-dessus), montre la ligne « 🩹 Démo du fallback : skill HubSpot cassé volontairement » |
+| **0:10** | Écran de suivi | « L'agent lit les deux fiches, comme d'habitude. » | Ouvre le lien « Suivi en direct » |
+| **~0:30** | Ligne **C-0004** : 🩹 ❌ refusée par HubSpot → 🧠 skill v2 corrigé par les 2 IA → ✅ envoyée après correction | « HubSpot refuse la fiche. Une première IA lit l'erreur et propose une correction, nos garde-fous la vérifient, une deuxième IA la valide. La fiche repart. » | Clique sur **📷 Voir** de C-0004 : « Erreur HubSpot » et « Ce que les IA ont fait » |
+| **~0:45** | Ligne **C-0105** : ✅ sans 🩹 | « La fiche suivante passe directement : Bascule a appris. Personne n'a touché au code. » | Montre la ligne C-0105 |
+| **~1:00** | HubSpot, vue « Bascule » | « Les deux contacts sont dans HubSpot, avec leur fonction au bon endroit. » | Ouvre la vue |
+
+**Si ça ne marche pas en direct** : ouvrir le [résultat de l'essai réussi du 18/11](https://projet-hackathon-jow2.vercel.app/?run=75b26e36-afe9-49d4-b686-cb4960dcc869&total=2) et dire « voici le même test, fait hier ». Si la ligne 🩹 dit « non corrigée », la raison est affichée juste après : rien de faux n'est parti dans HubSpot.
+
+**Répétition** : jeudi à 18h, une fois, après la démo principale.
 
 ## 5. Les chiffres à dire (réels, mesurés)
 
