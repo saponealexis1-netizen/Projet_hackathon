@@ -8,6 +8,8 @@
 
 ## Contenu du livrable
 
+📄 **Les 4 slides demandées (PDF) : [Bascule-livrable2-slides.pdf](Bascule-livrable2-slides.pdf)** · [téléchargement direct](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/Bascule-livrable2-slides.pdf)
+
 | # | Élément demandé | Où | Responsable | État |
 |---|---|---|---|---|
 | 01 | **Parcours utilisateur** | [parcours-utilisateur.md](../parcours/parcours-utilisateur.md) | Maxime | ✅ Version finale |
