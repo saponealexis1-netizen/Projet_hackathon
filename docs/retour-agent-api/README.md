@@ -1,6 +1,6 @@
 # Retour d'expérience — Agent API H Company
 
-Propriétaire : **Inès (CAIO)** · **Version 5 du mercredi 18/11**. Reste à ajouter ce qui se passe pendant la démo live (section 14), puis à finaliser vendredi avant 11h.
+Propriétaire : **Inès (CAIO)** · **Version 6 du mercredi 18/11**. Reste à ajouter ce qui se passe pendant la démo live (section 14), puis à finaliser vendredi avant 11h.
 
 > Sources : tests d'Alexis dans [`agent/runner/README.md`](../../agent/runner/README.md), mesures de Maxime dans [`docs/pitch/business-model.md`](../pitch/business-model.md), journal `migration_log` (Supabase).
 
@@ -94,14 +94,14 @@ Principe expliqué par notre professeur : quand une action échoue, le système 
 
 | Essai | Ce qui s'est passé | Ce qu'on a changé |
 |---|---|---|
-| 1er essai | HubSpot refuse bien, la réparation se déclenche, mais résultat **« non corrigée »**, sans raison affichée | Diagnostic en un clic, raison affichée dans le journal, modèles de secours, messages d'erreur clairs |
-| Essai n°4 | L'IA n°1 écrit la correspondance **à l'envers** (`{"jobtitle_ancien": "jobtitle"}` au lieu de `{"job_title": "jobtitle"}`). Les garde-fous la bloquent : **rien de faux ne part**, mais la fiche n'est pas réparée | Le code remet la correspondance dans le bon sens avant les garde-fous ; consigne de l'IA avec la règle clés / valeurs et l'exemple exact |
-| **Essai n°6** | ✅ **Réussi** : HubSpot refuse C-0004, les IA proposent `jobtitle`, garde-fous et IA n°2 valident, skill v2, **« envoyée après correction »**. C-0105 passe **directement** avec le skill réparé. Les 2 fiches sont dans HubSpot. Diagnostic entièrement vert | — |
+| **Run 4** (1er essai réel) | HubSpot refuse bien, la réparation se déclenche, mais l'IA n°1 écrit la correspondance **à l'envers** (`{"jobtitle_ancien": "jobtitle"}` au lieu de `{"job_title": "jobtitle"}`). Les garde-fous la bloquent (« champs inconnus du contrat ») : **rien de faux ne part**, résultat « non corrigée ». La raison était enregistrée dans `migration_log.self_heal`, mais **pas affichée dans le journal de l'action** | Raison affichée dans le journal, diagnostic en un clic, modèles de secours, messages d'erreur clairs ; le code remet la correspondance dans le bon sens avant les garde-fous ; consigne de l'IA avec la règle clés / valeurs et l'exemple exact |
+| **Run 6** | ✅ **Réussi** : HubSpot refuse C-0004, les IA proposent `jobtitle`, garde-fous et IA n°2 valident, skill v2, **« envoyée après correction »**. C-0105 passe **directement** avec le skill réparé. Les 2 fiches sont dans HubSpot. Diagnostic entièrement vert | — |
+| **Run 7** | ✅ **Réussite confirmée avec la version finale du code** (#55) : C-0004 « envoyée après correction », C-0105 envoyée directement, les 2 dans HubSpot. [Voir le résultat](https://projet-hackathon-jow2.vercel.app/?run=59f6de90-7885-42ea-abae-d6cffbc4f32b&total=2) | — |
 
 **Ce qu'on en retient**
 - **Une IA qui écrit du JSON se trompe de sens** : clés et valeurs inversées. La consigne seule ne suffit pas ; il faut **un code qui remet en forme** et **des garde-fous qui vérifient**.
 - **Les garde-fous ont fait leur travail dès le 1er essai** : la réparation a échoué, mais **aucune donnée fausse** n'est partie.
-- **Sans la raison affichée, on ne peut rien corriger** : le diagnostic et la raison dans le journal ont transformé « ça ne marche pas » en « l'IA inverse la correspondance ».
+- **Une raison enregistrée ne suffit pas, il faut qu'elle soit visible** : au run 4, la cause était dans la base de données mais pas dans le journal de l'action. L'afficher là où l'équipe regarde a transformé « ça ne marche pas » en « l'IA inverse la correspondance ».
 - **Plusieurs barrières valent mieux qu'une** : l'IA n°2 ne voit la proposition qu'après les garde-fous du code ; sur tous les essais, rien de faux n'est passé.
 
 ## 8. Ce qui nous a surpris
@@ -161,7 +161,7 @@ Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 | « Et si l'agent se trompe ? » | Il s'est trompé de fiche 3 fois sur la v1 et 1 fois sur la v2 (C-0009 au lieu de C-0090) : notre contrôle d'identité les a bloquées avant HubSpot, puis l'agent les a relues. Aucune mauvaise fiche n'est partie. Chaque fiche a sa capture d'écran. |
 | « Pourquoi pas un script ou un robot RPA ? » | Pas d'API ni d'export, et aucune configuration : on l'a prouvé en migrant deux versions différentes du logiciel avec exactement les mêmes consignes. Un robot RPA aurait dû être réenregistré. |
 | « Combien ça coûte ? » | Entre ~0,008 $ (v2) et ~0,015 $ (v1) par fiche, mesuré sur plus de 200 fiches : de ~25 à ~46 $ pour 3 000 fiches. |
-| « Et si HubSpot change ? » | Ce que Bascule sait de HubSpot est dans un skill que deux IA tiennent à jour. On l'a testé en direct : un champ HubSpot disparu, HubSpot refuse la fiche, les IA réparent, la fiche repart, la suivante passe directement. Une veille quotidienne lit aussi les nouveautés de HubSpot. |
+| « Et si HubSpot change ? » | Ce que Bascule sait de HubSpot est dans un skill que deux IA tiennent à jour. On l'a testé en vrai (runs 6 et 7) : un champ HubSpot disparu, HubSpot refuse la fiche, les IA réparent, la fiche repart, la suivante passe directement. Une veille quotidienne lit aussi les nouveautés de HubSpot. |
 | « Qu'est-ce qui a été le plus difficile ? » | Rendre l'agent fiable, pas le faire marcher : la première lecture a réussi tout de suite, les garde-fous ont pris le reste de la journée. |
 
 ## 13. Limites actuelles
