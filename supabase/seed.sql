@@ -2,7 +2,7 @@
 -- Fichier GÉNÉRÉ depuis data/contacts.legacy.json par data/generate_seed.py : ne pas modifier à la main.
 -- À lancer APRÈS la migration des tables. Peut être relancé sans créer de doublons.
 
-insert into public.legacy_contacts (legacy_id, first_name, last_name, email, phone, company, job_title, city, notes) values
+insert into hackathon.legacy_contacts (legacy_id, first_name, last_name, email, phone, company, job_title, city, notes) values
   ('C-0001', 'Julien', 'Moreau', 'julien.moreau@boulangerie-moreau.example.com', '+33 6 39 98 00 01', 'Boulangerie Moreau', 'Gérant', 'Lyon', 'Commande hebdomadaire de flyers'),
   ('C-0002', 'Sophie', 'Lefèvre', 'sophie.lefevre@cabinet-lefevre-conseil.example.com', '+33 6 39 98 00 02', 'Cabinet Lefèvre Conseil', 'Associée', 'Paris', 'Rappeler en janvier'),
   ('C-0003', 'Karim', 'Benali', 'karim.benali@transports-benali.example.com', '+33 6 39 98 00 03', 'Transports Benali', 'Directeur commercial', 'Marseille', null),
