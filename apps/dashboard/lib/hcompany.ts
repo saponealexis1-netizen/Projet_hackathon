@@ -17,7 +17,15 @@ async function h(path: string): Promise<Response> {
   });
 }
 
-type HSession = { id: string; status: unknown; group_id?: string | null; objective?: string | null };
+// Le groupe est dans « request » (détail d'une session) ; la consigne est dans « first_message » (liste).
+type HSession = {
+  id: string;
+  status: unknown;
+  group_id?: string | null;
+  request?: { group_id?: string | null } | null;
+  first_message?: unknown;
+  objective?: string | null;
+};
 
 function statusOf(s: HSession): string {
   return typeof s.status === "string" ? s.status : ((s.status as { status?: string })?.status ?? "inconnu");
@@ -32,20 +40,19 @@ export async function liveAgents(runId: string): Promise<LiveAgent[]> {
   return (body.items ?? [])
     .map((s) => ({
       sessionId: s.id,
-      legacyId: s.objective?.match(/\b(C-\d{4})\b/)?.[1] ?? null,
+      legacyId: JSON.stringify(s.first_message ?? s.objective ?? "").match(/\b(C-\d{4})\b/)?.[1] ?? null,
       status: statusOf(s),
     }))
     .filter((a) => ["pending", "queued", "running"].includes(a.status));
 }
 
-/** Vrai si un agent Bascule travaille déjà (évite deux migrations en même temps). */
+/** Vrai si un agent travaille déjà sur le compte H (évite deux migrations en même temps). */
 export async function basculeBusy(): Promise<boolean> {
   const res = await h("/sessions?size=20");
   if (!res.ok) return false;
   const body = (await res.json()) as { items?: HSession[] };
-  return (body.items ?? []).some(
-    (s) => s.group_id?.startsWith("bascule-") && ["pending", "queued", "running"].includes(statusOf(s)),
-  );
+  // La liste ne donne pas le groupe : tout agent en cours sur le compte H de Bascule compte.
+  return (body.items ?? []).some((s) => ["pending", "queued", "running"].includes(statusOf(s)));
 }
 
 /** Adresse de la dernière capture d'une session Bascule (null si aucune, ou si la session n'est pas à Bascule). */
@@ -53,8 +60,10 @@ export async function latestScreenshot(sessionId: string): Promise<string | null
   const s = await h(`/sessions/${sessionId}`);
   if (!s.ok) return null;
   const session = (await s.json()) as HSession;
-  if (!session.group_id?.startsWith("bascule-")) return null; // seulement nos agents
-  const params = new URLSearchParams({ sort: "-timestamp", type: "AgentEvent", size: "10" });
+  const group = session.request?.group_id ?? session.group_id;
+  if (!group?.startsWith("bascule-")) return null; // seulement nos agents
+  // Les captures sont dans les « observation_event » ; les derniers événements peuvent être d'autres types.
+  const params = new URLSearchParams({ sort: "-timestamp", type: "AgentEvent", size: "30" });
   const ev = await h(`/sessions/${sessionId}/events?${params}`);
   if (!ev.ok) return null;
   const body = (await ev.json()) as { items?: { data?: { image?: { source?: string } } }[] };
