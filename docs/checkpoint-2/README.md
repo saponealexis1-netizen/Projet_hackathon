@@ -19,7 +19,7 @@
 
 🎥 **[bascule-avancement.mp4](https://github.com/saponealexis1-netizen/Projet_hackathon/blob/main/docs/checkpoint-2/bascule-avancement.mp4)** · [téléchargement direct](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4) — voix : Inès
 
-Tournée sur le vrai prototype, le 18/11 : l'ancien CRM sans export, **une vraie migration lancée en un clic**, les agents H Company en direct, les preuves, une fiche piège bloquée, la réparation automatique quand HubSpot refuse une fiche, le bilan et les chiffres.
+Tournée sur le vrai prototype, le 18/11 : l'ancien CRM sans export, **une vraie migration lancée en un clic**, les agents H Company en direct, les preuves, une fiche piège bloquée, la réparation automatique quand HubSpot refuse une fiche, le bilan, les chiffres et les contacts arrivés dans HubSpot.
 
 ## Mini pitch
 
@@ -68,6 +68,9 @@ Mesures calculées à partir du journal `migration_log` par [`pipeline/metrics/`
 | **Écran de suivi de la vraie migration** (état de chaque fiche, preuves, bilan, bouton de lancement) | https://projet-hackathon-jow2.vercel.app/?run=tout |
 
 ![Écran de suivi : la vraie migration des 100 fiches](ecran-suivi-migration-reelle.png)
+
+![HubSpot : les contacts migrés par Bascule, avec leur identifiant d'origine](hubspot-contacts.jpg)
+*Dans HubSpot (vue « Bascule ») : 102 contacts migrés, chacun relié à sa fiche d'origine par la colonne « Bascule - ID ancien CRM ». Les fiches pièges bloquées n'y sont pas.*
 
 | Ancien CRM v1 : liste, pagination, « Message du jour » à fermer | Ancien CRM v2 : autres libellés, téléphone derrière « Voir le tél. » |
 |---|---|
