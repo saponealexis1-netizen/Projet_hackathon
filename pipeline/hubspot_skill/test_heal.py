@@ -115,6 +115,31 @@ class TestFallback(HealTest):
         self.assertIn("email_refused_by_hubspot", {a["code"] for a in row["anomalies"]})
         self.assertIsNone(row["hubspot_id"])
 
+    def test_reponse_inversee_de_l_essai_4_remise_a_l_endroit(self):
+        # Réponse réelle de l'IA n°1 lors de l'essai du 18/11 : clé = ancienne propriété HubSpot.
+        self.break_skill(job_title="jobtitle_ancien")
+        inverted = {**FIX_JOBTITLE, "mapping": {"jobtitle_ancien": "jobtitle"}}
+        hs = FakeHubSpot()
+        row = self.run_one(SAMPLE[0], hs, fake_chat(inverted, APPROVE))
+        self.assertEqual(row["self_heal"]["result"], "envoyée après correction")
+        self.assertEqual(sk.load()["mapping"]["job_title"], "jobtitle")
+        self.assertNotIn("jobtitle_ancien", sk.load()["mapping"])
+
+    def test_inversion_complete_remise_a_l_endroit(self):
+        self.break_skill(job_title="jobtitle_ancien")
+        swapped = {**FIX_JOBTITLE, "mapping": {"jobtitle": "job_title"}}
+        row = self.run_one(SAMPLE[0], FakeHubSpot(), fake_chat(swapped, APPROVE))
+        self.assertEqual(row["self_heal"]["result"], "envoyée après correction")
+        self.assertEqual(sk.load()["mapping"]["job_title"], "jobtitle")
+
+    def test_cle_inconnue_toujours_bloquee(self):
+        self.break_skill(job_title="jobtitle_ancien")
+        unknown = {**FIX_JOBTITLE, "mapping": {"fonction_inventee": "jobtitle"}}
+        chat = fake_chat(unknown, APPROVE)
+        row = self.run_one(SAMPLE[0], FakeHubSpot(), chat)
+        self.assertEqual(row["self_heal"]["result"], "non corrigée")
+        self.assertEqual(chat.calls, [1])   # bloquée par les garde-fous, contrôleur pas appelé
+
     def test_controleur_refuse_la_fiche_reste_en_echec(self):
         self.break_skill(job_title="jobtitle_ancien")
         row = self.run_one(SAMPLE[0], FakeHubSpot(), fake_chat(FIX_JOBTITLE, {"approve": False, "reasons": ["doute"]}))
