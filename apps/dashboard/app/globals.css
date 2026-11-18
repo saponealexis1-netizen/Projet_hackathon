@@ -116,8 +116,8 @@ a:hover { color: var(--accent-hover); }
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px 32px;
-  padding: 4px 0 6px;
+  gap: 18px 24px;
+  padding: 4px 0 0;
 }
 
 .brand { display: flex; align-items: center; gap: 16px; }
@@ -160,28 +160,30 @@ a:hover { color: var(--accent-hover); }
   text-align: center;
 }
 
-/* Parcours en 4 étapes : Ancien CRM → Agent → Vérification → HubSpot */
+/* Parcours en 4 étapes : une barre d'étapes pleine largeur sous le logo.
+   Elle suit l'état de la page (via :has), sans changement de HTML :
+   repos → numéros ; migration en cours → flux animé ; terminé → étapes cochées. */
 .pipeline {
+  order: 2; /* toujours sur sa propre ligne, sous le logo */
+  flex: 1 1 100%;
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
+  padding: 10px 18px 10px 12px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
   align-items: center;
-  gap: 8px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
   counter-reset: etape;
 }
 .pipeline li {
   counter-increment: etape;
-  position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 6px 14px 6px 6px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface);
+  gap: 10px;
+  min-width: 0;
+  min-height: 36px;
   color: var(--ink-2);
   font-size: 15px;
   font-weight: 600;
@@ -189,39 +191,69 @@ a:hover { color: var(--accent-hover); }
 }
 .pipeline li::before { /* numéro de l'étape */
   content: counter(etape);
+  flex: none;
   display: inline-grid;
   place-items: center;
   width: 28px; height: 28px;
   border-radius: 50%;
-  background: var(--surface-2);
   border: 1px solid var(--line-strong);
+  background: var(--surface-2);
   color: var(--ink-2);
   font: 600 14px/1 var(--mono);
 }
-.pipeline li + li::after { /* flèche entre deux étapes */
-  content: "→";
-  position: absolute;
-  left: -23px; top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted);
-  font-weight: 500;
+.pipeline li:not(:last-child)::after { /* trait de liaison vers l'étape suivante */
+  content: "";
+  flex: 1 1 auto;
+  min-width: 16px;
+  height: 2px;
+  margin: 0 16px 0 6px;
+  border-radius: 2px;
+  background: var(--line-strong);
 }
-/* Étape 1 : l'ancien monde (gris biseauté façon Windows 2000) */
+/* Étape 1 : l'ancien monde (bouton gris biseauté façon Windows 2000) */
 .pipeline li:first-child::before {
   border-radius: 3px;
-  background: var(--legacy-gray);
   border: 2px outset #f2f0ea;
+  background: var(--legacy-gray);
   color: #222;
 }
 /* Étape 2 : l'agent IA */
-.pipeline li:nth-child(2) { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent-hover); }
-.pipeline li:nth-child(2)::before { background: var(--surface); border-color: var(--accent-line); color: var(--accent-hover); }
+.pipeline li:nth-child(2) { color: var(--accent-hover); }
+.pipeline li:nth-child(2)::before { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent-hover); }
 /* Étape 4 : le nouveau monde */
-.pipeline li:last-child { background: var(--ink); border-color: var(--ink); color: #fff; }
-.pipeline li:last-child::before { background: var(--accent); border-color: var(--accent); color: #fff; }
+.pipeline li:last-child { color: var(--ink); font-weight: 700; }
+.pipeline li:last-child::before { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+/* Migration en cours : les données circulent entre les étapes */
+.page:has(.badge-live:not(.done)) .pipeline li:not(:last-child)::after,
+.page:has(.btn:disabled) .pipeline li:not(:last-child)::after {
+  background: repeating-linear-gradient(90deg, var(--accent) 0 8px, transparent 8px 14px);
+  background-size: 28px 2px;
+  animation: flux .9s linear infinite;
+}
+.page:has(.badge-live:not(.done)) .pipeline li:nth-child(2)::before {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 0 0 var(--accent-ring);
+  animation: halo-accent 1.6s ease-out infinite;
+}
+/* Migration terminée : chaque étape est cochée */
+.page:has(.badge-live.done) .pipeline li::before,
+.page:has(.bilan.done) .pipeline li::before {
+  content: "✓";
+  border: 1px solid var(--ok);
+  border-radius: 50%;
+  background: var(--ok);
+  color: #fff;
+  font: 800 14px/1 var(--font);
+}
+.page:has(.badge-live.done) .pipeline li:not(:last-child)::after,
+.page:has(.bilan.done) .pipeline li:not(:last-child)::after { background: var(--ok-line); }
 
 /* Badge « Mode démo : données simulées » */
 .badge-demo {
+  order: 1; /* sur la ligne du logo, à droite */
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -281,6 +313,8 @@ a:hover { color: var(--accent-hover); }
   gap: 20px 40px;
   padding: 28px;
 }
+.launch > :first-child { flex: 1 1 380px; min-width: 0; } /* le texte se resserre, l'action reste à droite */
+.launch > .btn, .launch > .badge-live { flex: none; }
 .launch h2 { font-size: 26px; letter-spacing: -0.025em; }
 .launch p { margin-top: 8px; max-width: 60ch; color: var(--ink-2); font-size: 16px; }
 .launch .alert { flex-basis: 100%; }
@@ -434,16 +468,18 @@ a:hover { color: var(--accent-hover); }
   background: var(--console-2);
   animation: monte .4s ease-out both;
 }
-.live-agent::before { /* barre de titre « Agent 1 » */
-  content: "Agent " counter(agent);
-  display: flex;
-  align-items: center;
+.live-agent::before { /* barre de titre « Agent 1 · ancien CRM » : dit au jury ce qu'il regarde */
+  content: "Agent " counter(agent) " · ancien CRM";
+  display: block;
   height: 36px;
-  padding: 0 14px;
+  padding: 0 36px 0 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   border-bottom: 1px solid var(--console-line);
   background: var(--console-3);
   color: var(--console-muted);
-  font: 600 14px/1 var(--mono);
+  font: 600 14px/36px var(--mono);
 }
 .live-agent::after { /* voyant de l'agent, en haut à droite */
   content: "";
@@ -459,7 +495,7 @@ a:hover { color: var(--accent-hover); }
 /* Capture carrée ~1200×1200, contenu utile en haut à gauche : on cadre dessus */
 .live-agent img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
   object-position: left top;
   background: var(--legacy);
@@ -622,10 +658,10 @@ a:hover { color: var(--accent-hover); }
 
 /* Colonnes (ordre fixe : Fiche, Contact, Entreprise, Statut, Anomalies, Durée, HubSpot, Preuve) */
 .table td:nth-child(1) { white-space: nowrap; font-weight: 600; }
-.table td:nth-child(2) { font-weight: 600; }
+.table td:nth-child(2) { font-weight: 600; white-space: nowrap; }
 .table td:nth-child(3) { color: var(--ink-2); }
-.table td:nth-child(5) { min-width: 300px; }
-.table td:nth-child(6) { white-space: nowrap; }
+.table td:nth-child(5) { min-width: 240px; }
+.table td:nth-child(6) { white-space: nowrap; font-family: var(--font); font-size: 15px; font-variant-numeric: tabular-nums; }
 .table th:nth-child(6), .table td:nth-child(6) { text-align: right; }
 .table td:nth-child(7) { font-weight: 700; color: var(--ok); }
 .table td:nth-child(7).muted { color: var(--muted); font-weight: 500; }
@@ -634,6 +670,9 @@ a:hover { color: var(--accent-hover); }
 /* Lignes bloquées : repérables immédiatement */
 .table tbody tr:has(.status-bloquee) td { background: var(--err-row); }
 .table tbody tr:has(.status-bloquee) td:first-child { box-shadow: inset 4px 0 0 var(--err); color: var(--err); }
+
+/* Vue longue (≥ 25 fiches, ex. ?run=tout) : lignes plus serrées */
+.table:has(tbody tr:nth-child(25)) tbody td { padding-top: 10px; padding-bottom: 10px; }
 
 /* Ligne d'attente « L'agent démarre… » */
 .table td[colspan] {
@@ -644,6 +683,17 @@ a:hover { color: var(--accent-hover); }
   animation: none;
 }
 .table tbody tr:hover td[colspan] { background: transparent; }
+.table tbody tr:only-child td[colspan]::before { /* roue tant qu'aucune fiche n'est arrivée */
+  content: "";
+  display: inline-block;
+  width: 16px; height: 16px;
+  margin-right: 12px;
+  vertical-align: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  border-top-color: var(--accent);
+  animation: tourne .9s linear infinite;
+}
 
 /* Pastille de statut : symbole + libellé, jamais la couleur seule */
 .status {
@@ -756,6 +806,10 @@ a:hover { color: var(--accent-hover); }
   box-shadow: 0 28px 56px -28px rgba(15, 18, 34, .4);
 }
 .bilan.done h2 { font-size: 26px; }
+/* Le bilan final passe avant le tableau (ordre visuel seulement, le HTML ne bouge pas) :
+   le taux de réussite se voit sans faire défiler 105 lignes. */
+.page:has(> .bilan.done) > .bilan { order: 1; }
+.page:has(> .bilan.done) > .card:has(.table) { order: 2; }
 .bilan.done h2::after {
   content: "✓ Terminé";
   padding: 4px 12px;
@@ -979,11 +1033,11 @@ a:hover { color: var(--accent-hover); }
 .fields tr.hl th::after {
   content: "relu";
   margin-left: 8px;
-  padding: 1px 7px;
+  padding: 1px 8px;
   border-radius: 999px;
   background: var(--accent);
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   vertical-align: 1px;
 }
@@ -1006,7 +1060,9 @@ a:hover { color: var(--accent-hover); }
    Animations (sobres, utiles)
    --------------------------------------------------------------------- */
 @keyframes tourne  { to { transform: rotate(360deg); } }
-@keyframes pulse   { 0% { transform: scale(1); opacity: .55; } 100% { transform: scale(2.6); opacity: 0; } }
+@keyframes pulse   { 0% { transform: scale(1); opacity: .5; } 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes halo-accent { 0% { box-shadow: 0 0 0 0 rgba(43, 61, 224, .45); } 100% { box-shadow: 0 0 0 8px rgba(43, 61, 224, 0); } }
+@keyframes flux    { to { background-position: 28px 0; } }  /* les données avancent d'une étape à l'autre */
 @keyframes halo    { 0% { box-shadow: 0 0 0 0 rgba(135, 146, 255, .55); } 100% { box-shadow: 0 0 0 10px rgba(135, 146, 255, 0); } }
 @keyframes reflet  { from { background-position: -200px 0; } to { background-position: calc(100% + 200px) 0; } }
 @keyframes arrive  { from { background-color: #e3e7ff; } }   /* nouvelle fiche : flash cobalt qui s'efface */
@@ -1023,7 +1079,10 @@ a:hover { color: var(--accent-hover); }
    --------------------------------------------------------------------- */
 @media (max-width: 1100px) {
   .page { padding: 24px 24px 56px; }
+  .card { padding: 22px 22px; }
+  .table thead th, .table tbody td { padding-left: 8px; padding-right: 8px; }
   .counter-value { font-size: 34px; }
+  .counter-label { font-size: 14px; }
   .stat-value.big { font-size: 56px; }
 }
 
@@ -1034,13 +1093,15 @@ a:hover { color: var(--accent-hover); }
   .bilan-cols, .modal-body { grid-template-columns: minmax(0, 1fr); }
   .table { display: block; overflow-x: auto; } /* tableau défilant horizontalement */
   .table thead th { position: static; }
+  .pipeline li:not(:last-child)::after { margin: 0 10px 0 4px; }
 }
 
 @media (max-width: 560px) {
   .page { padding: 16px 14px 40px; gap: 14px; }
   .card { padding: 18px; }
   .brand h1 { font-size: 26px; }
-  .pipeline { gap: 8px 24px; }
+  .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
+  .pipeline li:not(:last-child)::after { display: none; }
   .launch .btn, .launch .badge-live { width: 100%; }
   .counters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .live-grid { grid-template-columns: minmax(0, 1fr); }
