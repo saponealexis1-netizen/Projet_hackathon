@@ -31,6 +31,15 @@ try:  # exécution comme module (tests) ou comme script
 except ImportError:  # pragma: no cover
     from mapping import to_hubspot
 
+def refused_email_tlds() -> list:
+    """Extensions d'e-mail que HubSpot refuse, d'après le skill HubSpot (vide si indisponible)."""
+    try:
+        from pipeline.hubspot_skill.skill import refused_email_tlds as from_skill
+        return from_skill()
+    except Exception:
+        return []
+
+
 ALLOWED_FIELDS = [
     "legacy_id", "first_name", "last_name", "email", "phone",
     "company", "job_title", "city", "notes",
@@ -144,6 +153,11 @@ def verify_contact(raw: dict) -> dict:
         contact["email"] = email
         if not EMAIL_RE.match(email):
             flag("email", "bad_email", ERROR, f"e-mail invalide : « {email} »")
+        else:
+            refused = next((t for t in refused_email_tlds() if email.endswith(t)), None)
+            if refused:  # règle apprise par le skill HubSpot
+                flag("email", "email_refused_by_hubspot", ERROR,
+                     f"e-mail en « {refused} » refusé par HubSpot : « {email} »")
     else:
         flag("email", "missing_email", WARNING, "pas d'e-mail : HubSpot ne pourra pas dédoublonner ce contact")
 

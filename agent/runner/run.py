@@ -197,7 +197,9 @@ def main(argv: list[str]) -> int:
             dur = f"{r['duration_ms'] / 1000:.0f} s" if r.get("duration_ms") else "—"
             print(f"  [{len(rows)}/{len(ids)}] {c['legacy_id']}  {row['status']:<9} {dur:>5}  {cost}  "
                   f"{c.get('first_name')} {c.get('last_name')}"
-                  f"{' · ' + str(row['error']) if row.get('error') else ''}{extra}", flush=True)
+                  f"{' · ' + str(row['error']) if row.get('error') else ''}{extra}"
+                  f"{' · 🩹 ' + row['self_heal']['result'] + ' (skill v' + str(row['self_heal']['skill_version']) + ')' if row.get('self_heal') else ''}",
+                  flush=True)
 
     with ThreadPoolExecutor(max_workers=parallel) as pool:
         futures = [pool.submit(process, url, i, run_id, "--no-reread" not in argv) for i in ids]

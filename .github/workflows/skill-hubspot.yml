@@ -1,0 +1,82 @@
+# Veille HubSpot : tient à jour le skill HubSpot de Bascule (pipeline/hubspot_skill/).
+# Chaque jour, 2 IA regardent si les champs des contacts HubSpot ou le changelog HubSpot ont changé.
+# Si le skill change, une pull request est ouverte : Alexis la relit et la fusionne (règle de l'équipe).
+# À la main : GitHub > Actions > « Veille HubSpot (skill) » > Run workflow.
+name: Veille HubSpot (skill)
+
+on:
+  schedule:
+    - cron: "17 5 * * *"   # tous les jours vers 6h17 (heure de Paris)
+  workflow_dispatch:
+    inputs:
+      champs:
+        description: "Vérifier les champs des contacts HubSpot"
+        type: boolean
+        default: true
+      nouveautes:
+        description: "Lire le changelog HubSpot"
+        type: boolean
+        default: true
+
+concurrency:
+  group: skill-hubspot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  veille:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      # Facultatif : IA n°2 sur les crédits Vercel (AI Gateway) au lieu de Hugging Face
+      SKILL_LLM2_BASE_URL: ${{ secrets.SKILL_LLM2_BASE_URL }}
+      SKILL_LLM2_API_KEY: ${{ secrets.SKILL_LLM2_API_KEY }}
+      SKILL_LLM2_MODEL: ${{ secrets.SKILL_LLM2_MODEL }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Vérifier les secrets
+        run: |
+          for v in HUBSPOT_TOKEN HF_TOKEN; do
+            [ -n "${!v}" ] || { echo "::error::Secret manquant : $v (Settings > Secrets and variables > Actions)"; exit 1; }
+          done
+          # Les secrets vides ne doivent pas écraser les valeurs par défaut
+          [ -n "$SKILL_LLM2_BASE_URL" ] || echo "SKILL_LLM2_BASE_URL=https://router.huggingface.co/v1" >> "$GITHUB_ENV"
+          [ -n "$SKILL_LLM2_API_KEY" ] || echo "SKILL_LLM2_API_KEY=$HF_TOKEN" >> "$GITHUB_ENV"
+          [ -n "$SKILL_LLM2_MODEL" ] || echo "SKILL_LLM2_MODEL=Qwen/Qwen3-Next-80B-A3B-Instruct" >> "$GITHUB_ENV"
+
+      - name: Veille (2 IA)
+        run: |
+          ARGS=""
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.champs }}" = "true" ]; then ARGS="$ARGS --champs"; fi
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.nouveautes }}" = "true" ]; then ARGS="$ARGS --nouveautes"; fi
+          python -m pipeline.hubspot_skill.update $ARGS | tee veille.txt
+          { echo "### Veille HubSpot"; echo '```'; cat veille.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Proposer la mise à jour du skill (pull request)
+        run: |
+          if git diff --quiet -- pipeline/hubspot_skill/; then
+            echo "Skill inchangé : pas de pull request."; exit 0
+          fi
+          VERSION=$(python -c "import json; print(json.load(open('pipeline/hubspot_skill/skill.json'))['version'])")
+          BRANCH="skill/hubspot-v$VERSION-$(date +%Y%m%d-%H%M)"
+          git config user.name "Veille HubSpot (Bascule)"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git add pipeline/hubspot_skill/skill.json pipeline/hubspot_skill/SKILL.md
+          git commit -m "skill(hubspot): version $VERSION proposée par la veille (2 IA)"
+          git push -u origin "$BRANCH"
+          { echo "Mise à jour automatique du **skill HubSpot** (version $VERSION)."; echo;
+            echo "Proposée par l'IA n°1, validée par l'IA n°2 et par les garde-fous du code."; echo;
+            echo '```'; cat veille.txt; echo '```'; echo;
+            echo "À relire par Alexis avant fusion : voir pipeline/hubspot_skill/SKILL.md (section Historique)."; } > pr.md
+          gh pr create --base main --head "$BRANCH" --title "🧠 Skill HubSpot v$VERSION (veille automatique)" --body-file pr.md

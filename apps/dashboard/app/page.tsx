@@ -230,6 +230,12 @@ export default function SuiviMigration() {
                 value={`${bilan.relues} (${bilan.corrigeesParRelecture})`}
               />
               <Stat label="Fiches avec capture d'écran" value={`${bilan.avecPreuve} / ${bilan.traitees}`} />
+              {bilan.reparations > 0 && (
+                <Stat
+                  label="Refus HubSpot réparés par le skill"
+                  value={`${bilan.reparationsReussies} / ${bilan.reparations}`}
+                />
+              )}
             </div>
 
             <div className="bilan-cols">
@@ -333,8 +339,9 @@ function Ligne({ row, hubspotUrl, onPreuve }: { row: LogRow; hubspotUrl: string 
         <span className={`status status-${ui}`}>{UI_LABEL[ui]}</span>
       </td>
       <td className="small">
-        {reason(row) || (!row.reread && <span className="muted">—</span>)}
+        {reason(row) || (!row.reread && !row.self_heal && <span className="muted">—</span>)}
         {row.reread && <Relecture row={row} />}
+        {row.self_heal && <Reparation row={row} />}
       </td>
       <td className="mono">{formatDuree(row.duration_ms)}</td>
       <td>
@@ -372,6 +379,33 @@ function Relecture({ row }: { row: LogRow }) {
     <div className={`reread ${rereadChanged(row) ? "fixed" : ""}`}>
       🔁 {label} relu par l&apos;agent : « {r.before ?? "vide"} » → « {r.after ?? "vide"} »
       {!rereadChanged(row) && " (confirmé)"}
+    </div>
+  );
+}
+
+/** Fallback : « ❌ refusée par HubSpot → 🧠 skill vN corrigé par les 2 IA → ✅ envoyée ». */
+function Reparation({ row, detail }: { row: LogRow; detail?: boolean }) {
+  const h = row.self_heal!;
+  const ok = h.applied && !h.result.startsWith("échec");
+  return (
+    <div className={`heal ${ok ? "ok" : "ko"}`}>
+      <div>
+        🩹 ❌ refusée par HubSpot → {h.applied ? `🧠 skill v${h.skill_version} corrigé par les 2 IA` : "🧠 pas de correction"} →{" "}
+        {ok ? "✅" : "⚠️"} {h.result}
+        {h.reused && " (correction déjà apprise)"}
+      </div>
+      {detail && (
+        <div className="heal-detail">
+          <div>
+            <strong>Erreur HubSpot :</strong> {h.error}
+          </div>
+          {h.summary && (
+            <div>
+              <strong>Ce que les IA ont fait :</strong> {h.summary}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -435,6 +469,7 @@ function FenetrePreuve({ row, onClose }: { row: LogRow; onClose: () => void }) {
               </tbody>
             </table>
             {row.reread && <Relecture row={row} />}
+            {row.self_heal && <Reparation row={row} detail />}
             {reason(row) && <p className="small anomalies-txt">⚠️ {reason(row)}</p>}
           </div>
         </div>

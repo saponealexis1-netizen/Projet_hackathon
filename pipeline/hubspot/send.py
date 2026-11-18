@@ -107,8 +107,12 @@ def migrate_one(
     dry_run: bool = False,
     upsert: Callable[[list[dict]], dict[str, str]] = client.upsert_contacts,
     write_log: Callable[[list[dict]], None] | None = None,
+    heal: bool = True,
 ) -> dict:
     """Migre UNE fiche dès qu'elle est lue (l'écran de suivi se remplit en direct).
+
+    Si HubSpot refuse la fiche (erreur 400), le skill HubSpot se répare et la fiche est renvoyée
+    une fois (pipeline/hubspot_skill/heal.py) ; le compte rendu est dans row["self_heal"].
 
     Les doublons sont cherchés parmi les fiches déjà traitées dans ce lancement (`previous`) :
     la première fiche vue est gardée, la suivante est signalée.
@@ -125,11 +129,41 @@ def migrate_one(
                 row["status"], row["error"] = "failed", "contact non renvoyé par HubSpot"
         except Exception as e:
             row["status"], row["error"] = "failed", str(e)
+            if heal:  # Fallback (Inès) : les 2 IA corrigent le skill, puis on réessaie une fois
+                row.update(self_heal_and_retry(e, contact, previous, report_props, run_id, upsert))
     if write_log is None and not dry_run and supabase_configured():
         write_log = write_supabase_log
     if write_log:
         write_log([row])
     return row
+
+
+def self_heal_and_retry(error: Exception, contact: dict, previous: list[dict], payload: dict,
+                        run_id: str, upsert: Callable[[list[dict]], dict[str, str]]) -> dict:
+    """Fallback : réparation du skill par les 2 IA, revérification, puis un seul nouvel essai.
+
+    Renvoie les champs de la ligne à mettre à jour (au minimum « self_heal »)."""
+    from pipeline.hubspot_skill import heal
+
+    if not heal.is_healable(error):
+        return {}
+    report = heal.attempt(error, payload, run_id)
+    if not report["applied"]:
+        return {"self_heal": {**report, "result": "non corrigée"}}
+
+    legacy_id = contact.get("legacy_id") or "?"
+    fresh = verify_batch(previous + [contact])[-1]   # revérifiée avec le skill corrigé
+    if fresh["status"] == "error":                   # la règle apprise bloque désormais la fiche
+        return {"status": log_status(fresh), "anomalies": fresh["anomalies"], "error": None,
+                "self_heal": {**report, "result": "bloquée avant HubSpot (règle apprise)"}}
+    try:
+        hubspot_id = upsert([fresh["hubspot"]]).get(legacy_id)
+    except Exception as e:
+        return {"error": str(e), "self_heal": {**report, "result": "échec après correction"}}
+    if not hubspot_id:
+        return {"self_heal": {**report, "result": "échec après correction"}}
+    return {"status": log_status(fresh), "hubspot_id": hubspot_id, "error": None,
+            "anomalies": fresh["anomalies"], "self_heal": {**report, "result": "envoyée après correction"}}
 
 
 def failed_row(run_id: str, legacy_id: str, error: str, contact: dict | None = None,

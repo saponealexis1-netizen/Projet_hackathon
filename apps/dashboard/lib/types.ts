@@ -27,6 +27,18 @@ export type LogRow = {
   run_id?: string;
   agent_started_at?: string | null;
   agent_finished_at?: string | null;
+  /** Fallback (Inès) : HubSpot a refusé la fiche, les 2 IA ont réparé le skill, nouvel essai. */
+  self_heal?: SelfHeal | null;
+};
+
+export type SelfHeal = {
+  error: string;
+  tried: boolean;
+  applied: boolean;
+  reused?: boolean;
+  summary: string | null;
+  skill_version: number | null;
+  result: string; // « envoyée après correction », « bloquée avant HubSpot (règle apprise) », « non corrigée »…
 };
 
 export type Reread = {

@@ -49,6 +49,8 @@ export type Bilan = {
   relues: number; // D13 : fiches dont un champ a été relu par l'agent
   corrigeesParRelecture: number; // … et dont la valeur a changé après relecture
   avecPreuve: number; // D14 : fiches avec une capture d'écran
+  reparations: number; // Fallback : fiches refusées par HubSpot, réparation tentée
+  reparationsReussies: number;
 };
 
 /** Libellés français des champs du contrat commun. */
@@ -74,6 +76,7 @@ const CODE_LABEL: Record<string, string> = {
   missing_required: "Champ obligatoire vide",
   bad_legacy_id: "Identifiant invalide",
   bad_email: "E-mail invalide",
+  email_refused_by_hubspot: "E-mail refusé par HubSpot",
   duplicate_id: "Doublon (identifiant)",
   duplicate_email: "Doublon (e-mail)",
   duplicate_person: "Doublon (même personne)",
@@ -122,6 +125,8 @@ export function computeBilan(rows: LogRow[], total: number): Bilan {
     relues: rows.filter((r) => r.reread).length,
     corrigeesParRelecture: rows.filter(rereadChanged).length,
     avecPreuve: rows.filter((r) => r.screenshot_url).length,
+    reparations: rows.filter((r) => r.self_heal).length,
+    reparationsReussies: rows.filter((r) => r.self_heal?.applied).length,
   };
 }
 

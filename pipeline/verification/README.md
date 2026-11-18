@@ -48,6 +48,7 @@ a_envoyer = [r["hubspot"] for r in reports if r["status"] != "error"]
 | `missing_required` | Prénom, nom ou identifiant vide | ❌ error |
 | `bad_legacy_id` | Identifiant différent de `C-0000` | ❌ error |
 | `bad_email` | E-mail mal formé | ❌ error |
+| `email_refused_by_hubspot` | Extension d'e-mail refusée par HubSpot (ex. `.example`), d'après le [skill HubSpot](../hubspot_skill/README.md) | ❌ error |
 | `duplicate_id` | Même identifiant qu’une fiche précédente | ❌ error |
 | `duplicate_email` | Même e-mail qu'une fiche précédente | ❌ error |
 | `duplicate_person` | Même prénom + nom + entreprise (accents et majuscules ignorés) | ⚠️ warning |

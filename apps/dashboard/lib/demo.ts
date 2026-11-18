@@ -22,6 +22,18 @@ export function isDemoRunId(runId: string): boolean {
 
 export const DEMO_TOTAL = demoData.length;
 
+/** Exemple de fallback : HubSpot refuse, le skill est réparé par les 2 IA, la fiche repart. */
+const DEMO_HEAL: Record<string, LogRow["self_heal"]> = {
+  "C-0012": {
+    error: 'HubSpot HTTP 400 : Property "jobtitle_ancien" does not exist',
+    tried: true,
+    applied: true,
+    summary: "La propriété « jobtitle_ancien » n'existe plus : la fonction va dans « jobtitle »",
+    skill_version: 2,
+    result: "envoyée après correction",
+  },
+};
+
 /** Exemple de relecture ciblée (D13) pour la démo : téléphone mal lu, relu par l'agent. */
 const DEMO_REREAD: Record<string, LogRow["reread"]> = {
   "C-0005": { field: "phone", before: "06 39 98 00", after: "+33 6 39 98 00 05" },
@@ -42,5 +54,6 @@ export function demoRows(runId: string, now = Date.now()): LogRow[] {
       agent_session_id: null,
       screenshot_url: null,
       reread: DEMO_REREAD[r.legacy_id] ?? null,
+      self_heal: DEMO_HEAL[r.legacy_id] ?? null,
     }));
 }

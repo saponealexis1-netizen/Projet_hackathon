@@ -22,6 +22,10 @@ on:
         description: "Supprimer d'abord ces fiches de HubSpot (pour les voir arriver)"
         type: boolean
         default: true
+      panne_demo:
+        description: "Démo du fallback : casser volontairement le skill HubSpot (la fonction part vers une propriété disparue), puis le laisser se réparer"
+        type: boolean
+        default: false
 
 concurrency:
   group: migration
@@ -43,6 +47,8 @@ jobs:
       CRM_URL: ${{ inputs.url }}
       PARALLEL: ${{ inputs.parallel }}
       RUN_ID_INPUT: ${{ inputs.run_id }}
+      # Fallback : les 2 IA du skill HubSpot (pipeline/hubspot_skill/)
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -59,6 +65,18 @@ jobs:
         if: ${{ inputs.reset }}
         run: python -m pipeline.hubspot.reset --ids "$IDS" --yes
 
+      - name: Démo du fallback — casser le skill HubSpot
+        if: ${{ inputs.panne_demo }}
+        run: |
+          python - <<'PY'
+          from pipeline.hubspot_skill import skill as sk
+          s = sk.load()
+          s["mapping"]["job_title"] = "jobtitle_ancien"   # propriété qui n'existe pas dans HubSpot
+          sk.save(s)
+          print("Skill cassé volontairement : job_title → jobtitle_ancien")
+          PY
+          echo "### 🩹 Démo du fallback : skill HubSpot cassé volontairement (job_title → jobtitle_ancien)" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Migration (agent H Company)
         run: |
           RUN_ID="${RUN_ID_INPUT:-$(python -c 'import uuid; print(uuid.uuid4())')}"
@@ -66,3 +84,13 @@ jobs:
           LIEN="https://projet-hackathon-jow2.vercel.app/?run=$RUN_ID&total=$TOTAL"
           echo "### Suivi en direct : [$LIEN]($LIEN)" >> "$GITHUB_STEP_SUMMARY"
           python -m agent.runner.run --url "$CRM_URL" --ids "$IDS" --parallel "$PARALLEL" --run-id "$RUN_ID"
+
+      - name: Réparations du skill pendant la migration
+        if: ${{ always() }}
+        run: |
+          if git diff --quiet -- pipeline/hubspot_skill/skill.json; then
+            echo "Aucune réparation du skill pendant cette migration." >> "$GITHUB_STEP_SUMMARY"; exit 0
+          fi
+          { echo "### 🩹 Le skill HubSpot a été réparé pendant la migration"; echo '```';
+            python -c "import json; h=json.load(open('pipeline/hubspot_skill/skill.json'))['history']; [print(f\"v{x['version']} · {x['trigger']} · {x['summary']}\") for x in h[-3:]]";
+            echo '```'; } >> "$GITHUB_STEP_SUMMARY"
