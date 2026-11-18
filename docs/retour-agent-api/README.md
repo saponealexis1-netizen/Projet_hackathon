@@ -1,6 +1,6 @@
 # Retour d'expérience — Agent API H Company
 
-Propriétaire : **Inès (CAIO)** · **Version 4 du mardi 17/11**. Reste à ajouter ce qui se passe pendant la démo live (section 13), puis à finaliser vendredi avant 11h.
+Propriétaire : **Inès (CAIO)** · **Version 5 du mercredi 18/11**. Reste à ajouter ce qui se passe pendant la démo live (section 14), puis à finaliser vendredi avant 11h.
 
 > Sources : tests d'Alexis dans [`agent/runner/README.md`](../../agent/runner/README.md), mesures de Maxime dans [`docs/pitch/business-model.md`](../pitch/business-model.md), journal `migration_log` (Supabase).
 
@@ -84,14 +84,34 @@ Avant les garde-fous, le premier essai sur 5 fiches donnait **1 fiche exacte sur
 - **La relecture (D13) sait dire « c'est bien écrit comme ça »** : quand la donnée est fausse dans l'ancien CRM, l'agent la confirme au lieu d'inventer une correction. C'est le comportement voulu : Bascule recopie, il ne corrige pas les données du client.
 - **Les tests de pièges ont trouvé un bug de notre code** (n° 7 ci-dessus), corrigé avant la démo.
 
-## 7. Ce qui nous a surpris
+## 7. Bascule se répare tout seul quand HubSpot change (fallback)
+
+Principe expliqué par notre professeur : quand une action échoue, le système revient en arrière, se met à jour et réessaie, et on le voit dans les journaux. Côté ancien CRM, l'agent H s'adapte déjà seul (deux versions migrées sans réglage). Côté HubSpot, ce que Bascule sait (où ranger chaque champ, ce qui est refusé) est rangé dans un **skill** que **deux IA Hugging Face** tiennent à jour ([`pipeline/hubspot_skill/`](../../pipeline/hubspot_skill/README.md)).
+
+**Le cycle** : ❌ HubSpot refuse une fiche → 🧠 IA n°1 (Qwen3) lit l'erreur et propose une correction du skill → 🛡️ garde-fous du code → 🔍 IA n°2 valide → 🔁 la fiche repart une fois → ✅ résultat visible sur l'écran de suivi (🩹).
+
+**Les essais réels (18/11)**, avec une panne volontaire : la fonction des contacts envoyée vers une propriété qui n'existe plus (`jobtitle_ancien`).
+
+| Essai | Ce qui s'est passé | Ce qu'on a changé |
+|---|---|---|
+| 1er essai | HubSpot refuse bien, la réparation se déclenche, mais résultat **« non corrigée »**, sans raison affichée | Diagnostic en un clic, raison affichée dans le journal, modèles de secours, messages d'erreur clairs |
+| Essai n°4 | L'IA n°1 écrit la correspondance **à l'envers** (`{"jobtitle_ancien": "jobtitle"}` au lieu de `{"job_title": "jobtitle"}`). Les garde-fous la bloquent : **rien de faux ne part**, mais la fiche n'est pas réparée | Le code remet la correspondance dans le bon sens avant les garde-fous ; consigne de l'IA avec la règle clés / valeurs et l'exemple exact |
+| **Essai n°6** | ✅ **Réussi** : HubSpot refuse C-0004, les IA proposent `jobtitle`, garde-fous et IA n°2 valident, skill v2, **« envoyée après correction »**. C-0105 passe **directement** avec le skill réparé. Les 2 fiches sont dans HubSpot. Diagnostic entièrement vert | — |
+
+**Ce qu'on en retient**
+- **Une IA qui écrit du JSON se trompe de sens** : clés et valeurs inversées. La consigne seule ne suffit pas ; il faut **un code qui remet en forme** et **des garde-fous qui vérifient**.
+- **Les garde-fous ont fait leur travail dès le 1er essai** : la réparation a échoué, mais **aucune donnée fausse** n'est partie.
+- **Sans la raison affichée, on ne peut rien corriger** : le diagnostic et la raison dans le journal ont transformé « ça ne marche pas » en « l'IA inverse la correspondance ».
+- **Plusieurs barrières valent mieux qu'une** : l'IA n°2 ne voit la proposition qu'après les garde-fous du code ; sur tous les essais, rien de faux n'est passé.
+
+## 8. Ce qui nous a surpris
 
 - **L'agent « veut » répondre** : face à une information cachée, il invente une valeur crédible plutôt que de dire qu'il ne la voit pas. Il faut lui dire explicitement que le vide vaut mieux qu'une invention.
 - **Une erreur « parfaite » ne se voit pas** : un faux numéro bien formaté passe toutes les règles de vérification. Seule la **capture d'écran** a permis de comprendre ce qui s'était passé.
 - **Les consignes en français simple suffisent** : pas besoin de décrire le logiciel, seulement le but et les règles.
 - **La moitié du travail est autour de l'agent**, pas dans l'agent : format imposé, contrôles, relances, mesures.
 
-## 8. Les garde-fous qu'on a mis autour de l'agent
+## 9. Les garde-fous qu'on a mis autour de l'agent
 
 | Garde-fou | Où | Il protège contre… |
 |---|---|---|
@@ -103,7 +123,7 @@ Avant les garde-fous, le premier essai sur 5 fiches donnait **1 fiche exacte sur
 | Capture d'écran gardée pour chaque fiche (D14) | `migration_log` + écran de suivi | Les erreurs invisibles : on peut toujours vérifier |
 | Upsert sur `bascule_legacy_id` | `pipeline/hubspot/` | Les doublons dans HubSpot en cas de relance |
 
-## 9. Nos conseils à une équipe qui démarre avec l'Agent API
+## 10. Nos conseils à une équipe qui démarre avec l'Agent API
 
 1. **Imposer un format de réponse simple** (texte uniquement, chaîne vide si absent) dès le premier test.
 2. **Activer le texte de la page** (`markdown: true`) dès qu'il faut recopier des chiffres ou des identifiants.
@@ -113,7 +133,7 @@ Avant les garde-fous, le premier essai sur 5 fiches donnait **1 fiche exacte sur
 6. **Une session par fiche** plutôt qu'une longue session : plus facile à relancer, à mesurer et à paralléliser.
 7. **Arrêter d'attendre dès que la réponse est là** : sinon on perd du temps à chaque fiche.
 
-## 10. Nos retours à H Company
+## 11. Nos retours à H Company
 
 Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 
@@ -125,12 +145,13 @@ Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 | Des **captures d'écran durables** (ou un export) | Elles sont notre preuve pour l'utilisateur ; nous avons dû les faire relayer par notre serveur |
 | Plus d'**agents en parallèle** sur l'offre gratuite pendant un hackathon | Avec 3 agents, 105 fiches prennent 16,9 min (mesuré) ; une démo live en montre 5 ou 6 |
 
-## 11. Pour le pitch et les questions du jury
+## 12. Pour le pitch et les questions du jury
 
 **Trois messages à retenir**
 1. **Le même agent, sans aucun réglage, a migré deux logiciels différents** : il ne reçoit que l'adresse. 100/100 fiches exactes sur la v1, 100/100 sur la v2 (autre mise en page, autres libellés).
 2. **Il ne fait jamais seul** : 1 fiche exacte sur 5 sans garde-fous, 100 sur 100 avec.
 3. **Chaque donnée est prouvée** : capture d'écran de la fiche d'origine pour chaque contact migré.
+4. **Bascule se répare tout seul quand HubSpot change** : HubSpot refuse une fiche, deux IA corrigent le skill, la fiche repart, et la suivante passe directement (essai réel du 18/11).
 
 **Réponses courtes aux questions probables**
 
@@ -140,16 +161,17 @@ Ce qui nous aurait fait gagner du temps, à transmettre à l'équipe H Company :
 | « Et si l'agent se trompe ? » | Il s'est trompé de fiche 3 fois sur la v1 et 1 fois sur la v2 (C-0009 au lieu de C-0090) : notre contrôle d'identité les a bloquées avant HubSpot, puis l'agent les a relues. Aucune mauvaise fiche n'est partie. Chaque fiche a sa capture d'écran. |
 | « Pourquoi pas un script ou un robot RPA ? » | Pas d'API ni d'export, et aucune configuration : on l'a prouvé en migrant deux versions différentes du logiciel avec exactement les mêmes consignes. Un robot RPA aurait dû être réenregistré. |
 | « Combien ça coûte ? » | Entre ~0,008 $ (v2) et ~0,015 $ (v1) par fiche, mesuré sur plus de 200 fiches : de ~25 à ~46 $ pour 3 000 fiches. |
+| « Et si HubSpot change ? » | Ce que Bascule sait de HubSpot est dans un skill que deux IA tiennent à jour. On l'a testé en direct : un champ HubSpot disparu, HubSpot refuse la fiche, les IA réparent, la fiche repart, la suivante passe directement. Une veille quotidienne lit aussi les nouveautés de HubSpot. |
 | « Qu'est-ce qui a été le plus difficile ? » | Rendre l'agent fiable, pas le faire marcher : la première lecture a réussi tout de suite, les garde-fous ont pris le reste de la journée. |
 
-## 12. Limites actuelles
+## 13. Limites actuelles
 
 - **Pas de connexion par mot de passe** dans l'ancien CRM (D11) : l'agent n'a pas encore été testé derrière un écran de connexion.
 - **3 agents en parallèle** sur l'offre gratuite : une grosse migration prend plusieurs heures.
 - **Les captures d'écran dépendent de H Company** : il faudra les copier chez nous pour les garder.
 - **Données fictives uniquement** : pas encore testé sur un vrai vieux logiciel de client.
 
-## 13. À compléter jeudi et vendredi
+## 14. À compléter jeudi et vendredi
 
 - [x] Migration complète sur la **2e version** : 105/105 lues, 100/100 exactes, 5/5 pièges, 16,9 min (section 2).
 - [x] Résultat sur les **fiches pièges** : 5 / 5 traités comme prévu (section 6).
