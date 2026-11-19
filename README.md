@@ -2,123 +2,186 @@
 
 > **Changez de logiciel, sans perdre vos données.**
 
-Bascule est un agent IA qui récupère les fiches clients d'un ancien CRM **sans export ni API**, en utilisant son interface visuelle comme le ferait un humain, puis prépare leur migration vers un nouveau CRM.
+Bascule migre les fiches clients d'un vieux logiciel **sans export ni API** vers **HubSpot**. Un agent IA de **H Company** lit l'ancien logiciel **à l'écran, comme un humain**. Chaque fiche est ensuite **vérifiée**, **prouvée par une capture d'écran**, puis envoyée dans HubSpot. Les fiches douteuses sont bloquées avec leur raison.
 
-Projet réalisé lors du **Hackathon Eugenia 2026 — « Build The Future »** (16 → 20 novembre 2026), track *Creative Entrepreneur*, en partenariat avec H Company, Hugging Face et Vercel.
+Projet du **Hackathon Eugenia 2026 « Build The Future »** (16 → 20 novembre 2026), track *Creative Entrepreneur*, Team 8, avec H Company, Hugging Face et Vercel.
 
 ---
 
 ## Sommaire
 
+- [Tester en 2 minutes](#tester-en-2-minutes)
+- [Résultats réels](#résultats-réels)
 - [Le problème](#le-problème)
-- [La solution](#la-solution)
-- [Personas](#personas)
-- [Stack technique](#stack-technique)
-- [L'équipe](#léquipe)
-- [Liens en ligne](#liens-en-ligne)
-- [Livrables](#livrables)
+- [Comment ça marche](#comment-ça-marche)
+- [Ce qui rend Bascule fiable](#ce-qui-rend-bascule-fiable)
+- [Architecture et technologies](#architecture-et-technologies)
+- [Lancer le projet](#lancer-le-projet)
 - [Structure du dépôt](#structure-du-dépôt)
+- [Livrables](#livrables)
+- [L'équipe](#léquipe)
+- [Limites et suite](#limites-et-suite)
 
 ---
 
+## Tester en 2 minutes
+
+| | Lien | À faire |
+|---|---|---|
+| 1 | **Ancien CRM** (le logiciel à quitter) · [v1](https://projet-hackathon-uffi.vercel.app) · [v2](https://projet-hackathon-uffi.vercel.app/v2) | Fermez « Message du jour », cherchez un export dans le menu Fichier (il n'y en a pas), ouvrez une fiche : le numéro est caché derrière un bouton. |
+| 2 | **Écran de suivi de la vraie migration** · [ouvrir](https://projet-hackathon-jow2.vercel.app/?run=tout) | Les 105 fiches déjà migrées, avec leur statut et le bilan. Cliquez sur **Voir** : la capture de ce que l'agent a vu, à côté de ce qu'il a lu. |
+| 3 | **Vidéo de démonstration** (2 min) · [télécharger](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4) | Une vraie migration filmée de bout en bout, des agents en direct jusqu'aux contacts dans HubSpot. |
+
+L'écran de suivi a aussi un bouton **« Lancer la migration (agent réel) »** : il lance de vrais agents H Company sur 6 fiches de démo (une fiche normale et 5 fiches pièges), qu'on voit travailler en direct. Il est réservé à l'équipe, car chaque lancement consomme des crédits.
+
+## Résultats réels
+
+Mesurés sur de vraies migrations (journal `migration_log`, crédits mesurés par l'Agent API), les 17 et 18 novembre 2026.
+
+| Mesure | Ancien CRM v1 | Ancien CRM v2 (autre mise en page, autres libellés) |
+|---|---|---|
+| Fiches **exactes** (9 champs sur 9, comparés à la base d'origine) | **100 / 100** | **100 / 100** |
+| Fiches pièges (doublon, e-mail invalide, prénom vide, téléphone incomplet, majuscules) | — | **5 / 5** traitées comme prévu |
+| Mauvaise fiche envoyée dans HubSpot | **0** | **0** |
+| Durée réelle, 3 agents en parallèle | 33 min (avant une correction de notre code) | **16,9 min** pour 105 fiches (médiane **21 s** par fiche) |
+| Coût de l'agent H par fiche | ~0,015 $ | **~0,008 $** |
+
+- **Le même agent, avec les mêmes consignes, a migré deux logiciels différents** : il ne reçoit que l'adresse. Un script ou un robot RPA aurait dû être reconfiguré.
+- **3 000 fiches** coûteraient environ **25 à 45 $** de crédits d'agent.
+- **Réparation automatique** : un champ HubSpot volontairement cassé a été réparé par les IA, et la fiche est repartie (essais réels du 18/11).
+
 ## Le problème
 
-Changer de CRM devient difficile quand les fiches clients ne peuvent pas être exportées simplement.
-
-| | Constat | Conséquence |
-|---|---|---|
-| 01 | **Un logiciel fermé** : le CRM historique ne propose ni API accessible ni export exploitable. | Les outils de migration classiques sont inutilisables. |
-| 02 | **Une ressaisie manuelle** : l'équipe doit ouvrir chaque fiche et la recopier dans le nouveau logiciel. | Temps perdu et risque d'erreur. |
-| 03 | **Un frein à la migration** : l'entreprise hésite à adopter une meilleure solution. | Elle reste bloquée sur un outil dépassé. |
+Une petite entreprise veut passer sur HubSpot, mais son logiciel historique n'a **ni export, ni API**. La seule solution est de recopier chaque fiche à la main : pour 3 000 fiches, une centaine d'heures. Pour l'éditeur ou l'agence qui vend le nouveau CRM, c'est souvent la dernière objection avant la signature.
 
 > Le vrai problème n'est pas de choisir un nouveau CRM. C'est de réussir à quitter l'ancien.
 
-## La solution
-
-**Une migration pilotée par un agent IA.** L'agent utilise l'interface visuelle du CRM source ; le traitement et l'écriture sont ensuite contrôlés par notre application.
+## Comment ça marche
 
 ```
- 1. CRM ANCIEN          2. AGENT H COMPANY       3. VÉRIFICATION           4. CRM CIBLE
- Interface web     →    Observe, clique et   →   Mapping des champs,   →   CRM réel : HubSpot,
- simulée, sans          extrait les contacts     doublons et anomalies     alimenté via son API
- export ni API
+ 1. ANCIEN CRM          2. AGENTS H COMPANY        3. VÉRIFICATION              4. HUBSPOT
+ Interface web     →    Lisent chaque fiche   →    Doublons, e-mails,      →    Contacts créés par
+ sans export ni API     à l'écran, comme un        champs vides, relecture      l'API, reliés à leur
+                        humain (3 en parallèle)    ciblée d'un champ douteux    fiche d'origine
+                                     │
+                                     ▼
+                    Journal Supabase  →  Écran de suivi en direct (preuves, bilan)
 ```
 
-**Périmètre du MVP**
-- 10 à 20 contacts **synthétiques**.
-- Aucun accès direct à la base source.
-- Aucune donnée réelle.
-- Ancien CRM **simulé** (on contrôle la démo et on prouve l'absence d'export) ; CRM cible **réel** (HubSpot).
+1. **Lire** : l'agent ouvre le logiciel, ferme les fenêtres, passe les pages, ouvre chaque fiche et clique sur « Afficher le numéro ». Il ne reçoit que l'adresse : aucune configuration.
+2. **Vérifier** : chaque fiche est classée **migrée**, **à vérifier** ou **bloquée**. Un champ suspect est relu une seconde fois par l'agent.
+3. **Envoyer** : les fiches valides sont créées dans HubSpot, sans doublon (clé `bascule_legacy_id`).
+4. **Prouver** : chaque fiche garde la capture d'écran de l'agent. L'écran de suivi montre tout en direct : agents au travail, fiches, raisons des blocages, bilan, coût.
+5. **Se réparer** : si HubSpot refuse une fiche (un champ a disparu, une règle a changé), deux IA corrigent la correspondance des champs, des garde-fous vérifient, et la fiche repart.
 
-**Pourquoi un agent *computer-use* ?** Sans API ni export, une automatisation classique (script, connecteur) ne peut pas lire les données : il faut « voir » l'écran et naviguer dans l'interface. L'agent n'intervient que là où c'est indispensable (la lecture de l'ancien CRM) ; l'écriture dans HubSpot passe par son API, plus fiable.
+Le parcours utilisateur détaillé (Thomas, qui lance la migration et paie ; Camille, dont les données migrent) est dans [docs/parcours/](docs/parcours/parcours-utilisateur.md).
 
-Le cadrage complet (options étudiées, décisions, planning) est détaillé dans [docs/CADRAGE.md](docs/CADRAGE.md).
-La répartition des tâches et les règles de travail en équipe sont dans [docs/ORGANISATION.md](docs/ORGANISATION.md).
+## Ce qui rend Bascule fiable
 
-## Personas
+L'agent sait naviguer seul, mais il préfère inventer une valeur crédible plutôt que laisser un champ vide. **Sans garde-fous, 1 fiche sur 5 était exacte au premier essai ; avec, 100 sur 100.**
 
-Personas fictifs de cadrage — business model B2B à tester.
-
-| | **Camille** — utilisatrice finale | **Thomas** — client / payeur potentiel |
-|---|---|---|
-| Rôle | Gérante d'une petite agence | Responsable onboarding d'un éditeur CRM |
-| Situation | Utilise un vieux CRM et connaît peu les outils IA. Elle redoute de ressaisir ses contacts et de perdre des informations. | Veut automatiser l'intégration des nouveaux clients, mais les anciens logiciels sans export bloquent ses outils habituels. |
-| Citation | « Je veux changer d'outil, pas tout recopier. » | « La migration ne devrait pas bloquer une vente. » |
-
-## Stack technique
-
-| Outil | Rôle dans le projet |
+| Garde-fou | Il protège contre… |
 |---|---|
-| **H Company** (Agent API) | Navigation visuelle et extraction des fiches dans l'ancien CRM |
-| **HubSpot** (CRM gratuit + API) | CRM cible réel, dans lequel les contacts sont importés |
-| **Next.js / TypeScript** | Ancien CRM simulé, interface de suivi et orchestration |
-| **Vercel** | Hébergement des interfaces |
-| **Supabase** | Base cachée de l'ancien CRM + journal de migration et mesures (**ce n'est pas le CRM cible**) |
-| **Hugging Face** | Jeu de données synthétique de référence |
-| **GitHub + Claude Code** | Versionnage et développement |
+| Format de réponse imposé, « une valeur n'est valable que si tu la vois » | Les valeurs inventées |
+| Texte de la page en plus de l'image | Les chiffres mal lus |
+| Contrôle d'identité et relance automatique | La mauvaise fiche ouverte (4 fois sur 205, toutes rattrapées) |
+| Vérification (doublons, formats, champs obligatoires) | Les données fausses dans HubSpot |
+| Relecture ciblée d'un champ douteux | Les erreurs de lecture ponctuelles |
+| Capture d'écran de chaque fiche | Les erreurs invisibles : tout reste vérifiable |
+| Réparation par 2 IA + garde-fous du code | Un changement côté HubSpot |
 
-## L'équipe
+Retour d'expérience complet sur l'Agent API : [docs/retour-agent-api/](docs/retour-agent-api/README.md).
 
-Team 8 — six rôles attribués.
+## Architecture et technologies
 
-| Membre | Rôle | Responsabilités |
-|---|---|---|
-| Maxime Bazin | **CEO** | Vision, pitch, priorités |
-| Victoria Ifrah | **CTO** | Conception des agents |
-| Inès Soubran | **CAIO** | Extraction et vérification IA |
-| Alexis Sapone | **CDO** | Données, mapping, mesures |
-| Mehdi Zitouni | **CPO** | Design, parcours, interface |
-| Natalia Medrano | **CAO** | Automatisations, marketing |
+![Architecture de Bascule](docs/architecture/architecture.png)
 
-> **Cette semaine :** 4 membres actifs (Alexis, Victoria, Inès, Maxime) ; Mehdi et Natalia sont en standby. **Alexis est chef de projet** et seul responsable des fusions. Détail dans [docs/ORGANISATION.md](docs/ORGANISATION.md).
+| Outil | Rôle |
+|---|---|
+| **H Company — Agent API** (`h/web-surfer-flash`) | Lecture visuelle de l'ancien CRM, réponse JSON imposée, captures d'écran, coût et durée par fiche |
+| **HubSpot** (API) | CRM cible réel |
+| **Python** | Orchestration des agents, vérification, envoi HubSpot, mesures (bibliothèque standard uniquement) |
+| **Next.js sur Vercel** | Ancien CRM simulé (2 versions) et écran de suivi |
+| **Supabase** (schéma `hackathon`) | Base cachée de l'ancien CRM et journal de migration |
+| **GitHub Actions** | Lancement de la migration en un clic depuis l'écran de suivi |
+| **Hugging Face** (Qwen3) | Les 2 IA qui réparent le « skill HubSpot » |
 
-## Liens en ligne
+Détail : [docs/architecture/](docs/architecture/README.md) · décisions de cadrage : [docs/CADRAGE.md](docs/CADRAGE.md).
 
-| Application | Adresse | Statut |
-|---|---|---|
-| Ancien CRM simulé (`apps/legacy-crm`) | https://projet-hackathon-uffi.vercel.app | ✅ En ligne (socle) |
-| Écran de suivi de migration (`apps/dashboard`) | https://projet-hackathon-jow2.vercel.app | ✅ En ligne (mode démo : données simulées) |
+## Lancer le projet
 
-Chaque fusion sur `main` redéploie automatiquement sur Vercel.
+**Une migration réelle**, depuis GitHub, sans rien installer : onglet **Actions** › **« Lancer la migration »** › **Run workflow**. Secrets nécessaires : `HAI_API_KEY`, `HUBSPOT_TOKEN`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (et `HF_TOKEN` pour la réparation).
 
-## Livrables
+**En local**, avec Python 3 et les mêmes variables d'environnement :
 
-| Checkpoint | Échéance | Contenu | Statut |
-|---|---|---|---|
-| **1 — Validation d'idée** | Lun. 16/11, 17h | [Slides (PDF)](docs/checkpoint-1/) | ✅ Livré |
-| 2 — Point intermédiaire | Mer. 18/11, 17h | Parcours utilisateur, architecture, mini pitch, roadmap | À venir |
-| 3 — Produit | Ven. 20/11, 11h | Prototype, fiche projet + repo, vidéo démo | À venir |
-| 4 — Pitch deck | Ven. 20/11, 15h | 8 à 12 slides | À venir |
+```bash
+python -m agent.runner.run --url https://projet-hackathon-uffi.vercel.app --ids C-0004,C-0101 --dry-run
+```
+
+`--dry-run` lit les fiches sans rien envoyer dans HubSpot ni dans Supabase.
+
+**L'écran de suivi en local** (sans clés, il passe en mode démo avec des données simulées) :
+
+```bash
+cd apps/dashboard && npm install && npm run dev
+```
+
+**Les tests** (vérification, envoi HubSpot, agent, réparation) :
+
+```bash
+python3 -m unittest discover -s . -p "test_*.py"
+```
 
 ## Structure du dépôt
 
 ```
 .
-├── README.md                    ← présentation du projet (ce fichier)
-└── docs/
-    ├── CADRAGE.md               ← décisions de cadrage et planning de la semaine
-    ├── ORGANISATION.md          ← qui fait quoi, règles Git, circuit de merge
-    └── checkpoint-1/
-        ├── README.md            ← détail du livrable 1
-        └── Bascule_Livrable1_Validation_Idee_CORRIGE.pdf
+├── agent/runner/          ← l'agent H Company : consignes, lancement en parallèle, relances, relecture
+├── pipeline/
+│   ├── verification/      ← contrôle de chaque fiche (migrée / à vérifier / bloquée)
+│   ├── hubspot/           ← envoi dans HubSpot, journal, remise à zéro des fiches de démo
+│   ├── hubspot_skill/     ← skill HubSpot tenu à jour par 2 IA, réparation automatique
+│   └── metrics/           ← mesures : réussite par fiche et par champ, temps, coût
+├── apps/
+│   ├── legacy-crm/        ← l'ancien CRM simulé (v1 et v2)
+│   └── dashboard/         ← l'écran de suivi de migration
+├── data/                  ← 105 contacts fictifs, dont 5 fiches pièges
+├── shared/                ← format commun d'un contact
+├── supabase/              ← tables et migrations
+├── .github/workflows/     ← « Lancer la migration », veille HubSpot
+└── docs/                  ← cadrage, parcours, architecture, démo, livrables, pitch
 ```
+
+## Livrables
+
+| Checkpoint | Échéance | Contenu | Statut |
+|---|---|---|---|
+| **1 — Validation d'idée** | Lun. 16/11 | [Slides](docs/checkpoint-1/) | ✅ Livré |
+| **2 — Point intermédiaire** | Mer. 18/11 | [Parcours, architecture, vidéo, roadmap](docs/checkpoint-2/) | ✅ Livré |
+| **3 — Produit** | Ven. 20/11, 11h | Prototype en ligne, [fiche projet](docs/checkpoint-3/fiche-projet.md), ce dépôt, vidéo de démo | En cours |
+| **4 — Pitch deck** | Ven. 20/11, 15h | [Pitch deck](docs/pitch/) et [business model](docs/pitch/business-model.md) | En cours |
+
+## L'équipe
+
+Team 8.
+
+| Membre | Rôle | Contribution |
+|---|---|---|
+| Maxime Bazin | CEO | Ancien CRM simulé, business model, pitch |
+| Alexis Sapone | CDO · chef de projet | Cadrage, agent H Company et orchestration, envoi HubSpot, mesures |
+| Inès Soubran | CAIO | Vérification des fiches, écran de suivi, architecture, réparation automatique, retour d'expérience |
+| Victoria Ifrah | CTO | Socle de l'ancien CRM |
+| Mehdi Zitouni | CPO | Design de l'écran de suivi, démo du vendredi |
+| Natalia Medrano | CAO | En retrait cette semaine |
+
+Organisation et règles de travail : [docs/ORGANISATION.md](docs/ORGANISATION.md).
+
+## Limites et suite
+
+| Aujourd'hui (MVP) | Ensuite |
+|---|---|
+| Contacts uniquement | Notes, historique et pièces jointes |
+| Ancien CRM sans mot de passe | Connexion sécurisée (coffre-fort H Company) |
+| HubSpot uniquement | Salesforce, Pipedrive, Zoho |
+| 3 agents en parallèle (offre gratuite) | 10 agents et plus |
+| Données fictives | Pilote avec une agence partenaire HubSpot |
