@@ -1,6 +1,6 @@
-# Voix off de la vidéo de 5 min — calée sur la vidéo
+# Voix off de la vidéo du livrable 3 (enregistrée par Inès le 19/11)
 
-Vidéo : [`bascule-video-5min.mp4`](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/bascule-video-5min.mp4) (4 min 38, tournée le 19/11 sur le vrai prototype).
+Vidéo finale, avec cette voix off : [`video-finale-livrable-3.mp4`](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/video-finale-livrable-3.mp4) (3 min 01). Images d'origine, sans voix : [`video-sans-voix-pour-oral.mp4`](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/video-sans-voix-pour-oral.mp4).
 Texte : **Inès** (repris de son script [`video-prototype.md`](../demo/video-prototype.md), adapté à l'ordre et aux durées de la vidéo).
 
 ## Comment enregistrer
