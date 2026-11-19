@@ -58,6 +58,23 @@ Une petite entreprise qui veut changer de CRM est bloquée quand son ancien logi
 | **GitHub Actions** | Lancement de la vraie migration en un clic, veille quotidienne du skill HubSpot |
 | **GitHub + Claude Code** | Développement en équipe |
 
+## Architecture
+
+![Architecture de Bascule](../architecture/architecture.png)
+
+Ancien CRM → agents H Company (lecture à l'écran) → vérification → HubSpot (API) ; chaque fiche est notée dans un journal Supabase, affiché en direct par l'écran de suivi. Détail : [docs/architecture/](../architecture/README.md).
+
+## Comment tester
+
+| | Lien | À faire |
+|---|---|---|
+| 1 | **Ancien CRM** · [v1](https://projet-hackathon-uffi.vercel.app) · [v2](https://projet-hackathon-uffi.vercel.app/v2) | Fermer « Message du jour », chercher un export dans le menu Fichier (il n'y en a pas), ouvrir une fiche : le numéro est caché derrière un bouton. |
+| 2 | **Écran de suivi de la vraie migration** · [ouvrir](https://projet-hackathon-jow2.vercel.app/?run=tout) | Les 105 fiches migrées, leur statut et le bilan. Cliquer sur **Voir** : la capture de ce que l'agent a vu, à côté de ce qu'il a lu. |
+| 3 | **Vidéo de démonstration** (3 min) · [télécharger](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/video-finale-livrable-3.mp4) | Une vraie migration filmée de bout en bout. |
+| 4 | **Code** · [dépôt GitHub](https://github.com/saponealexis1-netizen/Projet_hackathon) | Lancer une migration : onglet Actions › « Lancer la migration », ou en local `python -m agent.runner.run --url https://projet-hackathon-uffi.vercel.app --ids C-0004 --dry-run` (détail dans le README). |
+
+Le bouton « Lancer la migration (agent réel) » de l'écran de suivi lance de vrais agents sur 6 fiches de démo ; il est réservé à l'équipe, car chaque lancement consomme des crédits.
+
 ## Ce qu'on a appris sur l'Agent API
 
 L'agent sait naviguer seul dans un logiciel qu'il n'a jamais vu, mais il préfère inventer une valeur crédible plutôt que laisser un champ vide. Ce sont les garde-fous autour de lui qui ont tout changé : **1 fiche exacte sur 5 au premier essai, 100 sur 100 ensuite**. Détail : [retour d'expérience](../retour-agent-api/README.md).
