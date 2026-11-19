@@ -1,6 +1,6 @@
 # Bascule — vidéo de 5 min (support de l'oral) : textes à ajouter
 
-Vidéo : [`bascule-video-5min.mp4`](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/bascule-video-5min.mp4) · 4 min 38 · sans son, sans texte (sauf les 3 cartons : titre, chiffres, fin).
+Vidéo **sans voix**, pour la passer derrière l'orateur : [`video-sans-voix-pour-oral.mp4`](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/video-sans-voix-pour-oral.mp4) · 4 min 38 · sans texte (sauf les 3 cartons : titre, chiffres, fin). La vidéo du livrable 3, avec la voix d'Inès, est [`video-finale-livrable-3.mp4`](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/video-finale-livrable-3.mp4).
 Tournée le 19/11 sur le vrai prototype : vraie migration de 6 fiches, vraie réparation sur 2 fiches.
 
 Voix off à lire par Inès, calée sur ces mêmes séquences : [voix-off-video-5min.md](voix-off-video-5min.md).
