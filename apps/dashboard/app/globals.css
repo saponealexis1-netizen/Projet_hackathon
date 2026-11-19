@@ -1,64 +1,70 @@
 /* =====================================================================
    Bascule — app/globals.css
-   Écran de suivi de migration (remplace intégralement l'ancien fichier)
+   Écran de suivi de migration, aux couleurs de l'interface HubSpot
+   (Bascule s'affiche comme une application intégrée à HubSpot).
 
    Polices (Google Fonts) — à ajouter dans app/layout.tsx, dans <head> :
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600;700&display=swap">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
    ===================================================================== */
 
 :root {
-  /* Fond et surfaces */
-  --bg: #f3f4f7;
+  /* Fond et surfaces (gris et blancs de l'interface HubSpot) */
+  --bg: #f0f0f0;
   --surface: #ffffff;
-  --surface-2: #f7f8fb;
-  --line: #e2e5ee;
-  --line-strong: #c9cfdc;
+  --surface-2: #f5f5f5;
+  --surface-3: #ebebeb;
+  --line: #dfdfdf;
+  --line-strong: #cccccc;
+  --line-control: #8a8a8a;   /* contour des boutons secondaires */
 
-  /* Texte (tous ≥ 4,5:1 sur blanc) */
-  --ink: #0f1222;
-  --ink-2: #363b52;
-  --muted: #586079;
+  /* Texte */
+  --ink: #333333;
+  --ink-2: #4d4d4d;
+  --muted: #666666;          /* 5,7:1 sur blanc */
 
-  /* Marque et actions : bleu cobalt, l'« après » de la bascule */
-  --accent: #2b3de0;
-  --accent-hover: #1f2db8;
-  --accent-soft: #eceeff;
-  --accent-line: #c6cbfb;
-  --accent-ring: rgba(43, 61, 224, .35);
+  /* Actions et liens (vert-bleu HubSpot) */
+  --primary: #00494b;
+  --primary-hover: #003436;
+  --primary-soft: #b3f0ed;   /* pilule teintée, comme « Filtrer » */
+  --primary-tint: #e6f8f7;
+  --link: #006162;
+  --teal: #007c7d;
+  --focus: rgba(0, 124, 125, .4);
 
-  /* Console des agents (seul bloc sombre de la page) */
-  --console: #0d1020;
-  --console-2: #161a2e;
-  --console-3: #1d2238;
-  --console-line: #2a3050;
-  --console-text: #e9ecf8;
-  --console-muted: #a3aac6;
-  --console-live: #8792ff;
+  /* Bandeau sombre (la « console » des agents reprend le gris foncé de HubSpot) */
+  --chrome: #333333;
+  --chrome-2: #3d3d3d;
+  --chrome-3: #2b2b2b;
+  --chrome-line: #575757;
+  --chrome-text: #f5f5f5;
+  --chrome-muted: #c7c7c7;
+  --chrome-live: #5ce1d6;
 
-  /* Statuts : texte / fond / bordure (constants partout) */
-  --ok: #0a7443;    --ok-soft: #e2f4e9;    --ok-line: #9fd8b7;
-  --warn: #9c4700;  --warn-soft: #fff0dc;  --warn-line: #f0c48e;
-  --err: #be1e2d;   --err-soft: #fdeaec;   --err-line: #f1a9b0;  --err-row: #fff6f6;
-  --ign: #525a6e;   --ign-soft: #eceef2;   --ign-line: #c9ced8;
+  /* Statuts : texte / fond / bordure (teintes des étiquettes HubSpot) */
+  --ok: #0b6b3a;    --ok-soft: #daf2e2;   --ok-line: #9fd6b2;
+  --warn: #8a4b00;  --warn-soft: #ffebc9; --warn-line: #f5c26b;
+  --err: #b5122b;   --err-soft: #ffd9dd;  --err-line: #f2a3ab;  --err-row: #fff5f6;
+  --ign: #4d4d4d;   --ign-soft: #ebebeb;  --ign-line: #cccccc;
 
   /* Mode démo */
-  --demo: #ffd84a;  --demo-line: #e3b900;  --demo-ink: #3d3000;
+  --demo: #f5c26b; --demo-ink: #333333;
 
   /* Rappel de l'ancien logiciel (fond bleu des captures, gris Windows 2000) */
   --legacy: #2f5b8f;
   --legacy-gray: #d4d0c8;
 
-  /* Formes */
-  --radius: 18px;
+  /* Formes : pilules pour les contrôles, grands arrondis pour les panneaux */
+  --radius: 16px;
   --radius-md: 12px;
   --radius-sm: 8px;
-  --shadow: 0 1px 2px rgba(15, 18, 34, .05), 0 10px 28px -16px rgba(15, 18, 34, .18);
+  --pill: 999px;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .05);
 
   /* Typographie */
-  --font: "Geist", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font: "Lexend Deca", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
 /* ---------------------------------------------------------------------
@@ -74,25 +80,27 @@ body {
   color: var(--ink);
   font-family: var(--font);
   font-size: 16px;
+  font-weight: 400;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3 { margin: 0; line-height: 1.2; letter-spacing: -0.015em; }
+h1, h2, h3 { margin: 0; line-height: 1.25; font-weight: 500; }
 p { margin: 0; }
 img { display: block; max-width: 100%; }
 button { font: inherit; }
-a { color: var(--accent); text-underline-offset: 3px; }
-a:hover { color: var(--accent-hover); }
+a { color: var(--link); font-weight: 500; text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-:focus-visible { outline: 3px solid var(--accent-ring); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
 /* Utilitaires utilisés par le code */
 .mono {
   font-family: var(--mono);
-  font-size: .95em;
-  letter-spacing: -0.01em;
+  font-size: .92em;
+  font-weight: 500;
+  letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
 .muted  { color: var(--muted); }
@@ -105,10 +113,10 @@ a:hover { color: var(--accent-hover); }
 .page {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 32px 32px 72px;
+  padding: 28px 32px 72px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .header {
@@ -116,25 +124,25 @@ a:hover { color: var(--accent-hover); }
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 18px 24px;
-  padding: 4px 0 0;
+  gap: 16px 24px;
 }
 
-.brand { display: flex; align-items: center; gap: 16px; }
-.brand h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; }
+.brand { display: flex; align-items: center; gap: 14px; }
+/* Titre de page à la manière de HubSpot (« Contacts ») */
+.brand h1 { font-size: 30px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
 
-.subtitle { margin-top: 4px; color: var(--muted); font-size: 16px; }
+.subtitle { margin-top: 4px; color: var(--muted); font-size: 15px; }
 
-/* Logo : un interrupteur « basculé » de l'ancien (gris) vers le nouveau (cobalt).
+/* Logo : un interrupteur « basculé » de l'ancien logiciel vers HubSpot.
    Le texte éventuel du logo (« B ») est masqué et redessiné dans le bouton. */
 .logo {
   position: relative;
   flex: none;
   display: inline-block;
-  width: 64px;
-  height: 36px;
-  border-radius: 999px;
-  background: var(--ink);
+  width: 60px;
+  height: 34px;
+  border-radius: var(--pill);
+  background: var(--chrome);
   font-size: 0;
   color: transparent;
   overflow: hidden;
@@ -142,38 +150,38 @@ a:hover { color: var(--accent-hover); }
 .logo::before { /* ancienne position : vide */
   content: "";
   position: absolute;
-  left: 10px; top: 50%;
+  left: 9px; top: 50%;
   width: 12px; height: 12px;
   margin-top: -6px;
   border-radius: 50%;
-  border: 2px solid #5b6180;
+  border: 2px solid #7a7a7a;
 }
 .logo::after { /* nouvelle position : bouton plein */
   content: "B";
   position: absolute;
   right: 4px; top: 4px;
-  width: 28px; height: 28px;
+  width: 26px; height: 26px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--teal);
   color: #fff;
-  font: 700 15px/28px var(--font);
+  font: 600 14px/26px var(--font);
   text-align: center;
 }
 
-/* Parcours en 4 étapes : une barre d'étapes pleine largeur sous le logo.
+/* Parcours en 4 étapes : une barre d'étapes pleine largeur sous le titre.
    Elle suit l'état de la page (via :has), sans changement de HTML :
    repos → numéros ; migration en cours → flux animé ; terminé → étapes cochées. */
 .pipeline {
-  order: 2; /* toujours sur sa propre ligne, sous le logo */
+  order: 2; /* toujours sur sa propre ligne, sous le titre */
   flex: 1 1 100%;
   list-style: none;
   margin: 0;
-  padding: 10px 18px 10px 12px;
+  padding: 10px 20px 10px 12px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
   align-items: center;
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  border-radius: var(--pill);
   background: var(--surface);
   counter-reset: etape;
 }
@@ -183,10 +191,10 @@ a:hover { color: var(--accent-hover); }
   align-items: center;
   gap: 10px;
   min-width: 0;
-  min-height: 36px;
+  min-height: 32px;
   color: var(--ink-2);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   white-space: nowrap;
 }
 .pipeline li::before { /* numéro de l'étape */
@@ -197,9 +205,9 @@ a:hover { color: var(--accent-hover); }
   width: 28px; height: 28px;
   border-radius: 50%;
   border: 1px solid var(--line-strong);
-  background: var(--surface-2);
-  color: var(--ink-2);
-  font: 600 14px/1 var(--mono);
+  background: var(--surface);
+  color: var(--muted);
+  font: 500 14px/1 var(--font);
 }
 .pipeline li:not(:last-child)::after { /* trait de liaison vers l'étape suivante */
   content: "";
@@ -210,7 +218,7 @@ a:hover { color: var(--accent-hover); }
   border-radius: 2px;
   background: var(--line-strong);
 }
-/* Étape 1 : l'ancien monde (bouton gris biseauté façon Windows 2000) */
+/* Étape 1 : l'ancien logiciel (bouton gris biseauté façon Windows 2000) */
 .pipeline li:first-child::before {
   border-radius: 3px;
   border: 2px outset #f2f0ea;
@@ -218,25 +226,24 @@ a:hover { color: var(--accent-hover); }
   color: #222;
 }
 /* Étape 2 : l'agent IA */
-.pipeline li:nth-child(2) { color: var(--accent-hover); }
-.pipeline li:nth-child(2)::before { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent-hover); }
-/* Étape 4 : le nouveau monde */
-.pipeline li:last-child { color: var(--ink); font-weight: 700; }
-.pipeline li:last-child::before { border-color: var(--accent); background: var(--accent); color: #fff; }
+.pipeline li:nth-child(2) { color: var(--link); }
+.pipeline li:nth-child(2)::before { border-color: var(--primary-soft); background: var(--primary-tint); color: var(--link); }
+/* Étape 4 : HubSpot, la destination */
+.pipeline li:last-child { color: var(--ink); font-weight: 600; }
+.pipeline li:last-child::before { border-color: var(--primary); background: var(--primary); color: #fff; }
 
 /* Migration en cours : les données circulent entre les étapes */
 .page:has(.badge-live:not(.done)) .pipeline li:not(:last-child)::after,
 .page:has(.btn:disabled) .pipeline li:not(:last-child)::after {
-  background: repeating-linear-gradient(90deg, var(--accent) 0 8px, transparent 8px 14px);
+  background: repeating-linear-gradient(90deg, var(--teal) 0 8px, transparent 8px 14px);
   background-size: 28px 2px;
   animation: flux .9s linear infinite;
 }
 .page:has(.badge-live:not(.done)) .pipeline li:nth-child(2)::before {
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--teal);
+  background: var(--teal);
   color: #fff;
-  box-shadow: 0 0 0 0 var(--accent-ring);
-  animation: halo-accent 1.6s ease-out infinite;
+  animation: halo-teal 1.6s ease-out infinite;
 }
 /* Migration terminée : chaque étape est cochée */
 .page:has(.badge-live.done) .pipeline li::before,
@@ -246,24 +253,24 @@ a:hover { color: var(--accent-hover); }
   border-radius: 50%;
   background: var(--ok);
   color: #fff;
-  font: 800 14px/1 var(--font);
+  font: 700 14px/1 var(--font);
 }
 .page:has(.badge-live.done) .pipeline li:not(:last-child)::after,
 .page:has(.bilan.done) .pipeline li:not(:last-child)::after { background: var(--ok-line); }
 
 /* Badge « Mode démo : données simulées » */
 .badge-demo {
-  order: 1; /* sur la ligne du logo, à droite */
+  order: 1; /* sur la ligne du titre, à droite */
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--demo-line);
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: var(--pill);
   background: var(--demo);
   color: var(--demo-ink);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
 }
 .badge-demo::before {
@@ -274,7 +281,7 @@ a:hover { color: var(--accent-hover); }
 }
 
 /* ---------------------------------------------------------------------
-   Cartes
+   Cartes (panneaux blancs, à plat, comme le contenu HubSpot)
    --------------------------------------------------------------------- */
 .card {
   background: var(--surface);
@@ -283,10 +290,10 @@ a:hover { color: var(--accent-hover); }
   box-shadow: var(--shadow);
   padding: 24px 28px;
 }
-.card h2 { font-size: 22px; font-weight: 700; }
-.card h3 { font-size: 17px; font-weight: 650; }
+.card h2 { font-size: 21px; font-weight: 500; }
+.card h3 { font-size: 16px; font-weight: 600; }
 
-/* Ligne de titre de bloc : titre à gauche, indicateur à droite */
+/* Ligne de titre de bloc : titre à gauche, compteur en pilule à droite (comme « 295 contacts ») */
 .progress-head {
   display: flex;
   flex-wrap: wrap;
@@ -296,9 +303,15 @@ a:hover { color: var(--accent-hover); }
 }
 .progress-head h2 { display: flex; align-items: center; gap: 12px; }
 .progress-head > :last-child:not(:first-child) {
-  color: var(--ink-2);
-  font-size: 17px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: var(--pill);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
 
@@ -311,47 +324,40 @@ a:hover { color: var(--accent-hover); }
   align-items: center;
   justify-content: space-between;
   gap: 20px 40px;
-  padding: 28px;
+  padding: 26px 28px;
 }
 .launch > :first-child { flex: 1 1 380px; min-width: 0; } /* le texte se resserre, l'action reste à droite */
 .launch > .btn, .launch > .badge-live { flex: none; }
-.launch h2 { font-size: 26px; letter-spacing: -0.025em; }
-.launch p { margin-top: 8px; max-width: 60ch; color: var(--ink-2); font-size: 16px; }
+.launch h2 { font-size: 24px; font-weight: 500; }
+.launch p { margin-top: 6px; max-width: 62ch; color: var(--muted); font-size: 16px; }
 .launch .alert { flex-basis: 100%; }
 
+/* Bouton principal : pilule vert-bleu, comme « Ajouter des contacts » */
 .btn {
   appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  min-height: 56px;
+  gap: 10px;
+  min-height: 48px;
   padding: 0 26px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  background: var(--accent);
+  border: 1px solid var(--primary);
+  border-radius: var(--pill);
+  background: var(--primary);
   color: #fff;
-  font-size: 17px;
-  font-weight: 650;
+  font-size: 16px;
+  font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 8px 20px -8px rgba(43, 61, 224, .65);
-  transition: background-color .15s, box-shadow .15s, transform .15s;
+  transition: background-color .15s, border-color .15s, transform .15s;
 }
-.btn::after { /* flèche d'action */
-  content: "→";
-  font-weight: 500;
-  transition: transform .15s;
-}
-.btn:hover:not(:disabled) { background: var(--accent-hover); }
-.btn:hover:not(:disabled)::after { transform: translateX(3px); }
+.btn:hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); }
 .btn:active:not(:disabled) { transform: translateY(1px); }
 /* « Lancement… » / « Migration en cours… » : bouton éteint + roue */
 .btn:disabled {
-  background: var(--surface-2);
   border-color: var(--line-strong);
-  color: var(--ink-2);
-  box-shadow: none;
+  background: var(--surface-2);
+  color: var(--muted);
   cursor: progress;
 }
 .btn:disabled::after {
@@ -359,7 +365,7 @@ a:hover { color: var(--accent-hover); }
   width: 18px; height: 18px;
   border-radius: 50%;
   border: 2.5px solid var(--line-strong);
-  border-top-color: var(--accent);
+  border-top-color: var(--teal);
   animation: tourne .9s linear infinite;
 }
 
@@ -367,26 +373,25 @@ a:hover { color: var(--accent-hover); }
 .badge-live {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  min-height: 56px;
+  gap: 10px;
+  min-height: 48px;
   padding: 0 22px;
-  border: 1px solid var(--accent-line);
-  border-radius: var(--radius-md);
-  background: var(--accent-soft);
-  color: var(--accent-hover);
-  font-size: 17px;
-  font-weight: 650;
+  border-radius: var(--pill);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 16px;
+  font-weight: 500;
   white-space: nowrap;
 }
 .badge-live:not(:has(.live-dot))::before { /* voyant si le code n'en met pas */
   content: "";
   width: 10px; height: 10px;
   border-radius: 50%;
-  background: currentColor;
-  animation: pulse 1.6s ease-out infinite;
+  background: var(--teal);
+  animation: halo-teal 1.6s ease-out infinite;
 }
 /* Migration terminée (modificateur .done, voir modifications HTML) */
-.badge-live.done { border-color: var(--ok-line); background: var(--ok-soft); color: var(--ok); }
+.badge-live.done { background: var(--ok-soft); color: var(--ok); }
 .badge-live.done .live-dot { display: none; }
 .badge-live.done::before {
   content: "✓";
@@ -401,42 +406,42 @@ a:hover { color: var(--accent-hover); }
   animation: none;
 }
 
-/* Message d'erreur sous le bloc */
+/* Message d'erreur sous le bloc (bandeau d'alerte HubSpot) */
 .alert {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   padding: 14px 18px;
   border: 1px solid var(--warn-line);
-  border-radius: var(--radius-md);
-  background: var(--warn-soft);
-  color: var(--warn);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  background: #fff8ec;
+  color: var(--ink);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* ---------------------------------------------------------------------
-   Agents en direct (la « console » : bloc sombre, le moment fort)
+   Agents en direct (la « console » : le gris foncé de HubSpot)
    --------------------------------------------------------------------- */
 .live-agents {
-  background: var(--console);
-  border-color: var(--console);
-  color: var(--console-text);
-  box-shadow: 0 24px 48px -24px rgba(13, 16, 32, .6);
+  border-color: var(--chrome);
+  background: var(--chrome);
+  color: var(--chrome-text);
 }
 .live-agents h2 { color: #fff; }
-.live-agents .muted { color: var(--console-muted); }
-.live-agents .progress-head > :last-child:not(:first-child) { color: var(--console-muted); }
+.live-agents .muted { color: var(--chrome-muted); }
+.live-agents .progress-head > :last-child:not(:first-child) { background: var(--chrome-2); color: var(--chrome-text); }
 
-/* Voyant « en direct » (cobalt : le rouge est réservé aux fiches bloquées) */
+/* Voyant « en direct » (vert d'eau : le rouge est réservé aux fiches bloquées) */
 .live-dot {
   position: relative;
   flex: none;
   display: inline-block;
   width: 12px; height: 12px;
   border-radius: 50%;
-  background: var(--accent);
-  color: var(--accent);
+  background: var(--teal);
+  color: var(--teal);
 }
 .live-dot::after {
   content: "";
@@ -446,7 +451,7 @@ a:hover { color: var(--accent-hover); }
   background: currentColor;
   animation: pulse 1.6s ease-out infinite;
 }
-.live-agents .live-dot { background: var(--console-live); color: var(--console-live); }
+.live-agents .live-dot { background: var(--chrome-live); color: var(--chrome-live); }
 
 .live-grid {
   display: grid;
@@ -463,9 +468,9 @@ a:hover { color: var(--accent-hover); }
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid var(--console-line);
+  border: 1px solid var(--chrome-line);
   border-radius: var(--radius-md);
-  background: var(--console-2);
+  background: var(--chrome-2);
   animation: monte .4s ease-out both;
 }
 .live-agent::before { /* barre de titre « Agent 1 · ancien CRM » : dit au jury ce qu'il regarde */
@@ -474,12 +479,12 @@ a:hover { color: var(--accent-hover); }
   height: 36px;
   padding: 0 36px 0 14px;
   overflow: hidden;
+  border-bottom: 1px solid var(--chrome-line);
+  background: var(--chrome-3);
+  color: var(--chrome-muted);
+  font: 500 14px/36px var(--font);
   white-space: nowrap;
   text-overflow: ellipsis;
-  border-bottom: 1px solid var(--console-line);
-  background: var(--console-3);
-  color: var(--console-muted);
-  font: 600 14px/36px var(--mono);
 }
 .live-agent::after { /* voyant de l'agent, en haut à droite */
   content: "";
@@ -487,10 +492,8 @@ a:hover { color: var(--accent-hover); }
   top: 13px; right: 14px;
   width: 10px; height: 10px;
   border-radius: 50%;
-  background: var(--console-live);
-  color: var(--console-live);
-  box-shadow: 0 0 0 0 rgba(135, 146, 255, .6);
-  animation: halo 1.6s ease-out infinite;
+  background: var(--chrome-live);
+  animation: halo-live 1.6s ease-out infinite;
 }
 /* Capture carrée ~1200×1200, contenu utile en haut à gauche : on cadre dessus */
 .live-agent img {
@@ -505,16 +508,15 @@ a:hover { color: var(--accent-hover); }
   align-items: center;
   gap: 8px;
   padding: 12px 14px;
-  border-top: 1px solid var(--console-line);
-  color: var(--console-text);
+  border-top: 1px solid var(--chrome-line);
+  color: var(--chrome-text);
   font-size: 15px;
 }
 .live-agent figcaption .mono {
-  padding: 2px 8px;
-  border-radius: 6px;
-  background: rgba(135, 146, 255, .18);
-  color: #d4d8ff;
-  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: var(--pill);
+  background: rgba(92, 225, 214, .16);
+  color: #b3f0ed;
 }
 
 /* États vides : « Démarrage des agents… » / « Aucun agent en cours… » */
@@ -527,9 +529,9 @@ a:hover { color: var(--accent-hover); }
   gap: 14px;
   min-height: 200px;
   padding: 24px;
-  border: 1px dashed var(--console-line);
+  border: 1px dashed var(--chrome-line);
   border-radius: var(--radius-md);
-  color: var(--console-muted);
+  color: var(--chrome-muted);
   font-size: 17px;
   text-align: center;
 }
@@ -538,8 +540,8 @@ a:hover { color: var(--accent-hover); }
   flex: none;
   width: 20px; height: 20px;
   border-radius: 50%;
-  border: 2.5px solid var(--console-line);
-  border-top-color: var(--console-live);
+  border: 2.5px solid var(--chrome-line);
+  border-top-color: var(--chrome-live);
   animation: tourne .9s linear infinite;
 }
 
@@ -548,24 +550,24 @@ a:hover { color: var(--accent-hover); }
    --------------------------------------------------------------------- */
 .progress {
   position: relative;
-  height: 14px;
+  height: 10px;
   margin: 18px 0 20px;
   overflow: hidden;
-  border-radius: 999px;
-  background: #e6e9f2;
+  border-radius: var(--pill);
+  background: var(--surface-3);
 }
 .progress-bar {
   position: relative;
   height: 100%;
-  border-radius: 999px;
-  background: var(--accent);
+  border-radius: var(--pill);
+  background: var(--teal);
   transition: width .6s cubic-bezier(.2, .8, .2, 1);
 }
 .progress-bar::after { /* reflet discret qui avance tant que la migration tourne */
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, .35) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, .4) 50%, transparent 100%);
   background-size: 200px 100%;
   background-repeat: no-repeat;
   animation: reflet 1.8s linear infinite;
@@ -581,17 +583,17 @@ a:hover { color: var(--accent-hover); }
 .counter {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   padding: 16px 18px 14px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  background: var(--surface-2);
+  background: var(--surface);
 }
 .counter-value {
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
 .counter-label {
@@ -600,7 +602,7 @@ a:hover { color: var(--accent-hover); }
   gap: 8px;
   color: var(--muted);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
 }
 .counter.ok   { border-color: var(--ok-line);   background: var(--ok-soft); }
 .counter.warn { border-color: var(--warn-line); background: var(--warn-soft); }
@@ -608,7 +610,7 @@ a:hover { color: var(--accent-hover); }
 .counter.ok   .counter-value, .counter.ok   .counter-label { color: var(--ok); }
 .counter.warn .counter-value, .counter.warn .counter-label { color: var(--warn); }
 .counter.err  .counter-value, .counter.err  .counter-label { color: var(--err); }
-/* Même symbole que la pastille de statut : le sens ne repose pas que sur la couleur */
+/* Même symbole que l'étiquette de statut : le sens ne repose pas que sur la couleur */
 .counter.ok .counter-label::before,
 .counter.warn .counter-label::before,
 .counter.err .counter-label::before {
@@ -618,7 +620,7 @@ a:hover { color: var(--accent-hover); }
   border-radius: 50%;
   color: #fff;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
 }
 .counter.ok   .counter-label::before { content: "✓"; background: var(--ok); }
@@ -626,7 +628,7 @@ a:hover { color: var(--accent-hover); }
 .counter.err  .counter-label::before { content: "✕"; background: var(--err); }
 
 /* ---------------------------------------------------------------------
-   Tableau des fiches
+   Tableau des fiches (à plat, comme les listes HubSpot)
    --------------------------------------------------------------------- */
 .table {
   width: 100%;
@@ -639,11 +641,11 @@ a:hover { color: var(--accent-hover); }
   top: 0;
   z-index: 1;
   padding: 12px;
-  border-bottom: 2px solid var(--line);
+  border-bottom: 1px solid var(--line-strong);
   background: var(--surface);
   color: var(--muted);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 400;
   text-align: left;
   white-space: nowrap;
 }
@@ -657,15 +659,15 @@ a:hover { color: var(--accent-hover); }
 .table tbody tr:hover td { background: var(--surface-2); }
 
 /* Colonnes (ordre fixe : Fiche, Contact, Entreprise, Statut, Anomalies, Durée, HubSpot, Preuve) */
-.table td:nth-child(1) { white-space: nowrap; font-weight: 600; }
+.table td:nth-child(1) { white-space: nowrap; }
 .table td:nth-child(2) { font-weight: 600; white-space: nowrap; }
 .table td:nth-child(3) { color: var(--ink-2); }
 .table td:nth-child(5) { min-width: 240px; }
 .table td:nth-child(6) { white-space: nowrap; font-family: var(--font); font-size: 15px; font-variant-numeric: tabular-nums; }
 .table th:nth-child(6), .table td:nth-child(6) { text-align: right; }
-.table td:nth-child(7) { font-weight: 700; color: var(--ok); }
-.table td:nth-child(7).muted { color: var(--muted); font-weight: 500; }
-.table td a:not(.link-btn) { font-weight: 600; }
+.table td:nth-child(7) { color: var(--ok); font-weight: 700; }
+.table td:nth-child(7).muted { color: var(--muted); font-weight: 400; }
+.table td:nth-child(7) a::after { content: " ↗"; } /* lien externe, comme les e-mails HubSpot */
 
 /* Lignes bloquées : repérables immédiatement */
 .table tbody tr:has(.status-bloquee) td { background: var(--err-row); }
@@ -691,21 +693,20 @@ a:hover { color: var(--accent-hover); }
   vertical-align: -3px;
   border-radius: 50%;
   border: 2px solid var(--line-strong);
-  border-top-color: var(--accent);
+  border-top-color: var(--teal);
   animation: tourne .9s linear infinite;
 }
 
-/* Pastille de statut : symbole + libellé, jamais la couleur seule */
+/* Étiquette de statut : symbole + libellé, jamais la couleur seule */
 .status {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 4px 12px 4px 5px;
-  border: 1px solid transparent;
-  border-radius: 999px;
+  padding: 3px 12px 3px 4px;
+  border-radius: var(--pill);
   font-size: 14px;
-  font-weight: 650;
-  line-height: 1.4;
+  font-weight: 500;
+  line-height: 1.5;
   white-space: nowrap;
 }
 .status::before {
@@ -715,38 +716,38 @@ a:hover { color: var(--accent-hover); }
   border-radius: 50%;
   color: #fff;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
 }
-.status-ok         { border-color: var(--ok-line);   background: var(--ok-soft);   color: var(--ok); }
-.status-a_verifier { border-color: var(--warn-line); background: var(--warn-soft); color: var(--warn); }
-.status-bloquee    { border-color: var(--err-line);  background: var(--err-soft);  color: var(--err); }
-.status-ignoree    { border-color: var(--ign-line);  background: var(--ign-soft);  color: var(--ign); }
+.status-ok         { background: var(--ok-soft);   color: var(--ok); }
+.status-a_verifier { background: var(--warn-soft); color: var(--warn); }
+.status-bloquee    { background: var(--err-soft);  color: var(--err); }
+.status-ignoree    { background: var(--ign-soft);  color: var(--ign); }
 .status-ok::before         { content: "✓"; background: var(--ok); }
 .status-a_verifier::before { content: "!"; background: var(--warn); }
 .status-bloquee::before    { content: "✕"; background: var(--err); }
 .status-ignoree::before    { content: "–"; background: var(--ign); }
 
-/* Bouton « 📷 Voir » et lien « Ouvrir » */
+/* Bouton « 📷 Voir » : pilule secondaire, comme « Exporter » */
 .link-btn {
   appearance: none;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 40px;
-  padding: 0 14px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-sm);
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--line-control);
+  border-radius: var(--pill);
   background: var(--surface);
   color: var(--ink);
   font-size: 14px;
-  font-weight: 650;
+  font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  transition: border-color .15s, background-color .15s, color .15s;
+  transition: background-color .15s, border-color .15s;
 }
-.link-btn:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-hover); }
+.link-btn:hover { border-color: var(--ink); background: var(--surface-2); text-decoration: none; }
 
 /* Relecture d'un champ par l'agent (🔁) */
 .reread {
@@ -757,28 +758,26 @@ a:hover { color: var(--accent-hover); }
 }
 .reread.fixed { /* la valeur a changé : mise en avant */
   display: inline-block;
-  padding: 4px 10px;
-  border: 1px solid var(--accent-line);
+  padding: 4px 12px;
   border-radius: var(--radius-sm);
-  background: var(--accent-soft);
-  color: var(--accent-hover);
-  font-weight: 600;
+  background: var(--primary-tint);
+  color: var(--link);
+  font-weight: 500;
 }
-.reread.fail { color: var(--warn); font-weight: 600; }
+.reread.fail { color: var(--warn); font-weight: 500; }
 
 /* Réparation automatique (🩹 → 🧠 → ✅) */
 .heal {
   display: inline-block;
   margin-top: 6px;
-  padding: 4px 10px;
-  border: 1px solid var(--line);
+  padding: 4px 12px;
   border-radius: var(--radius-sm);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.45;
 }
-.heal.ok { border-color: var(--ok-line);   background: var(--ok-soft);   color: var(--ok); }
-.heal.ko { border-color: var(--warn-line); background: var(--warn-soft); color: var(--warn); }
+.heal.ok { background: var(--ok-soft);   color: var(--ok); }
+.heal.ko { background: var(--warn-soft); color: var(--warn); }
 
 .heal-detail {
   display: grid;
@@ -791,6 +790,7 @@ a:hover { color: var(--accent-hover); }
   color: var(--ink-2);
   font-size: 14px;
 }
+.heal-detail strong { font-weight: 600; color: var(--ink); }
 .heal-detail .mono, .heal-detail code { font-family: var(--mono); color: var(--err); }
 
 /* ---------------------------------------------------------------------
@@ -802,25 +802,23 @@ a:hover { color: var(--accent-hover); }
 
 /* Migration terminée : le bilan devient le bloc principal */
 .bilan.done {
-  border: 2px solid var(--ink);
-  box-shadow: 0 28px 56px -28px rgba(15, 18, 34, .4);
+  border: 2px solid var(--primary);
+  box-shadow: 0 16px 40px -24px rgba(0, 73, 75, .45);
 }
-.bilan.done h2 { font-size: 26px; }
+.bilan.done h2 { font-size: 24px; }
+.bilan.done h2::after {
+  content: "✓ Terminé";
+  padding: 3px 12px;
+  border-radius: var(--pill);
+  background: var(--ok-soft);
+  color: var(--ok);
+  font-size: 14px;
+  font-weight: 500;
+}
 /* Le bilan final passe avant le tableau (ordre visuel seulement, le HTML ne bouge pas) :
    le taux de réussite se voit sans faire défiler 105 lignes. */
 .page:has(> .bilan.done) > .bilan { order: 1; }
 .page:has(> .bilan.done) > .card:has(.table) { order: 2; }
-.bilan.done h2::after {
-  content: "✓ Terminé";
-  padding: 4px 12px;
-  border: 1px solid var(--ok-line);
-  border-radius: 999px;
-  background: var(--ok-soft);
-  color: var(--ok);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0;
-}
 
 .bilan-grid {
   display: grid;
@@ -833,27 +831,29 @@ a:hover { color: var(--accent-hover); }
   flex-direction: column;
   gap: 4px;
   padding: 14px 16px;
-  border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--surface-2);
 }
 .stat-value {
   font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
-.stat-label { color: var(--muted); font-size: 14px; font-weight: 500; }
+.stat-label { color: var(--muted); font-size: 14px; }
 
 /* Les 2 chiffres héros : envoyées / taux de réussite */
 .stat:has(.stat-value.big) {
   grid-column: span 2;
   padding: 22px 24px;
-  border-color: var(--line-strong);
+  border: 1px solid var(--line);
   background: var(--surface);
 }
-.stat-value.big { font-size: 68px; line-height: 1; letter-spacing: -0.045em; }
-.stat:has(.stat-value.big) .stat-label { color: var(--ink-2); font-size: 16px; font-weight: 600; }
+.stat-value.big { font-size: 64px; font-weight: 400; line-height: 1; letter-spacing: -0.03em; }
+.stat:has(.stat-value.big) .stat-label { color: var(--ink-2); font-size: 16px; font-weight: 500; }
+.bilan:not(.done) .stat-value.big { color: var(--ink-2); }
+.bilan.done .stat-value.big { color: var(--primary); }
+.bilan.done .stat:has(.stat-value.big) { border-color: var(--primary-soft); background: var(--primary-tint); }
+
 /* Dernière rangée incomplète (5, 6 ou 7 stats secondaires) : on étire pour la remplir */
 @media (min-width: 901px) {
   .bilan-grid .stat:nth-child(7):last-child { grid-column: span 4; }
@@ -861,8 +861,6 @@ a:hover { color: var(--accent-hover); }
   .bilan-grid .stat:nth-child(8):last-child { grid-column: span 2; }
   .bilan-grid .stat:nth-child(9):last-child { grid-column: span 2; }
 }
-.bilan:not(.done) .stat-value.big { color: var(--ink-2); }
-.bilan.done .stat-value.big { color: var(--accent); }
 
 .bilan-cols {
   display: grid;
@@ -892,7 +890,7 @@ a:hover { color: var(--accent-hover); }
   margin-right: 6px;
   color: var(--err);
   font-family: var(--mono);
-  font-weight: 700;
+  font-weight: 600;
 }
 .anomalies li {
   display: flex;
@@ -902,18 +900,19 @@ a:hover { color: var(--accent-hover); }
   padding: 10px 14px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  background: var(--surface-2);
+  background: var(--surface);
   font-size: 15px;
 }
 .pill {
   flex: none;
   min-width: 34px;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: var(--ink);
+  padding: 1px 10px;
+  border-radius: var(--pill);
+  background: var(--chrome);
   color: #fff;
-  font: 600 14px/1.6 var(--mono);
+  font: 500 14px/1.7 var(--font);
   text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---------------------------------------------------------------------
@@ -927,18 +926,16 @@ a:hover { color: var(--accent-hover); }
   place-items: center;
   padding: 24px;
   overflow-y: auto;
-  background: rgba(13, 16, 32, .62);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, .55);
   animation: apparait .2s ease-out;
 }
 .modal {
   width: min(1160px, 100%);
   max-height: calc(100vh - 48px);
   overflow: auto;
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--surface);
-  box-shadow: 0 40px 80px -24px rgba(0, 0, 0, .5);
+  box-shadow: 0 32px 64px -24px rgba(0, 0, 0, .45);
   animation: ouvre .22s ease-out;
 }
 .modal-head {
@@ -949,32 +946,33 @@ a:hover { color: var(--accent-hover); }
   flex-wrap: wrap;
   align-items: center;
   gap: 10px 16px;
-  padding: 20px 24px;
+  padding: 18px 24px;
   border-bottom: 1px solid var(--line);
   background: var(--surface);
 }
-.modal-head h2 { font-size: 22px; font-weight: 700; }
+.modal-head h2 { font-size: 22px; font-weight: 500; }
 .modal-head h2 .mono, .modal-head h2 strong {
-  padding: 2px 8px;
-  border-radius: 6px;
-  background: var(--surface-2);
-  border: 1px solid var(--line);
+  padding: 2px 10px;
+  border-radius: var(--pill);
+  background: var(--bg);
   font-family: var(--mono);
+  font-size: .85em;
 }
+/* Bouton fermer : bouton-icône rond, comme ceux de HubSpot */
 .close {
   appearance: none;
   display: grid;
   place-items: center;
   width: 44px; height: 44px;
   margin-left: auto;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: var(--surface-2);
-  color: var(--ink-2);
-  font-size: 18px;
+  border: 1px solid var(--line-control);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 17px;
   cursor: pointer;
 }
-.close:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+.close:hover { background: var(--surface-2); border-color: var(--ink); }
 
 .modal-body {
   display: grid;
@@ -982,14 +980,7 @@ a:hover { color: var(--accent-hover); }
   gap: 32px;
   padding: 24px;
 }
-.modal-body h3 {
-  margin-bottom: 12px;
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
+.modal-body h3 { margin-bottom: 12px; color: var(--ink); font-size: 16px; font-weight: 600; }
 
 /* « Ce que l'agent a vu » */
 .shot {
@@ -1025,21 +1016,20 @@ a:hover { color: var(--accent-hover); }
   text-align: left;
   vertical-align: top;
 }
-.fields th { width: 34%; color: var(--muted); font-size: 14px; font-weight: 600; }
-.fields td { font-weight: 500; overflow-wrap: anywhere; }
+.fields th { width: 34%; color: var(--muted); font-size: 15px; font-weight: 400; }
+.fields td { color: var(--ink); overflow-wrap: anywhere; }
 /* Champ relu par l'agent : surligné */
-.fields tr.hl th, .fields tr.hl td { background: var(--accent-soft); }
-.fields tr.hl th { box-shadow: inset 4px 0 0 var(--accent); color: var(--accent-hover); }
+.fields tr.hl th, .fields tr.hl td { background: var(--primary-tint); }
+.fields tr.hl th { box-shadow: inset 4px 0 0 var(--teal); color: var(--link); }
 .fields tr.hl th::after {
   content: "relu";
   margin-left: 8px;
-  padding: 1px 8px;
-  border-radius: 999px;
-  background: var(--accent);
+  padding: 1px 9px;
+  border-radius: var(--pill);
+  background: var(--primary);
   color: #fff;
   font-size: 14px;
-  font-weight: 700;
-  vertical-align: 1px;
+  font-weight: 500;
 }
 .modal-body .reread { margin-top: 14px; }
 
@@ -1048,27 +1038,28 @@ a:hover { color: var(--accent-hover); }
   margin-top: 14px;
   padding: 12px 16px;
   border: 1px solid var(--warn-line);
-  border-radius: var(--radius-md);
-  background: var(--warn-soft);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  background: #fff8ec;
   color: var(--warn);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
 }
-.modal:has(.status-bloquee) .anomalies-txt { border-color: var(--err-line); background: var(--err-soft); color: var(--err); }
+.modal:has(.status-bloquee) .anomalies-txt { border-color: var(--err-line); border-left-color: var(--err); background: var(--err-row); color: var(--err); }
 
 /* ---------------------------------------------------------------------
    Animations (sobres, utiles)
    --------------------------------------------------------------------- */
-@keyframes tourne  { to { transform: rotate(360deg); } }
-@keyframes pulse   { 0% { transform: scale(1); opacity: .5; } 100% { transform: scale(2.2); opacity: 0; } }
-@keyframes halo-accent { 0% { box-shadow: 0 0 0 0 rgba(43, 61, 224, .45); } 100% { box-shadow: 0 0 0 8px rgba(43, 61, 224, 0); } }
-@keyframes flux    { to { background-position: 28px 0; } }  /* les données avancent d'une étape à l'autre */
-@keyframes halo    { 0% { box-shadow: 0 0 0 0 rgba(135, 146, 255, .55); } 100% { box-shadow: 0 0 0 10px rgba(135, 146, 255, 0); } }
-@keyframes reflet  { from { background-position: -200px 0; } to { background-position: calc(100% + 200px) 0; } }
-@keyframes arrive  { from { background-color: #e3e7ff; } }   /* nouvelle fiche : flash cobalt qui s'efface */
-@keyframes monte   { from { opacity: 0; transform: translateY(6px); } }
-@keyframes apparait { from { opacity: 0; } }
-@keyframes ouvre   { from { opacity: 0; transform: translateY(8px) scale(.99); } }
+@keyframes tourne    { to { transform: rotate(360deg); } }
+@keyframes pulse     { 0% { transform: scale(1); opacity: .5; } 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes halo-teal { 0% { box-shadow: 0 0 0 0 rgba(0, 124, 125, .45); } 100% { box-shadow: 0 0 0 8px rgba(0, 124, 125, 0); } }
+@keyframes halo-live { 0% { box-shadow: 0 0 0 0 rgba(92, 225, 214, .55); } 100% { box-shadow: 0 0 0 10px rgba(92, 225, 214, 0); } }
+@keyframes flux      { to { background-position: 28px 0; } }   /* les données avancent d'une étape à l'autre */
+@keyframes reflet    { from { background-position: -200px 0; } to { background-position: calc(100% + 200px) 0; } }
+@keyframes arrive    { from { background-color: #d4f5f2; } }   /* nouvelle fiche : léger flash vert d'eau */
+@keyframes monte     { from { opacity: 0; transform: translateY(6px); } }
+@keyframes apparait  { from { opacity: 0; } }
+@keyframes ouvre     { from { opacity: 0; transform: translateY(8px) scale(.99); } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -1079,11 +1070,12 @@ a:hover { color: var(--accent-hover); }
    --------------------------------------------------------------------- */
 @media (max-width: 1100px) {
   .page { padding: 24px 24px 56px; }
-  .card { padding: 22px 22px; }
-  .table thead th, .table tbody td { padding-left: 8px; padding-right: 8px; }
-  .counter-value { font-size: 34px; }
+  .card { padding: 22px; }
+  .counter-value { font-size: 32px; }
   .counter-label { font-size: 14px; }
-  .stat-value.big { font-size: 56px; }
+  .stat-value.big { font-size: 54px; }
+  .table thead th, .table tbody td { padding-left: 8px; padding-right: 8px; }
+  .table td:nth-child(5) { min-width: 200px; }
 }
 
 @media (max-width: 900px) {
@@ -1100,7 +1092,7 @@ a:hover { color: var(--accent-hover); }
   .page { padding: 16px 14px 40px; gap: 14px; }
   .card { padding: 18px; }
   .brand h1 { font-size: 26px; }
-  .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
+  .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; border-radius: var(--radius); }
   .pipeline li:not(:last-child)::after { display: none; }
   .launch .btn, .launch .badge-live { width: 100%; }
   .counters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
