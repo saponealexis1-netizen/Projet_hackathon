@@ -1,5 +1,7 @@
 # Vidéo du prototype (5 min) — livrable 3, vendredi 11h
 
+> **Remplacé** : la vidéo a été tournée le 19/11 sur le vrai prototype ([livrable 3](../checkpoint-3/)). Le texte à lire, calé sur cette vidéo, est dans [docs/checkpoint-3/voix-off-video-5min.md](../checkpoint-3/voix-off-video-5min.md). Ce script reste ici pour l'historique.
+
 Propriétaire : **Inès** (voix et écran). À enregistrer **jeudi 19/11 entre 14h30 et 17h**, sur le site final (design de Mehdi) ; s'il n'est pas prêt à 15h30, sur le site actuel.
 
 | | |

@@ -133,7 +133,7 @@
 
 | Heure | Dépôt | Contenu |
 |---|---|---|
-| **11h** | Prototype + dépôt GitHub + vidéo de 5 min | Lien du dépôt (branche `main`), liens de l'écran de suivi et de l'ancien CRM, vidéo |
+| **11h** | Prototype + dépôt GitHub + vidéo de 5 min | Tout est dans [docs/checkpoint-3](../checkpoint-3/README.md), avec le message de dépôt à copier |
 | **15h** | Pitch deck | PDF de Maxime, relu |
 
 Avant 11h : vérifier qu'aucune PR utile n'est restée ouverte, fusionner celles marquées **« PRÊT POUR MERGE »**, puis vérifier que les 3 liens s'ouvrent.
