@@ -91,7 +91,7 @@
 | **~0:45** | Ligne **C-0105** : envoyée, sans réparation | « La fiche suivante passe directement : Bascule a appris. Personne n'a touché au code. » | Montre la ligne C-0105 |
 | **~1:00** | HubSpot, vue « Bascule » | « Les deux contacts sont dans HubSpot, avec leur fonction au bon endroit. » | Ouvre la vue |
 
-**Si ça ne marche pas en direct** : ouvrir le [résultat de l'essai réussi du 18/11](https://projet-hackathon-jow2.vercel.app/?run=75b26e36-afe9-49d4-b686-cb4960dcc869&total=2) et dire « voici le même test, fait hier ». Si la ligne 🩹 dit « non corrigée », la raison est affichée juste après : rien de faux n'est parti dans HubSpot.
+**Si ça ne marche pas en direct** : ouvrir le [résultat de l'essai réussi du 18/11](https://projet-hackathon-jow2.vercel.app/?run=75b26e36-afe9-49d4-b686-cb4960dcc869&total=2) et dire « voici le même test, fait hier ». Si la ligne de réparation dit « non corrigée », la raison est affichée juste après : rien de faux n'est parti dans HubSpot.
 
 **Répétition** : jeudi à 18h, une fois, après la démo principale.
 
