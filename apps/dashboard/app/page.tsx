@@ -157,7 +157,7 @@ export default function SuiviMigration() {
         )}
       </section>
 
-      {error && <p className="alert">⚠️ {error}</p>}
+      {error && <p className="alert">{error}</p>}
 
       {run && (
         <>
@@ -371,7 +371,7 @@ function Ligne({ row, hubspotUrl, onPreuve }: { row: LogRow; hubspotUrl: string 
       <td>
         {row.screenshot_url || row.extracted ? (
           <button className="link-btn" onClick={onPreuve}>
-            {row.screenshot_url ? "📷 Voir" : "Voir"}
+            Voir
           </button>
         ) : (
           <span className="muted">—</span>
@@ -385,24 +385,24 @@ function Ligne({ row, hubspotUrl, onPreuve }: { row: LogRow; hubspotUrl: string 
 function Relecture({ row }: { row: LogRow }) {
   const r = row.reread!;
   const label = FIELD_LABEL[r.field] ?? r.field;
-  if (r.error) return <div className="reread fail">🔁 Relecture de « {label} » impossible : {r.error}</div>;
+  if (r.error) return <div className="reread fail">Relecture de « {label} » impossible : {r.error}</div>;
   return (
     <div className={`reread ${rereadChanged(row) ? "fixed" : ""}`}>
-      🔁 {label} relu par l&apos;agent : « {r.before ?? "vide"} » → « {r.after ?? "vide"} »
+      {label} relu par l&apos;agent : « {r.before ?? "vide"} » → « {r.after ?? "vide"} »
       {!rereadChanged(row) && " (confirmé)"}
     </div>
   );
 }
 
-/** Fallback : « ❌ refusée par HubSpot → 🧠 skill vN corrigé par les 2 IA → ✅ envoyée ». */
+/** Fallback : « refusée par HubSpot → skill vN corrigé par les 2 IA → envoyée ». */
 function Reparation({ row, detail }: { row: LogRow; detail?: boolean }) {
   const h = row.self_heal!;
   const ok = h.applied && !h.result.startsWith("échec");
   return (
     <div className={`heal ${ok ? "ok" : "ko"}`}>
       <div>
-        🩹 ❌ refusée par HubSpot → {h.applied ? `🧠 skill v${h.skill_version} corrigé par les 2 IA` : "🧠 pas de correction"} →{" "}
-        {ok ? "✅" : "⚠️"} {h.result}
+        Refusée par HubSpot → {h.applied ? `skill v${h.skill_version} corrigé par les 2 IA` : "pas de correction"} →{" "}
+        {h.result}
         {h.reused && " (correction déjà apprise)"}
       </div>
       {detail && (
@@ -481,7 +481,7 @@ function FenetrePreuve({ row, onClose }: { row: LogRow; onClose: () => void }) {
             </table>
             {row.reread && <Relecture row={row} />}
             {row.self_heal && <Reparation row={row} detail />}
-            {reason(row) && <p className="small anomalies-txt">⚠️ {reason(row)}</p>}
+            {reason(row) && <p className="small anomalies-txt">{reason(row)}</p>}
           </div>
         </div>
       </div>

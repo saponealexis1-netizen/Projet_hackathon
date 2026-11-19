@@ -728,7 +728,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .status-bloquee::before    { content: "✕"; background: var(--err); }
 .status-ignoree::before    { content: "–"; background: var(--ign); }
 
-/* Bouton « 📷 Voir » : pilule secondaire, comme « Exporter » */
+/* Bouton « Voir » : pilule secondaire, comme « Exporter » */
 .link-btn {
   appearance: none;
   display: inline-flex;
@@ -749,7 +749,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .link-btn:hover { border-color: var(--ink); background: var(--surface-2); text-decoration: none; }
 
-/* Relecture d'un champ par l'agent (🔁) */
+/* Relecture d'un champ par l'agent */
 .reread {
   margin-top: 6px;
   color: var(--muted);
@@ -766,7 +766,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .reread.fail { color: var(--warn); font-weight: 500; }
 
-/* Réparation automatique (🩹 → 🧠 → ✅) */
+/* Réparation automatique (refus HubSpot → correction → nouvel essai) */
 .heal {
   display: inline-block;
   margin-top: 6px;

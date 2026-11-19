@@ -24,7 +24,7 @@
 | **0:00** | Écran de suivi | « On lance Bascule sur 6 fiches. L'agent ne connaît rien de ce logiciel : on lui donne seulement l'adresse. » | Clique sur **« Lancer la migration (agent réel) »** |
 | **0:05** | **Ancien CRM** v1, fenêtre « Message du jour » | « Voici le logiciel de Camille, installé en 2010. Aucun export, aucune API. Le numéro est même caché derrière un bouton. » | Ferme la fenêtre, ouvre **Fichier** (aucun export), ouvre une fiche, onglet **Coordonnées**, clique sur **Afficher le numéro** |
 | **0:35** | Écran de suivi, panneau **« Agents en direct »** | « Voilà les agents H Company : chacun voit l'écran, ferme la fenêtre, passe les pages, clique sur Afficher… comme un humain. » | Revient sur l'onglet 1 : 3 agents travaillent, leur écran se rafraîchit toutes les 3 s |
-| **1:00** | Écran de suivi, les fiches arrivent une par une | « Chaque fiche est vérifiée avant HubSpot. Le doublon est bloqué, l'e-mail invalide est relu puis bloqué, le nom en majuscules est corrigé. » | Clique sur **📷 Voir** d'une fiche : capture + champs lus côte à côte |
+| **1:00** | Écran de suivi, les fiches arrivent une par une | « Chaque fiche est vérifiée avant HubSpot. Le doublon est bloqué, l'e-mail invalide est relu puis bloqué, le nom en majuscules est corrigé. » | Clique sur **Voir** d'une fiche : capture + champs lus côte à côte |
 | **1:30** | **HubSpot**, vue « Bascule » | « Les contacts sont dans HubSpot, chacun relié à sa fiche d'origine. Rien de faux n'y est arrivé. » | Ouvre la vue, montre la colonne « Bascule - ID ancien CRM » |
 | **1:45** | Écran de suivi `?run=tout` | « Et sur toute la base : 100 fiches sur 100 exactes, chacune prouvée par sa capture d'écran. » | Ouvre l'adresse `?run=tout` (bilan complet) |
 | **2:00** | — | « Thomas n'a rien recopié. Camille travaille déjà dans HubSpot. » | — |
@@ -87,11 +87,11 @@
 |---|---|---|---|
 | **0:00** | Résumé de l'action GitHub | « Et si HubSpot change ? On casse volontairement ce que Bascule sait de HubSpot : la fonction des contacts part vers un champ qui n'existe plus. » | Lance l'action (étapes ci-dessus), montre la ligne « 🩹 Démo du fallback : skill HubSpot cassé volontairement » |
 | **0:10** | Écran de suivi | « L'agent lit les deux fiches, comme d'habitude. » | Ouvre le lien « Suivi en direct » |
-| **~0:30** | Ligne **C-0004** : 🩹 ❌ refusée par HubSpot → 🧠 skill v2 corrigé par les 2 IA → ✅ envoyée après correction | « HubSpot refuse la fiche. Une première IA lit l'erreur et propose une correction, nos garde-fous la vérifient, une deuxième IA la valide. La fiche repart. » | Clique sur **📷 Voir** de C-0004 : « Erreur HubSpot » et « Ce que les IA ont fait » |
-| **~0:45** | Ligne **C-0105** : ✅ sans 🩹 | « La fiche suivante passe directement : Bascule a appris. Personne n'a touché au code. » | Montre la ligne C-0105 |
+| **~0:30** | Ligne **C-0004** : « Refusée par HubSpot → skill v2 corrigé par les 2 IA → envoyée après correction » | « HubSpot refuse la fiche. Une première IA lit l'erreur et propose une correction, nos garde-fous la vérifient, une deuxième IA la valide. La fiche repart. » | Clique sur **Voir** de C-0004 : « Erreur HubSpot » et « Ce que les IA ont fait » |
+| **~0:45** | Ligne **C-0105** : envoyée, sans réparation | « La fiche suivante passe directement : Bascule a appris. Personne n'a touché au code. » | Montre la ligne C-0105 |
 | **~1:00** | HubSpot, vue « Bascule » | « Les deux contacts sont dans HubSpot, avec leur fonction au bon endroit. » | Ouvre la vue |
 
-**Si ça ne marche pas en direct** : ouvrir le [résultat de l'essai réussi du 18/11](https://projet-hackathon-jow2.vercel.app/?run=75b26e36-afe9-49d4-b686-cb4960dcc869&total=2) et dire « voici le même test, fait hier ». Si la ligne 🩹 dit « non corrigée », la raison est affichée juste après : rien de faux n'est parti dans HubSpot.
+**Si ça ne marche pas en direct** : ouvrir le [résultat de l'essai réussi du 18/11](https://projet-hackathon-jow2.vercel.app/?run=75b26e36-afe9-49d4-b686-cb4960dcc869&total=2) et dire « voici le même test, fait hier ». Si la ligne de réparation dit « non corrigée », la raison est affichée juste après : rien de faux n'est parti dans HubSpot.
 
 **Répétition** : jeudi à 18h, une fois, après la démo principale.
 
