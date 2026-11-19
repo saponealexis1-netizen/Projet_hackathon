@@ -1,6 +1,6 @@
 # Skill HubSpot — Bascule
 
-> **Version 1** du 2026-11-17 · Inès (version de départ, écrite à la main)
+> **Version 2** du 2026-11-19 · IA n°1 Qwen/Qwen3-32B (proposition) + IA n°2 Qwen/Qwen3-Next-80B-A3B-Instruct (validation)
 > Fichier **généré** à partir de `skill.json` : ne pas le modifier à la main.
 > Mis à jour par la veille automatique (2 IA qui se contrôlent), voir [README](README.md).
 
@@ -28,14 +28,17 @@
 
 ## 4. Nouveautés HubSpot qui nous concernent
 
-- Aucune pour l'instant.
+- 2026-08-11 — **Breaking Change: CRM API Write Validation Enforcement** : Validation des propriétés requises lors de l'écriture dans l'API CRM (version 2026-09). *(impact : skill)*
+- 2026-10-14 — **Automatic Update: HubSpot domain security settings will move to TLS 1.2** : Mise à jour automatique vers TLS 1.2 pour les domaines hébergés par HubSpot. *(impact : alerte)*
 
 ## 5. Alertes pour l'équipe
 
-- Aucune.
+- ⚠️ 2026-11-19 — Surveiller l'impact de la validation API CRM 2026-09 sur les écritures de contacts
+- ⚠️ 2026-11-19 — Vérifier la compatibilité TLS 1.2 pour les intégrations externes
 
 ## 6. Historique
 
 | Version | Date | Déclencheur | Ce qui a changé |
 |---|---|---|---|
+| 2 | 2026-11-19 | nouveautés | rien à changer |
 | 1 | 2026-11-17 | création | Reprise de pipeline/verification/mapping.py et de la leçon d'Alexis sur les e-mails en .example. |
