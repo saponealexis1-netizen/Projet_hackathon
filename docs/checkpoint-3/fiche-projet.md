@@ -1,7 +1,7 @@
 # Bascule — Fiche projet
 
-> **Version finale du 18/11/2026** (Inès). Déposée par **Mehdi** vendredi 20/11 à 11h (livrable 3), avec le dépôt GitHub et la vidéo de 5 min.
-> Seul point à compléter jeudi : le **lien de la vidéo** (section Liens). Adapter au formulaire Eugenia si ses rubriques diffèrent (copier-coller rubrique par rubrique).
+> **Version finale** (Inès, mise à jour le 19/11). Déposée par **Mehdi** vendredi 20/11 à 11h (livrable 3), avec le dépôt GitHub et la vidéo de démonstration : voir [le dossier du livrable 3](README.md).
+> Adapter au formulaire Eugenia si ses rubriques diffèrent (copier-coller rubrique par rubrique).
 
 ---
 
@@ -89,8 +89,8 @@ Détail : [business model](../pitch/business-model.md).
 | Dépôt GitHub | https://github.com/saponealexis1-netizen/Projet_hackathon |
 | Ancien CRM simulé | https://projet-hackathon-uffi.vercel.app |
 | Écran de suivi (vraie migration) | https://projet-hackathon-jow2.vercel.app/?run=tout |
-| Vidéo démo (5 min) | `[à ajouter jeudi, après l'enregistrement]` · script : [docs/demo/video-prototype.md](../demo/video-prototype.md) |
+| Vidéo de démonstration (4 min 38, prototype réel) | [télécharger](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/bascule-video-5min.mp4) · textes : [voix off](voix-off-video-5min.md) |
 | Réparation automatique (essai réel) | https://projet-hackathon-jow2.vercel.app/?run=59f6de90-7885-42ea-abae-d6cffbc4f32b&total=2 |
-| Mini-pitch (livrable 2) | [docs/checkpoint-2/bascule-mini-pitch.mp4](../checkpoint-2/bascule-mini-pitch.mp4) |
+| Mini-pitch (livrable 2, 2 min) | [télécharger](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4) |
 | Retour d'expérience Agent API | [docs/retour-agent-api/](../retour-agent-api/README.md) |
 | Architecture | [docs/architecture/](../architecture/README.md) |

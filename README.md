@@ -30,7 +30,7 @@ Projet du **Hackathon Eugenia 2026 « Build The Future »** (16 → 20 novembre 
 |---|---|---|
 | 1 | **Ancien CRM** (le logiciel à quitter) · [v1](https://projet-hackathon-uffi.vercel.app) · [v2](https://projet-hackathon-uffi.vercel.app/v2) | Fermez « Message du jour », cherchez un export dans le menu Fichier (il n'y en a pas), ouvrez une fiche : le numéro est caché derrière un bouton. |
 | 2 | **Écran de suivi de la vraie migration** · [ouvrir](https://projet-hackathon-jow2.vercel.app/?run=tout) | Les 105 fiches déjà migrées, avec leur statut et le bilan. Cliquez sur **Voir** : la capture de ce que l'agent a vu, à côté de ce qu'il a lu. |
-| 3 | **Vidéo de démonstration** (4 min 38) · [télécharger](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/demo/bascule-video-5min.mp4) · version courte (2 min) : [télécharger](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4) | Ancien CRM v1 et v2, données Supabase, vraie migration avec les agents en direct, preuves, HubSpot, réparation automatique. |
+| 3 | **Vidéo de démonstration** (4 min 38) · [télécharger](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/bascule-video-5min.mp4) · version courte (2 min) : [télécharger](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-2/bascule-avancement.mp4) | Ancien CRM v1 et v2, données Supabase, vraie migration avec les agents en direct, preuves, HubSpot, réparation automatique. |
 
 L'écran de suivi a aussi un bouton **« Lancer la migration (agent réel) »** : il lance de vrais agents H Company sur 6 fiches de démo (une fiche normale et 5 fiches pièges), qu'on voit travailler en direct. Il est réservé à l'équipe, car chaque lancement consomme des crédits.
 
@@ -158,7 +158,7 @@ python3 -m unittest discover -s . -p "test_*.py"
 |---|---|---|---|
 | **1 — Validation d'idée** | Lun. 16/11 | [Slides](docs/checkpoint-1/) | ✅ Livré |
 | **2 — Point intermédiaire** | Mer. 18/11 | [Parcours, architecture, vidéo, roadmap](docs/checkpoint-2/) | ✅ Livré |
-| **3 — Produit** | Ven. 20/11, 11h | Prototype en ligne, [fiche projet](docs/checkpoint-3/fiche-projet.md), ce dépôt, vidéo de démo | En cours |
+| **3 — Produit** | Ven. 20/11, 11h | [Prototype, fiche projet, dépôt, vidéo de démo](docs/checkpoint-3/) | Prêt à déposer |
 | **4 — Pitch deck** | Ven. 20/11, 15h | [Pitch deck](docs/pitch/) et [business model](docs/pitch/business-model.md) | En cours |
 
 ## L'équipe

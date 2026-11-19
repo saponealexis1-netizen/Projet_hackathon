@@ -1,7 +1,7 @@
 # Voix off de la vidéo de 5 min — calée sur la vidéo
 
-Vidéo : [`bascule-video-5min.mp4`](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/demo/bascule-video-5min.mp4) (4 min 38, tournée le 19/11 sur le vrai prototype).
-Texte : **Inès** (repris de son script `video-prototype.md`, adapté à l'ordre et aux durées de la vidéo).
+Vidéo : [`bascule-video-5min.mp4`](https://github.com/saponealexis1-netizen/Projet_hackathon/raw/main/docs/checkpoint-3/bascule-video-5min.mp4) (4 min 38, tournée le 19/11 sur le vrai prototype).
+Texte : **Inès** (repris de son script [`video-prototype.md`](../demo/video-prototype.md), adapté à l'ordre et aux durées de la vidéo).
 
 ## Comment enregistrer
 
