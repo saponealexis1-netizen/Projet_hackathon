@@ -61,6 +61,8 @@
 
 ## Partie 3 — Mehdi, vidéo de 0:52 à 2:58 (≈ 1 min 24 réelles)
 
+Version en temps réel, pour le chronomètre : [script-mehdi.md](script-mehdi.md).
+
 | Compteur | À l'écran | Texte de Mehdi |
 |---|---|---|
 | **0:52** | Supabase : table `legacy_contacts`, puis `migration_log` | « Derrière l'ancien logiciel, une base Supabase de cent cinq contacts fictifs, dont cinq fiches pièges : un doublon, un e-mail invalide, un prénom vide, un téléphone incomplet. Et voici le journal où Bascule note chaque fiche migrée. » |
