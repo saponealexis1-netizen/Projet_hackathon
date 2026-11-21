@@ -1,6 +1,6 @@
 # Skill HubSpot — Bascule
 
-> **Version 1** du 2026-11-17 · Inès (version de départ, écrite à la main)
+> **Version 2** du 2026-11-21 · IA n°1 Qwen/Qwen3-32B (proposition) + IA n°2 Qwen/Qwen3-Next-80B-A3B-Instruct (validation)
 > Fichier **généré** à partir de `skill.json` : ne pas le modifier à la main.
 > Mis à jour par la veille automatique (2 IA qui se contrôlent), voir [README](README.md).
 
@@ -28,14 +28,15 @@
 
 ## 4. Nouveautés HubSpot qui nous concernent
 
-- Aucune pour l'instant.
+- 2026-09-15 — **Legacy APIs and Apps: What's Going Unsupported** : Fin du support des APIs v1-v3 et des apps legacy en septembre 2027. *(impact : alerte)*
 
 ## 5. Alertes pour l'équipe
 
-- Aucune.
+- ⚠️ 2026-11-21 — Vérifier que Bascule utilise une version d'API CRM compatible avec les nouvelles règles de validation (2026-09+).
 
 ## 6. Historique
 
 | Version | Date | Déclencheur | Ce qui a changé |
 |---|---|---|---|
+| 2 | 2026-11-21 | nouveautés | Rien à changer : les mises à jour HubSpot ne modifient pas les propriétés utilisées par Bascule ou les règles de validation actuelles. |
 | 1 | 2026-11-17 | création | Reprise de pipeline/verification/mapping.py et de la leçon d'Alexis sur les e-mails en .example. |
