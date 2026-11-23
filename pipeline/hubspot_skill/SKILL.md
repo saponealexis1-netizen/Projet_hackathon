@@ -32,7 +32,7 @@
 
 ## 5. Alertes pour l'équipe
 
-- Aucune.
+- ⚠️ 2026-11-23 — [nouveautés] proposition non appliquée : analyste : IA n°1 (Qwen/Qwen3-32B) : HTTP 429 {"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"qwen/qwen3-32b is temporarily rate-limited upstream. Please retry shortly, or add your own provider key to use your own limits: https://openrouter.ai/workspaces/prod/byok","provider_name":"DeepInfra","is_byok":false,"provide
 
 ## 6. Historique
 
