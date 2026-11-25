@@ -1,6 +1,6 @@
 # Skill HubSpot — Bascule
 
-> **Version 1** du 2026-11-17 · Inès (version de départ, écrite à la main)
+> **Version 2** du 2026-11-25 · IA n°1 Qwen/Qwen3-32B (proposition) + IA n°2 Qwen/Qwen3-Next-80B-A3B-Instruct (validation)
 > Fichier **généré** à partir de `skill.json` : ne pas le modifier à la main.
 > Mis à jour par la veille automatique (2 IA qui se contrôlent), voir [README](README.md).
 
@@ -28,14 +28,15 @@
 
 ## 4. Nouveautés HubSpot qui nous concernent
 
-- Aucune pour l'instant.
+- 2026-08-11 — **Validation renforcée de l'API CRM** : HubSpot exige désormais la validation des propriétés requises lors des écritures CRM via l'API (version 2026-09+). *(impact : alerte)*
 
 ## 5. Alertes pour l'équipe
 
-- Aucune.
+- ⚠️ 2026-11-25 — La validation renforcée de l'API CRM (2026-09+) pourrait affecter l'import si des propriétés requises ne sont pas fournies. Vérifier que tous les champs obligatoires sont présents dans le mapping.
 
 ## 6. Historique
 
 | Version | Date | Déclencheur | Ce qui a changé |
 |---|---|---|---|
+| 2 | 2026-11-25 | nouveautés | Rien à changer. Aucune modification du mapping n'est nécessaire. Nouvelle alerte sur la validation renforcée de l'API CRM. |
 | 1 | 2026-11-17 | création | Reprise de pipeline/verification/mapping.py et de la leçon d'Alexis sur les e-mails en .example. |
