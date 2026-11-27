@@ -5,8 +5,7 @@
 name: Veille HubSpot (skill)
 
 on:
-  schedule:
-    - cron: "17 5 * * *"   # tous les jours vers 6h17 (heure de Paris)
+  # Veille quotidienne arrêtée après le hackathon (27/11) : lancement manuel uniquement.
   workflow_dispatch:
     inputs:
       champs:
